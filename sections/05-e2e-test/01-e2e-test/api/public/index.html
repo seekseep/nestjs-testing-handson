@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>メモ</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 40rem;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      input,
+      textarea,
+      button {
+        font: inherit;
+        padding: 0.4rem;
+      }
+      [role='alert'] {
+        color: #b91c1c;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        border: 1px solid #d4d4d8;
+        border-radius: 0.5rem;
+        padding: 0.5rem 1rem;
+        margin-bottom: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>メモ</h1>
+
+    <!-- API に送るトークン。sessionStorage に入れておき、API を呼ぶたびに読む -->
+    <form id="token-form">
+      <label for="token">トークン</label>
+      <input id="token" placeholder="トークン" autocomplete="off" />
+      <button type="submit">トークンを保存</button>
+    </form>
+
+    <form id="note-form">
+      <input name="title" placeholder="タイトル" />
+      <textarea name="body" placeholder="本文"></textarea>
+      <button type="submit">追加</button>
+    </form>
+
+    <p id="error" role="alert"></p>
+    <ul id="notes"></ul>
+
+    <script>
+      const tokenInput = document.getElementById('token');
+      const noteForm = document.getElementById('note-form');
+      const errorText = document.getElementById('error');
+      const list = document.getElementById('notes');
+
+      tokenInput.value = sessionStorage.getItem('token') ?? '';
+
+      /** トークンを付けて API を呼ぶ。失敗したら、API のエラーの説明で例外を投げる。 */
+      async function callApi(method, path, body) {
+        const token = sessionStorage.getItem('token') ?? '';
+        const res = await fetch(path, {
+          method,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: body === undefined ? undefined : JSON.stringify(body),
+        });
+        if (!res.ok) {
+          const error = await res.json();
+          // 入力チェックのエラーは message が配列で、項目ごとに 1 つずつ入る
+          throw new Error([error.message].flat().join(' / '));
+        }
+        return res.status === 204 ? undefined : res.json();
+      }
+
+      /** メモの一覧を読み込み直して、画面に出す。 */
+      async function showNotes() {
+        try {
+          const notes = await callApi('GET', '/notes');
+          list.replaceChildren(...notes.map(noteItem));
+          errorText.textContent = '';
+        } catch (e) {
+          list.replaceChildren();
+          errorText.textContent = e.message;
+        }
+      }
+
+      /** メモ 1 件ぶんの <li>。 */
+      function noteItem(note) {
+        const li = document.createElement('li');
+        const title = document.createElement('strong');
+        title.textContent = note.title;
+        const body = document.createElement('p');
+        body.textContent = note.body;
+        const remove = document.createElement('button');
+        remove.textContent = '削除';
+        remove.addEventListener('click', async () => {
+          try {
+            await callApi('DELETE', `/notes/${note.id}`);
+            await showNotes();
+          } catch (e) {
+            errorText.textContent = e.message;
+          }
+        });
+        li.append(title, body, remove);
+        return li;
+      }
+
+      document.getElementById('token-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        sessionStorage.setItem('token', tokenInput.value.trim());
+        void showNotes();
+      });
+
+      noteForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const data = new FormData(noteForm);
+        try {
+          await callApi('POST', '/notes', {
+            title: data.get('title'),
+            body: data.get('body'),
+          });
+          noteForm.reset();
+          await showNotes();
+        } catch (err) {
+          errorText.textContent = err.message;
+        }
+      });
+
+      void showNotes();
+    </script>
+  </body>
+</html>
