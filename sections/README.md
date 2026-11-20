@@ -52,7 +52,7 @@ sections/
 
 ## 前提
 
-- macOS / Windows 10・11（PowerShell 7）/ Linux のどれか。Windows に必要なスペックは [準備](./01-setup/01-environment/LECTURE.md) の節にあります
+- macOS 14 以降 / Windows 11（PowerShell 7）/ Linux（Ubuntu 22.04 以降）のどれか。Windows に必要なスペックは [準備](./01-setup/01-environment/LECTURE.md) の節にあります
 - ターミナルの基本的な操作（`cd`・`ls`）ができる
 - JavaScript か TypeScript を書いたことがある
 - NestJS は、はじめてでも進められます。コントローラー・サービス・モジュールといった言葉は、02 章でざっと説明します
