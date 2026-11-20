@@ -4,58 +4,38 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
-import { isAdmin, type User } from '../auth/user.js';
-import type { CreateNoteDto } from './dto/create-note.dto.js';
-import type { UpdateNoteDto } from './dto/update-note.dto.js';
-import type { Note } from './entities/note.entity.js';
+
+export interface Note {
+  id: string;
+  text: string;
+  // 作った人（アクセストークンの sub）
+  ownerId: string;
+}
 
 @Injectable()
 export class NotesService {
-  // メモはメモリ上に持つ。API を止めると消える。
+  // ノートはメモリ上の配列に持つ（API を起動し直すと消える）
   private readonly notes: Note[] = [];
 
-  create(createNoteDto: CreateNoteDto, user: User): Note {
-    const now = new Date().toISOString();
-    const note: Note = {
-      id: randomUUID(),
-      ownerId: user.sub,
-      title: createNoteDto.title,
-      body: createNoteDto.body,
-      createdAt: now,
-      updatedAt: now,
-    };
+  create(text: string, ownerId: string): Note {
+    const note = { id: randomUUID(), text, ownerId };
     this.notes.push(note);
     return note;
   }
 
-  /** admin なら全員のメモを、そうでなければ自分のメモだけを返す。 */
-  findAll(user: User): Note[] {
-    if (isAdmin(user)) return this.notes;
-    return this.notes.filter((note) => note.ownerId === user.sub);
+  findAll(): Note[] {
+    return this.notes;
   }
 
-  /** 無ければ 404、持ち主でも admin でもなければ 403 にする。 */
-  findOne(id: string, user: User): Note {
-    const note = this.notes.find((n) => n.id === id);
-    if (!note) {
-      throw new NotFoundException(`Note ${id} not found`);
+  remove(id: string, userId: string): void {
+    const index = this.notes.findIndex((note) => note.id === id);
+    if (index === -1) {
+      throw new NotFoundException();
     }
-    if (note.ownerId !== user.sub && !isAdmin(user)) {
-      throw new ForbiddenException(`Note ${id} is not yours`);
+    // 作った人でなければ 403
+    if (this.notes[index].ownerId !== userId) {
+      throw new ForbiddenException();
     }
-    return note;
-  }
-
-  update(id: string, updateNoteDto: UpdateNoteDto, user: User): Note {
-    const note = this.findOne(id, user);
-    if (updateNoteDto.title !== undefined) note.title = updateNoteDto.title;
-    if (updateNoteDto.body !== undefined) note.body = updateNoteDto.body;
-    note.updatedAt = new Date().toISOString();
-    return note;
-  }
-
-  remove(id: string, user: User): void {
-    const note = this.findOne(id, user);
-    this.notes.splice(this.notes.indexOf(note), 1);
+    this.notes.splice(index, 1);
   }
 }

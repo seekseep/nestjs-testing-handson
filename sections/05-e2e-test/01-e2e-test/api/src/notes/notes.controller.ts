@@ -5,64 +5,32 @@ import {
   Get,
   HttpCode,
   Param,
-  Patch,
   Post,
-  UseGuards,
+  Req,
 } from '@nestjs/common';
-import { z } from 'zod';
-import { AuthGuard } from '../auth/auth.guard.js';
-import { CurrentUser } from '../auth/current-user.decorator.js';
-import type { User } from '../auth/user.js';
-import { createNoteSchema, type CreateNoteDto } from './dto/create-note.dto.js';
-import { updateNoteSchema, type UpdateNoteDto } from './dto/update-note.dto.js';
-import type { Note } from './entities/note.entity.js';
+import type { AuthenticatedRequest } from '../auth/auth.middleware.js';
 import { NotesService } from './notes.service.js';
 
-/** URL の :id。 */
-const noteIdSchema = z.uuid();
-
 @Controller('notes')
-// このコントローラーのどの API も、正しいトークンが無ければ 401 にする
-@UseGuards(AuthGuard)
 export class NotesController {
   constructor(private readonly notesService: NotesService) {}
 
+  // POST /notes … ノートを作る。正しいアクセストークンが無ければ 401（AuthMiddleware）
   @Post()
-  create(
-    @Body({ schema: createNoteSchema }) createNoteDto: CreateNoteDto,
-    @CurrentUser() user: User,
-  ): Note {
-    return this.notesService.create(createNoteDto, user);
+  create(@Req() req: AuthenticatedRequest, @Body() body: { text: string }) {
+    return this.notesService.create(body.text, req.user.sub);
   }
 
+  // GET /notes … ノートの一覧
   @Get()
-  findAll(@CurrentUser() user: User): Note[] {
-    return this.notesService.findAll(user);
+  findAll() {
+    return this.notesService.findAll();
   }
 
-  @Get(':id')
-  findOne(
-    @Param('id', { schema: noteIdSchema }) id: string,
-    @CurrentUser() user: User,
-  ): Note {
-    return this.notesService.findOne(id, user);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id', { schema: noteIdSchema }) id: string,
-    @Body({ schema: updateNoteSchema }) updateNoteDto: UpdateNoteDto,
-    @CurrentUser() user: User,
-  ): Note {
-    return this.notesService.update(id, updateNoteDto, user);
-  }
-
+  // DELETE /notes/:id … ノートを消す。成功したら 204（本文なし）。作った人でなければ 403
   @Delete(':id')
   @HttpCode(204)
-  remove(
-    @Param('id', { schema: noteIdSchema }) id: string,
-    @CurrentUser() user: User,
-  ): void {
-    this.notesService.remove(id, user);
+  remove(@Req() req: AuthenticatedRequest, @Param('id') id: string) {
+    this.notesService.remove(id, req.user.sub);
   }
 }

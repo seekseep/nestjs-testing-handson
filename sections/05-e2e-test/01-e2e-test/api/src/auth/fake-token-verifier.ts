@@ -1,16 +1,17 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
-import { extractBearerToken } from './bearer-token.js';
-import { TokenVerifier } from './token-verifier.js';
-import type { User } from './user.js';
+import {
+  type AuthUser,
+  extractBearerToken,
+  TokenVerifier,
+} from './token-verifier.js';
 
 /**
  * テスト用の、決め打ちのトークンと、それが表すユーザー。
  * 本物の Cognito のトークンではなく、ただの文字列。
  */
-export const FAKE_TOKENS: Record<string, User> = {
-  'alice-token': { sub: 'alice', groups: [] },
-  'bob-token': { sub: 'bob', groups: [] },
-  'admin-token': { sub: 'admin', groups: ['admin'] },
+export const FAKE_TOKENS: Record<string, AuthUser> = {
+  'alice-token': { sub: 'alice' },
+  'bob-token': { sub: 'bob' },
 };
 
 /**
@@ -26,7 +27,7 @@ export class FakeTokenVerifier implements Pick<TokenVerifier, 'verify'> {
     );
   }
 
-  verify(authorization: string | undefined): Promise<User> {
+  verify(authorization: string | undefined): Promise<AuthUser> {
     const token = extractBearerToken(authorization);
     const user = FAKE_TOKENS[token];
     if (!user) {

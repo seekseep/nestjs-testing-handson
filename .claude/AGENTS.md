@@ -2,7 +2,7 @@
 
 ## プロジェクト概要
 
-NestJS で作ったメモの API に、単体テスト（Vitest）・結合テスト（Vitest と supertest）・E2E テスト（Playwright）を書くハンズオン教材。
+NestJS で作ったノートの API（作成・一覧・削除。B と同じ形）に、単体テスト（Vitest）・結合テスト（Vitest と supertest）・E2E テスト（Playwright）を書くハンズオン教材。
 3 本に分けたハンズオンの C（A: 基本的な REST API `nestjs-rest-api-handson`、B: Cognito で認証と認可 `nestjs-cognito-auth-handson`）。
 A も B も終えていなくても始められるように、02 章で「はじめのプロジェクト」を ZIP で配る。
 handson-builder スキルの骨格（`sections/` ＋ Starlight の `site/` ＋ GitHub Pages）を使っている。
@@ -13,7 +13,7 @@ handson-builder スキルの骨格（`sections/` ＋ Starlight の `site/` ＋ G
 | 用語 | 指すもの | 例 |
 |---|---|---|
 | **章** | `sections/<NN-section>/`。章立ては固定（イシュー #1） | `03-unit-test/` |
-| **節** | `sections/<NN-section>/<NN-lecture>/`。増減してよい | `03-unit-test/01-functions-services/` |
+| **節** | `sections/<NN-section>/<NN-lecture>/`。増減してよい | `03-unit-test/01-service/` |
 
 - 節のディレクトリは **その節を終えた時点のプロジェクト** を丸ごと持つ（`api/`）
 - 次の節は、前の節のディレクトリをコピーして差分を足して作る（`tools/copy-lecture.sh <前の節> <次の節>`）
@@ -29,7 +29,7 @@ sections/<sec>/<lec>/
 ├── LECTURE.md        教材本文（ZIP に入らない）
 ├── images/           説明図（ZIP に入らない）
 └── api/              NestJS（1 つだけ）
-    ├── public/index.html   画面（HTML 1 枚。app.useStaticAssets() で配る）
+    ├── public/notes.html   ノートの一覧の画面（app.useStaticAssets() で配る）
     ├── src/
     ├── test/         結合テスト（04 章から）
     └── e2e/          E2E テスト（05 章から。playwright.config.ts も api/ に置く）
@@ -39,10 +39,12 @@ sections/<sec>/<lec>/
   `.gitattributes`、`nest new` の使わないスクリプト（`start:dev`・`test:watch` など）や見本は入れない。
   `nest-cli.json` は `deleteOutDir` のために残す（無いと `dist/` を消したあとビルドし直せない）
 - **最小限の構成**: Podman・compose・Next.js・Amplify・OpenAPI は使わない。**AWS（Cognito）が無くても全部進められる**
-- 言語は **TypeScript**（NestJS 12 の `nest new` の既定。ESM で、import の末尾は `.js`）。テストは Vitest（`nest new` の既定）
+- 題材は B（`nestjs-cognito-auth-handson`）の最後の節（`05-refactor/01-auth-middleware`）と同じ形: `POST /notes`（トークン要る）・`GET /notes`（誰でも）・`DELETE /notes/:id`（作った人だけ。ほかの人は 403、無ければ 404）。
+  ノートは `{ id, text, ownerId }` をメモリ上の配列に持つ。認証は `AuthMiddleware`（`forRoutes()` で POST と DELETE にだけ掛ける）。
+  B と違い、トークンの検証は DI で差し替えられる `TokenVerifier` クラスに切り出し、Floci・Podman は使わない
+- 言語は **TypeScript**（ESM で、import の末尾は `.js`）。はじめのプロジェクトにテストの道具は入れず、Vitest は 03-01、coverage-v8 は 03-02、`@nestjs/testing`・supertest は 04、Playwright は 05 で入れる
 - パッケージマネージャはレクチャー側が **npm**（`api/package-lock.json`）、サイトが pnpm
 - ポートは 3000（E2E テストは、ふだんの起動とぶつからないように 3100）
-- ファイル名は NestJS の標準（`notes/dto/create-note.dto.ts`・`update-note.dto.ts`、`notes/entities/note.entity.ts`）
 - `.env`・`.env.example` は置かない（`.env` の読み込みもしない）。本物の `TokenVerifier` は Cognito の ID が無ければ WARN を出してどのトークンも 401 にする
 - **秘匿情報（ユーザープール ID・クライアント ID・AWS アカウント ID・キー）の実値は絶対にコミットしない**
 
@@ -77,9 +79,9 @@ sections/<sec>/<lec>/
 
 ## テストでの認証
 
-- テストでの認証は **トークンの直書き**（`alice-token`・`bob-token`・`admin-token` を通す `FakeTokenVerifier`）
-- 結合テストは `overrideProvider(TokenVerifier).useClass(FakeTokenVerifier)`、E2E テストは API の `USE_FAKE_AUTH=true` と、
-  画面が `sessionStorage` から読むトークンを Playwright の `addInitScript` で入れる
+- テストでの認証は **トークンの直書き**（`alice-token`・`bob-token` を通す `FakeTokenVerifier`）
+- 結合テストは `overrideProvider(TokenVerifier).useClass(FakeTokenVerifier)`、E2E テストは API の `USE_FAKE_AUTH=true`（`AppModule` が偽物を使う）と、
+  Playwright の `request` に `Authorization: Bearer alice-token` を付けて作成・削除し、一覧の画面（`/notes.html`）に反映されるかを見る
 - 本来の方法（テスト用ユーザーでのサインイン、setup project と storageState など）には触れない、と本文に書く
 
 ## サイト（site/）の開発
