@@ -19,12 +19,14 @@ sidebar:
 ファイルを書き換える手順は、前の節との差分で示します。行頭が `+` の行を足し、`-` の行を消します。新しく作るファイルは、すべての行に `+` が付きます。
 
 ```diff lang="ts"
- async function bootstrap() {
-   const app = await NestFactory.create(AppModule);
--  app.useGlobalPipes(new StandardSchemaValidationPipe());
-+  setupApp(app);
-   await app.listen(process.env.PORT ?? 3000);
- }
+ @Module({
+   controllers: [NotesController],
+-  providers: [NotesService, TokenVerifier],
++  providers: [
++    NotesService,
++    { provide: TokenVerifier, useClass: FakeTokenVerifier },
++  ],
+ })
 ```
 
 ### この節を終えたときのディレクトリ

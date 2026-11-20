@@ -20,8 +20,7 @@ const TOOL_COLORS = {
   NestJS: '#E0234E',
   'VS Code': '#007ACC',
   TypeScript: '#3178C6',
-  Zod: '#3068B7',
-  Guard: '#475569',
+  Middleware: '#475569',
   Vitest: '#729B1B',
   Coverage: '#475569',
   supertest: '#475569',
@@ -31,9 +30,9 @@ const TOOL_COLORS = {
 
 const THUMBNAILS = [
   ['01-setup/01-environment', '01', '準備', ['Node.js', 'VS Code']],
-  ['02-starter/01-starter-project', '02', 'はじめのプロジェクト', ['NestJS', 'Zod', 'Guard', 'HTML']],
-  ['03-unit-test/01-functions-services', '03', '関数とサービスのテスト', ['Vitest', 'NestJS']],
-  ['03-unit-test/02-mock-coverage', '03', 'モックとカバレッジ', ['Vitest', 'Guard', 'Coverage']],
+  ['02-starter/01-starter-project', '02', 'はじめのプロジェクト', ['NestJS', 'Middleware', 'HTML']],
+  ['03-unit-test/01-service', '03', 'サービスのテスト', ['Vitest', 'NestJS']],
+  ['03-unit-test/02-mock-coverage', '03', 'モックとカバレッジ', ['Vitest', 'Middleware', 'Coverage']],
   ['04-integration-test/01-integration-test', '04', '結合テスト', ['Vitest', 'supertest', 'NestJS']],
   ['05-e2e-test/01-e2e-test', '05', 'E2E テスト', ['Playwright', 'NestJS', 'HTML']],
 ];
