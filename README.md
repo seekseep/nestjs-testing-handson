@@ -21,6 +21,8 @@ NestJS で作ったメモの API に、**単体テスト・結合テスト・E2E
 
 ## このハンズオンで作るもの
 
+![3 種類のテストが確かめる範囲。単体テストは 1 つのクラスだけ、結合テストは API 全体を HTTP で、E2E テストはブラウザから画面と API をまとめて確かめる](./sections/03-unit-test/01-functions-services/images/01-test-types.svg)
+
 ### 01. 準備
 
 Node.js 26 と VS Code を入れます。Windows では PowerShell 7 を使います。
