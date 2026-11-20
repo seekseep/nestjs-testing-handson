@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 330" width="960" height="330" role="img" aria-label="リクエストの流れ。ブラウザの画面が API を呼ぶと、AuthGuard が TokenVerifier でトークンを確かめ、StandardSchemaValidationPipe が Zod のスキーマで入力を確かめ、NotesController が NotesService を呼ぶ。NotesService が持ち主と admin グループで認可する">
+<defs>
+<style>text{font-family:'Hiragino Sans','Noto Sans JP','Yu Gothic UI',system-ui,sans-serif}.t{font-size:17px;font-weight:700;fill:#0f172a}.s{font-size:13px;fill:#475569}.m{font-size:13px;fill:#1e293b;font-family:ui-monospace,Menlo,monospace}.e{font-size:13px;fill:#b91c1c;font-weight:600}</style>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker>
+</defs>
+<rect width="960" height="330" rx="20" fill="#f8fafc"/>
+<rect x="30" y="60" width="150" height="110" rx="12" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="105" y="100" text-anchor="middle" class="t">ブラウザ</text>
+<text x="105" y="124" text-anchor="middle" class="m">index.html</text>
+<text x="105" y="146" text-anchor="middle" class="s">トークンを付けて呼ぶ</text>
+<rect x="210" y="40" width="720" height="150" rx="14" fill="#fff" stroke="#E0234E" stroke-width="2"/>
+<text x="230" y="66" class="t" fill="#E0234E">API（NestJS）</text>
+<rect x="230" y="85" width="150" height="85" rx="10" fill="#fde2e8"/>
+<text x="305" y="112" text-anchor="middle" class="m">AuthGuard</text>
+<text x="305" y="134" text-anchor="middle" class="s">トークンを確かめる</text>
+<text x="305" y="155" text-anchor="middle" class="m">TokenVerifier</text>
+<rect x="400" y="85" width="160" height="85" rx="10" fill="#fde2e8"/>
+<text x="480" y="112" text-anchor="middle" class="m">Pipe</text>
+<text x="480" y="134" text-anchor="middle" class="s">入力を確かめる</text>
+<text x="480" y="155" text-anchor="middle" class="m">Zod のスキーマ</text>
+<rect x="580" y="85" width="150" height="85" rx="10" fill="#fde2e8"/>
+<text x="655" y="112" text-anchor="middle" class="m">NotesController</text>
+<text x="655" y="134" text-anchor="middle" class="s">URL と処理を</text>
+<text x="655" y="155" text-anchor="middle" class="s">結びつける</text>
+<rect x="750" y="85" width="160" height="85" rx="10" fill="#fde2e8"/>
+<text x="830" y="112" text-anchor="middle" class="m">NotesService</text>
+<text x="830" y="134" text-anchor="middle" class="s">メモを持つ・</text>
+<text x="830" y="155" text-anchor="middle" class="s">持ち主を確かめる</text>
+<line x1="180" y1="127" x2="226" y2="127" stroke="#64748b" stroke-width="2" marker-end="url(#a)"/>
+<line x1="380" y1="127" x2="396" y2="127" stroke="#64748b" stroke-width="2" marker-end="url(#a)"/>
+<line x1="560" y1="127" x2="576" y2="127" stroke="#64748b" stroke-width="2" marker-end="url(#a)"/>
+<line x1="730" y1="127" x2="746" y2="127" stroke="#64748b" stroke-width="2" marker-end="url(#a)"/>
+<text x="305" y="220" text-anchor="middle" class="e">401</text>
+<text x="305" y="240" text-anchor="middle" class="s">トークンが無い・正しくない</text>
+<text x="480" y="220" text-anchor="middle" class="e">400</text>
+<text x="480" y="240" text-anchor="middle" class="s">タイトルが空 など</text>
+<text x="830" y="220" text-anchor="middle" class="e">403 / 404</text>
+<text x="830" y="240" text-anchor="middle" class="s">他の人のメモ / 無いメモ</text>
+<text x="830" y="262" text-anchor="middle" class="s">（admin グループは全員分）</text>
+<text x="30" y="305" class="s">それぞれの部品が断ると、そこで止まってエラーを返す</text>
+</svg>
