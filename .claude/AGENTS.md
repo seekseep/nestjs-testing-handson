@@ -43,7 +43,7 @@ sections/<sec>/<lec>/
 - パッケージマネージャはレクチャー側が **npm**（`api/package-lock.json`）、サイトが pnpm
 - ポートは 3000（E2E テストは、ふだんの起動とぶつからないように 3100）
 - ファイル名は NestJS の標準（`notes/dto/create-note.dto.ts`・`update-note.dto.ts`、`notes/entities/note.entity.ts`）
-- `.env` は gitignore。`.env.example` にプレースホルダだけを書いて追跡する
+- `.env`・`.env.example` は置かない（`.env` の読み込みもしない）。本物の `TokenVerifier` は Cognito の ID が無ければ WARN を出してどのトークンも 401 にする
 - **秘匿情報（ユーザープール ID・クライアント ID・AWS アカウント ID・キー）の実値は絶対にコミットしない**
 
 ## 本文の分量
@@ -94,7 +94,7 @@ pnpm run build    # 本番ビルド
 ```
 
 - ZIP・`::tree`・`::diff` は `git ls-files --cached --others --exclude-standard` の結果を使う。
-  `.gitignore` 済みのもの（`node_modules/`・`dist/`・`coverage/`・`.env`）は入らない
+  `.gitignore` 済みのもの（`node_modules/`・`dist/`・`coverage/`）は入らない
 - 依存を上げ直すときに踏みやすい点（esbuild の allowBuilds、archiver 8 の `ZipArchive`、Astro 7 の
   `@astrojs/markdown-remark`）は `.claude/handson-builder-conventions.md` を参照
 
