@@ -17,7 +17,7 @@ handson-builder スキルの骨格（`sections/` ＋ Starlight の `site/` ＋ G
 
 - 節のディレクトリは **その節を終えた時点のプロジェクト** を丸ごと持つ（`api/`）
 - 次の節は、前の節のディレクトリをコピーして差分を足して作る（`tools/copy-lecture.sh <前の節> <次の節>`）
-- 本文は `LECTURE.md`（`docs: true`）。節の直下の `README.md` は ZIP を展開した人向けの起動方法
+- 本文は `LECTURE.md`（`docs: true`）。節の直下に `README.md` は置かない（起動方法は本文に書く）
 - 説明図は `images/` に SVG で置く（`00-thumbnail.svg` を先頭サムネに。`tools/thumbnail.mjs` の THUMBNAILS に足して `node tools/thumbnail.mjs`）
 - 章の直下には README を置かない
 - 準備の節（01 章）はプロジェクトを持たない（本文だけ）
@@ -26,7 +26,6 @@ handson-builder スキルの骨格（`sections/` ＋ Starlight の `site/` ＋ G
 
 ```text
 sections/<sec>/<lec>/
-├── README.md         起動方法（ZIP に入る。::tree には出さない）
 ├── LECTURE.md        教材本文（ZIP に入らない）
 ├── images/           説明図（ZIP に入らない）
 └── api/              NestJS（1 つだけ）
@@ -36,6 +35,9 @@ sections/<sec>/<lec>/
     └── e2e/          E2E テスト（05 章から。playwright.config.ts も api/ に置く）
 ```
 
+- **プロジェクトのファイルは最小限**: ビルド・起動・教材のテストに要るものだけを置く。lint・format（oxlint・Prettier）、
+  `.gitattributes`、`nest new` の使わないスクリプト（`start:dev`・`test:watch` など）や見本は入れない。
+  `nest-cli.json` は `deleteOutDir` のために残す（無いと `dist/` を消したあとビルドし直せない）
 - **最小限の構成**: Podman・compose・Next.js・Amplify・OpenAPI は使わない。**AWS（Cognito）が無くても全部進められる**
 - 言語は **TypeScript**（NestJS 12 の `nest new` の既定。ESM で、import の末尾は `.js`）。テストは Vitest（`nest new` の既定）
 - パッケージマネージャはレクチャー側が **npm**（`api/package-lock.json`）、サイトが pnpm
@@ -43,6 +45,15 @@ sections/<sec>/<lec>/
 - ファイル名は NestJS の標準（`notes/dto/create-note.dto.ts`・`update-note.dto.ts`、`notes/entities/note.entity.ts`）
 - `.env` は gitignore。`.env.example` にプレースホルダだけを書いて追跡する
 - **秘匿情報（ユーザープール ID・クライアント ID・AWS アカウント ID・キー）の実値は絶対にコミットしない**
+
+## 本文の分量
+
+- 重要な要素だけを理解させる。「あったら良い」説明は書かない
+- 手順は 1 通りに絞る。選択肢や別解（バージョン管理ツール・winget などの別の入れ方）を並べない。「〜でもかまいません」も書かない
+- 任意の道具の紹介・豆知識・歴史や背景の長い説明・同じことの言い直し・比較表（Jest との対応など）は書かない
+- `::diff` の下の箇条書きは、そのコードを読むのに欠かせない点だけにする
+- `:::faq` は、手順どおりに進めても本当につまずく問題だけにする。無ければ `:::faq` ごと書かない
+- 残すもの: その節の重要な要素、テストでの認証の注意、`USE_FAKE_AUTH` の警告、打つコマンドと期待する出力
 
 ## 本文の書き方（センチネル）
 
