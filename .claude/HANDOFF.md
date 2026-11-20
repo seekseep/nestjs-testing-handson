@@ -8,7 +8,8 @@
   - C: テスト（このリポジトリ）
 - サイトの仕組み（`site/`・`tools/`・`.github/workflows/deploy-docs.yml`）は、元のリポジトリの main からそのまま持ってきた
 - 教材は元の `sections/10-testing/` の 3 節をもとに、最小構成（NestJS 1 つ＋ HTML 1 枚）に書き直した
-- 進み具合はイシュー #1 を見る
+- 2026-11-20: 01〜05 章をすべてマージ済み（#2〜#6）。GitHub Pages へのデプロイも成功している（https://seekseep.github.io/nestjs-testing-handson/）
+- 進み具合と残り（A の改名後のリンク確認）はイシュー #1 を見る
 
 ## 環境
 
@@ -31,6 +32,14 @@
   - 本来の方法（テスト用ユーザーでのサインイン、setup project と storageState など）には触れない、と本文に書く（ユーザーの指示）
 - 結合テストのファイルは `test/*.integration-spec.ts`（NestJS の「e2e」は、このハンズオンでは結合テストと呼ぶ）
 - E2E テストは `api/e2e/`、`api/playwright.config.ts`。Vitest が拾わないように `vitest.config.ts` の `include` を `src/` に絞る
+
+## 作っていて分かったこと
+
+- Playwright の System requirements が Windows 11+・macOS 14+ なので、前提を Windows 11 にした
+- AI エージェントの中で Vitest を動かすと、エージェントを見分けて `skipFull` を付け、カバレッジの表から 100% のファイルを隠す・`console.log` を出さない。本文の出力例は `env -i PATH=... HOME=...` で環境変数を外して取った
+- Nest の TestingModule の既定のロガーはエラーしか出さないので、結合テストで `FakeTokenVerifier` の WARN は出ない
+- `AuthModule` の `USE_FAKE_AUTH` はファイルが読み込まれたときに決まるので、`main.ts` が読む `.env` に書いても効かない（05-01 の FAQ）
+- npm 11.12 の `npm install` は `npm warn install-scripts`（fsevents）を出す（02-01 の FAQ）
 
 ## 確かめ方のメモ
 
