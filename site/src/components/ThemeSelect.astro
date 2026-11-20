@@ -1,0 +1,39 @@
+---
+/**
+ * Starlight のテーマ切り替え（ThemeSelect）を差し替えて、その左に OS（macOS / Windows / Linux）の切り替えを置く。
+ *
+ * OS はページの途中で変えるものではないので、切り替えはここと `::platform-choice` のボタンだけにする。
+ * 本文の `:::::platform` はタブを出さず、選んでいる OS の中身だけを表示する（platform.css）。
+ * 選んだ OS の反映と localStorage への保存は site/src/scripts/platform-client.js（全ページに inline 注入）。
+ */
+import Select from '@astrojs/starlight/components/Select.astro';
+import Default from '@astrojs/starlight/components/ThemeSelect.astro';
+---
+
+<handson-platform-select>
+  <Select
+    icon="laptop"
+    label="お使いの OS"
+    options={[
+      { label: 'macOS', value: 'macos', selected: true },
+      { label: 'Windows', value: 'windows', selected: false },
+      { label: 'Linux', value: 'linux', selected: false },
+    ]}
+    width="11em"
+  />
+</handson-platform-select>
+<Default />
+
+<script is:inline>
+  // 描画前に保存済みの OS へ合わせ、選択欄の表示がちらつかないようにする。
+  (function () {
+    var select = document.currentScript.previousElementSibling.previousElementSibling.querySelector('select');
+    if (select && document.documentElement.dataset.os) select.value = document.documentElement.dataset.os;
+  })();
+</script>
+
+<style>
+  handson-platform-select {
+    display: contents;
+  }
+</style>

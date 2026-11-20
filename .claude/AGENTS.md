@@ -1,0 +1,100 @@
+# AGENTS.md - プロジェクト方針
+
+## プロジェクト概要
+
+NestJS で作ったメモの API に、単体テスト（Vitest）・結合テスト（Vitest と supertest）・E2E テスト（Playwright）を書くハンズオン教材。
+3 本に分けたハンズオンの C（A: 基本的な REST API `nestjs-rest-api-handson`、B: Cognito で認証と認可 `nestjs-cognito-auth-handson`）。
+A も B も終えていなくても始められるように、02 章で「はじめのプロジェクト」を ZIP で配る。
+handson-builder スキルの骨格（`sections/` ＋ Starlight の `site/` ＋ GitHub Pages）を使っている。
+全体の計画と方針の正本は GitHub のイシュー #1。
+
+## 用語：章（セクション）と節（レクチャー）
+
+| 用語 | 指すもの | 例 |
+|---|---|---|
+| **章** | `sections/<NN-section>/`。章立ては固定（イシュー #1） | `03-unit-test/` |
+| **節** | `sections/<NN-section>/<NN-lecture>/`。増減してよい | `03-unit-test/01-functions-services/` |
+
+- 節のディレクトリは **その節を終えた時点のプロジェクト** を丸ごと持つ（`api/`）
+- 次の節は、前の節のディレクトリをコピーして差分を足して作る（`tools/copy-lecture.sh <前の節> <次の節>`）
+- 本文は `LECTURE.md`（`docs: true`）。節の直下の `README.md` は ZIP を展開した人向けの起動方法
+- 説明図は `images/` に SVG で置く（`00-thumbnail.svg` を先頭サムネに。`tools/thumbnail.mjs` の THUMBNAILS に足して `node tools/thumbnail.mjs`）
+- 章の直下には README を置かない
+- 準備の節（01 章）はプロジェクトを持たない（本文だけ）
+
+## プロジェクトの形
+
+```text
+sections/<sec>/<lec>/
+├── README.md         起動方法（ZIP に入る。::tree には出さない）
+├── LECTURE.md        教材本文（ZIP に入らない）
+├── images/           説明図（ZIP に入らない）
+└── api/              NestJS（1 つだけ）
+    ├── public/index.html   画面（HTML 1 枚。app.useStaticAssets() で配る）
+    ├── src/
+    ├── test/         結合テスト（04 章から）
+    └── e2e/          E2E テスト（05 章から。playwright.config.ts も api/ に置く）
+```
+
+- **最小限の構成**: Podman・compose・Next.js・Amplify・OpenAPI は使わない。**AWS（Cognito）が無くても全部進められる**
+- 言語は **TypeScript**（NestJS 12 の `nest new` の既定。ESM で、import の末尾は `.js`）。テストは Vitest（`nest new` の既定）
+- パッケージマネージャはレクチャー側が **npm**（`api/package-lock.json`）、サイトが pnpm
+- ポートは 3000（E2E テストは、ふだんの起動とぶつからないように 3100）
+- ファイル名は NestJS の標準（`notes/dto/create-note.dto.ts`・`update-note.dto.ts`、`notes/entities/note.entity.ts`）
+- `.env` は gitignore。`.env.example` にプレースホルダだけを書いて追跡する
+- **秘匿情報（ユーザープール ID・クライアント ID・AWS アカウント ID・キー）の実値は絶対にコミットしない**
+
+## 本文の書き方（センチネル）
+
+- コードの変更は `::diff{file="api/src/main.ts"}` で示す。前の節の同じファイルとの差分を実ファイルから生成する
+  （`site/scripts/libs/project-diff.mjs`）。新規ファイルは全行 `+`。本文にコードを手で二重に書かない
+  - `::diff[どこを書き換えるか]{file="..."}` で説明を付けられる
+  - `::diff` は先頭に「`api/src/main.ts` を変更する」の見出しを自動で付ける（前の節に無ければ「作成する」、
+    この節で消したなら「削除する」。漢字で書く）。見出しの深さは直前の見出しより 1 つ深い。
+    本文に「`...` を作ります」のような、見出しと重なる文は書かない
+  - 比べる相手を変えるときは `from="<sec>/<lec>"`、前の節でのファイル名が違うときは `fromFile="..."`
+- ページの最後は「参考にした公式ドキュメント」→「この節を終えたときのディレクトリ」見出し → `::tree` → `:::download` ＋ `[...](./project.zip)` → `:::faq`
+  - `::tree` は、その節のプロジェクト全体をエディタ（左にツリー、右にコード）で見せる。前の節から追加・変更したファイルに「作成」「変更」の印、変更したファイルの足した行に色を付ける。`package-lock.json` と画像は中身を省く
+- コマンドの実行例は普通のコードブロックで書く
+- 「参考にした公式ドキュメント」は `- [名前](URL) … 何を参考にしたか` の形で並べる。リンクは開けることと、書いた中身が本当にそのページにあることを確かめてから載せる
+- よくある質問は `:::faq`、注意は `:::warning` / `:::danger` / `:::notice`
+- 手順が OS で分かれるところは `:::::platform` で囲み、中を `::::macos` / `::::windows` / `::::linux`（`::::macos-linux` のように `-` でつなぐと両方に出す）に分ける
+  - Windows は PowerShell 7 の手順を書く（WSL は使わない）。bash のコマンドで PowerShell では動かないもの（`\` の改行・`/dev/null`・`export`・`rm -rf`・`VAR=値 コマンド` など）は、`::::macos-linux` と `::::windows` に分ける
+  - 選んだ OS は localStorage（キー `handson-os`）に残り、ナビゲーションバーの選択欄と `::platform-choice`（01-01 に置いている）で変える
+  - パネルの中に見出し（`##`・`###`）は書かない（目次に残って、隠れた所を指してしまう）
+- 「次へ」の見出しやリンクは書かない（Starlight の前へ／次へと重複するため）
+
+## テストでの認証
+
+- テストでの認証は **トークンの直書き**（`alice-token`・`bob-token`・`admin-token` を通す `FakeTokenVerifier`）
+- 結合テストは `overrideProvider(TokenVerifier).useClass(FakeTokenVerifier)`、E2E テストは API の `USE_FAKE_AUTH=true` と、
+  画面が `sessionStorage` から読むトークンを Playwright の `addInitScript` で入れる
+- 本来の方法（テスト用ユーザーでのサインイン、setup project と storageState など）には触れない、と本文に書く
+
+## サイト（site/）の開発
+
+パッケージマネージャは **pnpm**（`site/package.json` の `packageManager` で固定）。
+
+```sh
+cd site
+pnpm install
+pnpm run dev      # http://localhost:4321（predev で previews / sync / downloads が走る）
+pnpm run build    # 本番ビルド
+```
+
+- ZIP・`::tree`・`::diff` は `git ls-files --cached --others --exclude-standard` の結果を使う。
+  `.gitignore` 済みのもの（`node_modules/`・`dist/`・`coverage/`・`.env`）は入らない
+- 依存を上げ直すときに踏みやすい点（esbuild の allowBuilds、archiver 8 の `ZipArchive`、Astro 7 の
+  `@astrojs/markdown-remark`）は `.claude/handson-builder-conventions.md` を参照
+
+## サイトへの公開ルール
+
+- frontmatter に `docs: true` を持つマークダウンだけが `site/scripts/sync-lectures.mjs` に拾われる
+- 文章は必ず `sections/` 側に書く。`site/src/content/docs/` は自動生成なので直接編集しない
+- 相対リンクは sync スクリプトが自動変換する（他の節 → サイト内 URL、ソースコード → GitHub blob、
+  画像 → GitHub raw、`./project.zip` → その節の ZIP、`./start.zip` → 前の節の ZIP）
+
+## 進め方（このリポジトリ）
+
+- 章ごとにブランチを切って PR を作る。ビルドとテストが通ることを確かめてからマージしてよい
+- 方針が変わったらイシュー #1 の本文を更新する

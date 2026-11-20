@@ -1,0 +1,657 @@
+/* `::codeview` が生成する簡易エディタ UI（remark-editor.mjs の <section class="editor">）。
+   左=ファイル一覧、右=コード。ヘッダに ZIP ダウンロードボタン。
+   `::preview` が生成するライブプレビュー（.lecture-preview）もここで装飾する。 */
+
+.editor {
+  margin: 2rem 0;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.6rem;
+  overflow: hidden;
+  background-color: var(--sl-color-gray-6);
+}
+
+.editor__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid var(--sl-color-gray-5);
+}
+
+.editor__title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  color: var(--sl-color-white);
+}
+
+.editor__title::before {
+  content: '';
+  width: 1.05em;
+  height: 1.05em;
+  background-color: var(--sl-color-accent);
+  -webkit-mask: var(--flag-icon) center / contain no-repeat;
+  mask: var(--flag-icon) center / contain no-repeat;
+  --flag-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z'/%3E%3Cline x1='4' y1='22' x2='4' y2='15'/%3E%3C/svg%3E");
+}
+
+/* ヘッダの右側（ダウンロードと全画面のボタン）。 */
+.editor__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 0 auto;
+}
+
+.editor__actions > * {
+  margin-top: 0;
+}
+
+/* ヘッダ内のダウンロードボタンはコンパクトに。 */
+.editor__header .download-button {
+  margin: 0;
+  padding: 0.45rem 0.9rem;
+  font-size: var(--sl-text-sm);
+}
+
+.editor__body {
+  display: grid;
+  margin-top: 0;
+  grid-template-columns: minmax(140px, 200px) 1fr;
+}
+
+/* 左: ファイル一覧。行（＝ファイル）を枠にぴったり揃える（インセットのずれを作らない）。 */
+.editor__files {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--sl-color-gray-5);
+  background-color: var(--sl-color-black);
+  padding: 0;
+  gap: 0;
+  overflow-x: auto;
+}
+
+.editor__file {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--sl-color-gray-2);
+  text-align: left;
+  padding: 0.5rem 0.9rem;
+  border-radius: 0;
+  font-family: var(--sl-font-mono, monospace);
+  font-size: var(--sl-text-xs);
+  white-space: nowrap;
+  cursor: pointer;
+  margin: 0;
+}
+
+.editor__file:hover {
+  background-color: var(--sl-color-gray-5);
+  color: var(--sl-color-white);
+}
+
+.editor__file.is-active {
+  background-color: var(--sl-color-accent);
+  color: #fff;
+}
+
+/* ツリー表示（tree="true"）。フォルダとファイルを、深さ（--depth）だけ字下げして並べる。
+   フォルダには開け閉めの山形が付くので、その分（1.1rem）だけ左に出して、同じ深さのアイコンをそろえる。 */
+.editor--tree .editor__file,
+.editor__dir {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding-left: calc(1.7rem + var(--depth, 0) * 0.9rem);
+}
+
+.editor__dir {
+  appearance: none;
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  text-align: left;
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
+  padding-left: calc(0.6rem + var(--depth, 0) * 0.9rem);
+  padding-right: 0.9rem;
+  color: var(--sl-color-gray-3);
+  font-family: var(--sl-font-mono, monospace);
+  font-size: var(--sl-text-xs);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.editor__dir:hover {
+  background-color: var(--sl-color-gray-5);
+  color: var(--sl-color-white);
+}
+
+.editor__dir:focus-visible {
+  outline: 2px solid var(--sl-color-accent-high);
+  outline-offset: -2px;
+}
+
+/* 閉じたフォルダの中の行 */
+.editor__files .is-folded {
+  display: none;
+}
+
+/* 開け閉めの山形（Lucide の chevron-down）。閉じているときは右を向く */
+.editor__icon.editor__icon--chevron {
+  width: 0.9rem;
+  height: 0.9rem;
+  margin-right: -0.2rem;
+  opacity: 0.7;
+  transition: transform 0.15s;
+  --editor-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+
+.editor__dir[aria-expanded='false'] .editor__icon--chevron {
+  transform: rotate(-90deg);
+}
+
+.editor--tree .editor__file {
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
+}
+
+.editor__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.editor--tree .editor__file .file-badge {
+  margin-left: auto;
+}
+
+/* フォルダ・ファイルのアイコン（Lucide の folder / file）。currentColor で塗るため mask で描く。 */
+.editor__icon {
+  flex: none;
+  width: 1.1em;
+  height: 1.1em;
+  margin: 0;
+  background-color: currentColor;
+  -webkit-mask: var(--editor-icon) center / contain no-repeat;
+  mask: var(--editor-icon) center / contain no-repeat;
+}
+
+.editor__icon--folder {
+  color: var(--sl-color-accent-high);
+  --editor-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z'/%3E%3C/svg%3E");
+}
+
+.editor__icon--file {
+  opacity: 0.75;
+  --editor-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z'/%3E%3Cpath d='M14 2v4a2 2 0 0 0 2 2h4'/%3E%3C/svg%3E");
+}
+
+.editor__file.is-active .editor__icon--file {
+  opacity: 1;
+}
+
+/* 「全画面」ボタン。 */
+.editor__fullscreen {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0.4rem 0.75rem;
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-white);
+  background: var(--sl-color-black);
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.4rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.editor__fullscreen:hover {
+  background: var(--sl-color-gray-5);
+}
+
+.editor__fullscreen:focus-visible {
+  outline: 2px solid var(--sl-color-accent-high);
+  outline-offset: 2px;
+}
+
+/* Lucide の maximize / minimize */
+.editor__fullscreen-icon {
+  flex: none;
+  width: 1.1em;
+  height: 1.1em;
+  margin: 0;
+  background-color: currentColor;
+  -webkit-mask: var(--fullscreen-icon) center / contain no-repeat;
+  mask: var(--fullscreen-icon) center / contain no-repeat;
+  --fullscreen-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 3H5a2 2 0 0 0-2 2v3'/%3E%3Cpath d='M21 8V5a2 2 0 0 0-2-2h-3'/%3E%3Cpath d='M3 16v3a2 2 0 0 0 2 2h3'/%3E%3Cpath d='M16 21h3a2 2 0 0 0 2-2v-3'/%3E%3C/svg%3E");
+}
+
+.editor.is-fullscreen .editor__fullscreen-icon {
+  --fullscreen-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 3v3a2 2 0 0 1-2 2H3'/%3E%3Cpath d='M21 8h-3a2 2 0 0 1-2-2V3'/%3E%3Cpath d='M3 16h3a2 2 0 0 1 2 2v3'/%3E%3Cpath d='M16 21v-3a2 2 0 0 1 2-2h3'/%3E%3C/svg%3E");
+}
+
+.editor__fullscreen-icon,
+.editor__fullscreen-label {
+  margin-top: 0;
+}
+
+/* 全画面のとき。Fullscreen API（:fullscreen）でも、代わりの position: fixed でも同じ見た目にする。
+   ファイル一覧とコードは、それぞれの中でスクロールする。 */
+.editor.is-fullscreen {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+.editor.is-fallback-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  height: 100vh;
+  height: 100dvh;
+}
+
+html.has-editor-fullscreen {
+  overflow: hidden;
+}
+
+/* Starlight の .main-pane は isolation: isolate で重なり順を閉じ込めるので、
+   そのままではヘッダや目次バーがエディタの上に来る。代わりの全画面のあいだだけ外す */
+html.has-editor-fullscreen .main-pane {
+  isolation: auto;
+}
+
+.editor.is-fullscreen .editor__body {
+  flex: 1;
+  min-height: 0;
+  grid-template-columns: minmax(200px, 300px) 1fr;
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.editor.is-fullscreen .editor__files,
+.editor.is-fullscreen .editor__code {
+  overflow: auto;
+}
+
+/* 右: コード */
+.editor__code {
+  min-width: 0; /* グリッド内で横スクロールを許可する */
+  margin-top: 0;
+}
+
+.editor__pane {
+  display: none;
+  margin-top: 0;
+}
+
+.editor__pane.is-active {
+  display: block;
+}
+
+/* ペイン内のコードブロックの外側マージンを詰める。 */
+.editor__pane > :first-child {
+  margin: 0;
+  border-radius: 0;
+}
+
+.editor__pane pre {
+  border-radius: 0;
+}
+
+/* Expressive Code の空のフレームヘッダ（title 無しの figcaption）を隠す。
+   空の帯が「段」として見えてしまうため。 */
+.editor__pane .expressive-code .frame > figcaption.header {
+  display: none;
+}
+
+/* 行番号。EC は各行を <div class="ec-line"><div class="code">…</div></div> で出力するので、
+   カウンタで行番号を振り、コード先頭にガター風の番号を差し込む。 */
+.editor__pane .expressive-code code {
+  counter-reset: editor-ln;
+  padding-top: 0;
+}
+
+.editor__pane .ec-line {
+  counter-increment: editor-ln;
+}
+
+.editor__pane .expressive-code .ec-line.ec-line > .code::before {
+  /* Expressive Code は色を付けた行（mark・ins）の ::before を印に使い、position: absolute にする。
+     行番号が流れから外れて字下げがずれないよう、ここで流れに戻す（.ec-line.ec-line は詳細度を上げるため） */
+  position: static;
+  padding: 0;
+  background: none;
+  content: counter(editor-ln);
+  display: inline-block;
+  width: 2.5ch;
+  margin-right: 1.25ch;
+  text-align: right;
+  color: var(--sl-color-gray-4);
+  user-select: none;
+}
+
+/* 画面が狭いときは縦積み（ファイル一覧を上、コードを下）。 */
+@media (max-width: 640px) {
+  .editor__body {
+    grid-template-columns: 1fr;
+  }
+  .editor__files {
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-right: 0;
+    border-bottom: 1px solid var(--sl-color-gray-5);
+  }
+  /* ツリーは横に並べると形が崩れるので、縦のまま高さを抑えてスクロールさせる */
+  .editor--tree .editor__files {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    max-height: 14rem;
+    overflow-y: auto;
+  }
+  .editor.is-fullscreen .editor__body {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  .editor.is-fullscreen .editor__files {
+    max-height: 35vh;
+  }
+  /* 狭い画面ではアイコンだけにする（文言は読み上げ用に残す） */
+  .editor__fullscreen-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* `::preview` のライブプレビュー。 */
+.lecture-preview {
+  margin: 1.5rem 0;
+  padding: 0;
+}
+
+.lecture-preview__bar {
+  width: 720px;
+  max-width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* 再読み込みボタンと「新しいタブで開く」リンクは見た目をそろえる。
+   後者は実リンクなので <a>。開発者ツールを開いて試す節で使う。 */
+.lecture-preview__reload,
+.lecture-preview__open {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-white);
+  background: var(--sl-color-gray-6);
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.375rem;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.lecture-preview__reload:hover,
+.lecture-preview__open:hover {
+  background: var(--sl-color-gray-5);
+  color: var(--sl-color-white);
+}
+
+/* 外部リンク扱いのアイコン（rehype-external-links）は付けない。 */
+.lecture-preview__open::after {
+  content: none;
+}
+
+.lecture-preview__frame {
+  display: block;
+  box-sizing: content-box; /* border 分を寸法に含めず、内部ビューポートを canvas と一致させる */
+  width: 720px;
+  max-width: 100%;
+  height: 480px;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.5rem;
+  background: #fdf6e3;
+}
+
+.lecture-preview__caption {
+  margin-top: 0.5rem;
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-gray-2);
+}
+
+/* 積み上げ方式: このレクチャーで足した・変えたファイルの印（エディタの一覧・::changes の表・::file の見出し） */
+.file-badge {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0 0.4rem;
+  border-radius: 0.3rem;
+  font-family: var(--sl-font, sans-serif);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.5;
+  vertical-align: middle;
+}
+.file-badge--added {
+  background-color: var(--sl-color-green-low);
+  color: var(--sl-color-green-high);
+  border: 1px solid var(--sl-color-green);
+}
+.file-badge--changed {
+  background-color: var(--sl-color-orange-low);
+  color: var(--sl-color-orange-high);
+  border: 1px solid var(--sl-color-orange);
+}
+.file-badge--removed {
+  background-color: var(--sl-color-red-low);
+  color: var(--sl-color-red-high);
+  border: 1px solid var(--sl-color-red);
+}
+.file-changes td:first-child {
+  white-space: nowrap;
+}
+.file-changes--timeline td:first-child {
+  font-family: var(--sl-font-mono, monospace);
+}
+
+/* ::file — 「`path` を作成する」の見出しの下に置く、役割と色の付いた行の説明 */
+.file-heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+  margin: 0.5rem 0 -0.25rem;
+}
+.file-heading .file-badge {
+  margin-left: 0;
+}
+.file-heading__about {
+  color: var(--sl-color-gray-3);
+  font-size: var(--sl-text-sm);
+}
+.file-heading__hint {
+  flex-basis: 100%;
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-gray-3);
+}
+
+/* 本文の抜粋（handson-excerpts.mjs の .excerpt）。上にファイル名と何行目かを置き、
+   抜粋の各行にはファイルでの行番号（editor-client.js が data-ln に入れる）を出す。
+   コードの枠の下の端に「全体を確認する」の帯（.excerpt__foot）を付け、押すと抜粋がその場でファイル全体に広がる。 */
+.excerpt__bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.6rem;
+  margin-bottom: 0.4rem;
+  font-size: var(--sl-text-sm);
+}
+
+.excerpt__range {
+  color: var(--sl-color-gray-3);
+}
+
+/* 抜粋・全体のどちらも、下の端は帯につなげるので角を丸めない */
+.excerpt > .expressive-code,
+.excerpt__full {
+  margin-top: 0;
+}
+
+.excerpt > .expressive-code .frame pre,
+.excerpt__full .expressive-code .frame pre {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.excerpt__foot {
+  margin-top: 0;
+}
+
+.excerpt__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.3rem 0.75rem;
+  font-size: var(--sl-text-xs);
+  color: var(--sl-color-gray-2);
+  background: var(--sl-color-gray-6);
+  border: 1px solid var(--sl-color-gray-5);
+  border-top: 0;
+  border-radius: 0 0 0.4rem 0.4rem;
+  cursor: pointer;
+}
+
+.excerpt__toggle:hover {
+  color: var(--sl-color-white);
+  background: var(--sl-color-gray-5);
+}
+
+.excerpt__toggle:focus-visible {
+  outline: 2px solid var(--sl-color-accent-high);
+  outline-offset: 2px;
+}
+
+/* 下向き（広げる）／上向き（戻す）の山形。Lucide の chevron-down */
+.excerpt__toggle::before {
+  content: '';
+  width: 1.1em;
+  height: 1.1em;
+  background-color: currentColor;
+  -webkit-mask: var(--chevron-icon) center / contain no-repeat;
+  mask: var(--chevron-icon) center / contain no-repeat;
+  --chevron-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  transition: transform 0.15s;
+}
+
+.excerpt.is-open .excerpt__toggle::before {
+  transform: rotate(180deg);
+}
+
+.excerpt__toggle-label {
+  margin: 0;
+}
+
+.excerpt > .expressive-code .ec-line.ec-line > .code::before {
+  /* Expressive Code は色を付けた行（mark・ins）の ::before を印に使い、position: absolute にする。
+     行番号が流れから外れて字下げがずれないよう、ここで流れに戻す（.ec-line.ec-line は詳細度を上げるため） */
+  position: static;
+  padding: 0;
+  background: none;
+  content: attr(data-ln);
+  display: inline-block;
+  min-width: 3ch;
+  margin-right: 1.25ch;
+  text-align: right;
+  color: var(--sl-color-gray-4);
+  user-select: none;
+}
+
+/* ファイル全体。長いファイルでもページが伸びすぎないよう、枠の中でスクロールさせる */
+.excerpt__full {
+  max-height: 28rem;
+  overflow: auto;
+}
+
+.excerpt__full .expressive-code code {
+  counter-reset: excerpt-ln;
+}
+
+.excerpt__full .ec-line {
+  counter-increment: excerpt-ln;
+}
+
+.excerpt__full .expressive-code .ec-line.ec-line > .code::before {
+  position: static;
+  padding: 0;
+  background: none;
+  content: counter(excerpt-ln);
+  display: inline-block;
+  min-width: 3ch;
+  margin-right: 1.25ch;
+  text-align: right;
+  color: var(--sl-color-gray-4);
+  user-select: none;
+}
+
+/* ::file のファイル全文（handson-sentinels.mjs の .file-code）にも行番号を振る */
+.file-code > .expressive-code {
+  margin-top: 0;
+}
+
+.file-code .expressive-code code {
+  counter-reset: file-ln;
+}
+
+.file-code .ec-line {
+  counter-increment: file-ln;
+}
+
+.file-code .expressive-code .ec-line.ec-line > .code::before {
+  position: static;
+  padding: 0;
+  background: none;
+  content: counter(file-ln);
+  display: inline-block;
+  min-width: 3ch;
+  margin-right: 1.25ch;
+  text-align: right;
+  color: var(--sl-color-gray-4);
+  user-select: none;
+}
+
+/* ::tree のエディタ（プロジェクト全体）。ファイルが多いので、枠の高さを決めて、
+   ツリーとコードをそれぞれの中でスクロールさせる。ツリーは名前が切れにくいよう少し広げる。
+   全画面のときは、上の .is-fullscreen の決まりに任せる。 */
+@media (min-width: 641px) {
+  .editor--tree:not(.is-fullscreen) .editor__body {
+    grid-template-columns: minmax(180px, 260px) 1fr;
+    height: 34rem;
+  }
+  .editor--tree:not(.is-fullscreen) .editor__files,
+  .editor--tree:not(.is-fullscreen) .editor__code {
+    min-height: 0;
+    overflow: auto;
+  }
+}

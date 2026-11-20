@@ -1,0 +1,76 @@
+/* `:::::platform`（remark-platform.mjs）の OS ごとのパネル。
+   どれを出すかは <html data-os="macos|windows|linux">（platform-client.js）で決める。
+   枠や背景は付けず、本文の一部としてそのまま流す。 */
+
+.platform__panel > :first-child {
+  margin-top: 0;
+}
+
+/* Starlight の本文の間隔（直下の要素どうしの 1rem）を、パネルの中でもそろえる。 */
+.platform__panel > * + * {
+  margin-top: 1rem;
+}
+
+.platform > .platform__panel + .platform__panel {
+  margin-top: 0;
+}
+
+/* 選んでいる OS のクラスを持たないパネルを隠す。data-os が無い間（スクリプトが動かない環境）は全部出す。 */
+:root[data-os='macos'] .platform__panel:not(.platform__panel--macos),
+:root[data-os='windows'] .platform__panel:not(.platform__panel--windows),
+:root[data-os='linux'] .platform__panel:not(.platform__panel--linux) {
+  display: none;
+}
+
+/* `::platform-choice` の、OS を選ぶ大きなボタン。 */
+.platform-choice {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.75rem;
+  margin: 1.25rem 0 1.5rem;
+}
+
+.platform-choice__option {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1rem 1.1rem;
+  border: 2px solid var(--sl-color-gray-5);
+  border-radius: 0.6rem;
+  background: var(--sl-color-black);
+  color: var(--sl-color-white);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.platform-choice__option:hover {
+  border-color: var(--sl-color-gray-3);
+}
+
+.platform-choice__name {
+  font-size: var(--sl-text-lg);
+  font-weight: 700;
+}
+
+.platform-choice__desc {
+  color: var(--sl-color-gray-2);
+  font-size: var(--sl-text-sm);
+}
+
+/* 選んでいるものを強調する。 */
+:root[data-os='macos'] .platform-choice__option--macos,
+:root[data-os='windows'] .platform-choice__option--windows,
+:root[data-os='linux'] .platform-choice__option--linux {
+  border-color: var(--sl-color-accent);
+  background: color-mix(in srgb, var(--sl-color-accent) 10%, var(--sl-color-black));
+}
+
+:root[data-os='macos'] .platform-choice__option--macos .platform-choice__name::after,
+:root[data-os='windows'] .platform-choice__option--windows .platform-choice__name::after,
+:root[data-os='linux'] .platform-choice__option--linux .platform-choice__name::after {
+  content: '  ✓ 選択中';
+  color: var(--sl-color-accent-high);
+  font-size: var(--sl-text-sm);
+  font-weight: 600;
+}
