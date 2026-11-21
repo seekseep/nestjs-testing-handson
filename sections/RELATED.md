@@ -13,7 +13,7 @@ NestJS のハンズオンは 3 本に分かれています。Cognito と Entra I
 | ハンズオン | すること | 使うもの |
 |---|---|---|
 | [NestJS で作る REST API](https://seekseep.github.io/nestjs-rest-api-handson/) | OpenAPI で API を設計し、そのとおりにメモの作成・取得・一覧・更新・削除を NestJS で実装して、NestJS の形（モジュール・サービス・DTO）に整理する | Node.js・VS Code |
-| [NestJS と Cognito で認証と認可](https://seekseep.github.io/nestjs-cognito-auth-handson/) | ノートの API（NestJS と SQLite）を表と図で設計して実装し、Amazon Cognito のトークンでの認証と、作った人だけが削除できる認可を足す | Node.js・Podman・VS Code |
+| [NestJS と Cognito で認証と認可](https://seekseep.github.io/nestjs-cognito-auth-handson/) | ノートの API（NestJS と SQLite）を表と図で設計して実装し、Amazon Cognito のトークンでの認証と、所有・役割・所属での認可を足して、権限を API で確かめるかトークンに持たせるかを比べる | Node.js・Podman・VS Code |
 | NestJS のテスト（このハンズオン） | 割り勘のアプリ（NestJS と SQLite）に、単体テスト・結合テスト・E2E テストを書き、DI で単体テストしやすい形に直す | Node.js・Podman・VS Code |
 | [Cognito と Entra ID をローカルで練習する](https://seekseep.github.io/cognito-entra-id-emulation-handson/) | Cognito のユーザープールを作り、素の HTML からログインして、Cognito 経由で Entra ID にもログインする | Podman・aws CLI・jq |
 
