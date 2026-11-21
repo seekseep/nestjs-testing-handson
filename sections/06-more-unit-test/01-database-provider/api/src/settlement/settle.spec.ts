@@ -2,10 +2,12 @@ import { describe, expect, it } from 'vitest';
 import { balances, settle, split } from './settle.js';
 
 describe('split', () => {
+  // S1
   it('割り切れるときは、同じ額に分ける', () => {
     expect(split(9000, 3)).toEqual([3000, 3000, 3000]);
   });
 
+  // S2
   it('割り切れないときは、前の人から 1 円ずつ足し、合計を元の金額と同じにする', () => {
     const shares = split(10000, 3);
 
@@ -13,16 +15,19 @@ describe('split', () => {
     expect(shares.reduce((a, b) => a + b)).toBe(10000);
   });
 
+  // S3
   it('0 円は、全員 0 円', () => {
     expect(split(0, 3)).toEqual([0, 0, 0]);
   });
 
+  // S4
   it('1 人なら、その人が全部', () => {
     expect(split(500, 1)).toEqual([500]);
   });
 });
 
 describe('balances', () => {
+  // B1
   it('払った人はプラス、対象の人はマイナスになる', () => {
     const result = balances([
       { payerId: 1, amount: 9000, participantIds: [1, 2, 3] },
@@ -35,6 +40,7 @@ describe('balances', () => {
     ]);
   });
 
+  // B2
   it('払った人が対象でなければ、払った額がそのままプラスになる', () => {
     const result = balances([
       { payerId: 1, amount: 6000, participantIds: [2, 3] },
@@ -47,6 +53,7 @@ describe('balances', () => {
     ]);
   });
 
+  // B3
   it('どの立て替えにも出てこない人は、入らない', () => {
     const result = balances([
       { payerId: 1, amount: 1000, participantIds: [1, 2] },
@@ -57,6 +64,7 @@ describe('balances', () => {
 });
 
 describe('settle', () => {
+  // T1
   it('受け取る人 1 人に、ほかの人が払う', () => {
     const result = settle([
       { memberId: 1, amount: 6000 },
@@ -70,6 +78,7 @@ describe('settle', () => {
     ]);
   });
 
+  // T2
   it('多く払う人から、多く受け取る人へ払い、回数を少なくする', () => {
     const result = settle([
       { memberId: 1, amount: 5000 },
@@ -83,6 +92,7 @@ describe('settle', () => {
     ]);
   });
 
+  // T3
   it('差し引きが 0 の人しかいなければ、払う人はいない', () => {
     expect(settle([{ memberId: 1, amount: 0 }])).toEqual([]);
   });

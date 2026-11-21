@@ -1,8 +1,0 @@
-# 依存とビルドの成果物
-node_modules/
-dist/
-*.tsbuildinfo
-
-# Playwright の結果とレポート
-test-results/
-playwright-report/

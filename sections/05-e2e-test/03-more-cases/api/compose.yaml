@@ -1,0 +1,23 @@
+services:
+  api:
+    # このフォルダの Dockerfile からイメージを作る
+    build: .
+    ports:
+      - "127.0.0.1:3001:3000"
+    environment:
+      # SQLite のファイルを、ボリューム（db）の中に置く
+      DB_PATH: /data/warikan.db
+    volumes:
+      - db:/data
+
+  web:
+    # 画面（public/）を配るだけの静的サーバー
+    image: docker.io/library/nginx:1.27-alpine
+    ports:
+      - "127.0.0.1:3000:80"
+    volumes:
+      - ./public:/usr/share/nginx/html:ro
+
+volumes:
+  # SQLite のファイルを置く場所。コンテナを作り直しても残る
+  db:

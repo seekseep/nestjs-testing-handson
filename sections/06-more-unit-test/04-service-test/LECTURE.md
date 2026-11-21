@@ -9,6 +9,8 @@ title: サービスを単体テストする
 
 `SettlementService` は、立て替えを読むリポジトリをコンストラクターで受け取ります。テストでは、DB を読む本物の代わりに、決まった立て替えを返す偽物を渡します。こうすると、DB も HTTP も使わずに、清算を出すところを単体テストできます。
 
+![単体テストの範囲。テストのコードが SettlementService を作って呼び、本物の PaymentsRepository の代わりに、findAll() だけを持つ偽物のリポジトリを渡す。本物の PaymentsRepository と DatabaseSync は使わない](./images/01-fake.svg)
+
 ::diff{file="api/src/settlement/settlement.service.spec.ts"}
 
 - `fakeRepository(payments)` … `findAll()` が決まった立て替えを返すだけの偽物です。`SettlementService` が使うのは `findAll()` だけなので、ほかは要りません
@@ -21,7 +23,7 @@ npm test
 ```
 
 ```text
- ✓ src/settlement/settle.spec.ts (10 tests) 3ms
+ ✓ src/settlement/settle.spec.ts (10 tests) 2ms
  ✓ src/settlement/settlement.service.spec.ts (3 tests) 2ms
 
  Test Files  2 passed (2)
@@ -31,7 +33,7 @@ npm test
 04 章の結合テストも、そのまま通ります。
 
 ```bash
-npm run test:integration
+npm run test:e2e
 ```
 
 ```text
