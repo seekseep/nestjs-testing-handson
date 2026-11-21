@@ -4,7 +4,7 @@
 
 NestJS で作ったノートの API（作成・一覧・削除。B と同じ形）に、単体テスト（Vitest）・結合テスト（Vitest と supertest）・E2E テスト（Playwright）を書くハンズオン教材。
 3 本に分けたハンズオンの C（A: 基本的な REST API `nestjs-rest-api-handson`、B: Cognito で認証と認可 `nestjs-cognito-auth-handson`）。
-A も B も終えていなくても始められるように、02 章で「はじめのプロジェクト」を ZIP で配る。
+A も B も終えていなくても始められるように、01 章で「はじめのプロジェクト」を ZIP で配る。
 handson-builder スキルの骨格（`sections/` ＋ Starlight の `site/` ＋ GitHub Pages）を使っている。
 全体の計画と方針の正本は GitHub のイシュー #1。
 
@@ -12,15 +12,15 @@ handson-builder スキルの骨格（`sections/` ＋ Starlight の `site/` ＋ G
 
 | 用語 | 指すもの | 例 |
 |---|---|---|
-| **章** | `sections/<NN-section>/`。章立ては固定（イシュー #1） | `03-unit-test/` |
-| **節** | `sections/<NN-section>/<NN-lecture>/`。増減してよい | `03-unit-test/01-service/` |
+| **章** | `sections/<NN-section>/`。章立ては固定（イシュー #1） | `02-unit-test/` |
+| **節** | `sections/<NN-section>/<NN-lecture>/`。増減してよい | `02-unit-test/01-service/` |
 
 - 節のディレクトリは **その節を終えた時点のプロジェクト** を丸ごと持つ（`api/`）
 - 次の節は、前の節のディレクトリをコピーして差分を足して作る（`tools/copy-lecture.sh <前の節> <次の節>`）
 - 本文は `LECTURE.md`（`docs: true`）。節の直下に `README.md` は置かない（起動方法は本文に書く）
 - 説明図は `images/` に SVG で置く（`00-thumbnail.svg` を先頭サムネに。`tools/thumbnail.mjs` の THUMBNAILS に足して `node tools/thumbnail.mjs`）
 - 章の直下には README を置かない
-- 準備の節（01 章）はプロジェクトを持たない（本文だけ）
+- 01 章の最初の節（`01-setup/01-environment`）はプロジェクトを持たない（本文だけ）。はじめのプロジェクトは `01-setup/02-starter-project`
 
 ## プロジェクトの形
 
@@ -31,8 +31,8 @@ sections/<sec>/<lec>/
 └── api/              NestJS（1 つだけ）
     ├── public/notes.html   ノートの一覧の画面（app.useStaticAssets() で配る）
     ├── src/
-    ├── test/         結合テスト（04 章から）
-    └── e2e/          E2E テスト（05 章から。playwright.config.ts も api/ に置く）
+    ├── test/         結合テスト（03 章から）
+    └── e2e/          E2E テスト（04 章から。playwright.config.ts も api/ に置く）
 ```
 
 - **プロジェクトのファイルは最小限**: ビルド・起動・教材のテストに要るものだけを置く。lint・format（oxlint・Prettier）、
@@ -42,7 +42,7 @@ sections/<sec>/<lec>/
 - 題材は B（`nestjs-cognito-auth-handson`）の最後の節（`05-refactor/01-auth-middleware`）と同じ形: `POST /notes`（トークン要る）・`GET /notes`（誰でも）・`DELETE /notes/:id`（作った人だけ。ほかの人は 403、無ければ 404）。
   ノートは `{ id, text, ownerId }` をメモリ上の配列に持つ。認証は `AuthMiddleware`（`forRoutes()` で POST と DELETE にだけ掛ける）。
   B と違い、トークンの検証は DI で差し替えられる `TokenVerifier` クラスに切り出し、Floci・Podman は使わない
-- 言語は **TypeScript**（ESM で、import の末尾は `.js`）。はじめのプロジェクトにテストの道具は入れず、Vitest は 03-01、coverage-v8 は 03-02、`@nestjs/testing`・supertest は 04、Playwright は 05 で入れる
+- 言語は **TypeScript**（ESM で、import の末尾は `.js`）。はじめのプロジェクトにテストの道具は入れず、Vitest は 02-01、coverage-v8 は 02-02、`@nestjs/testing`・supertest は 03、Playwright は 04 で入れる
 - パッケージマネージャはレクチャー側が **npm**（`api/package-lock.json`）、サイトが pnpm
 - ポートは 3000（E2E テストは、ふだんの起動とぶつからないように 3100）
 - `.env`・`.env.example` は置かない（`.env` の読み込みもしない）。本物の `TokenVerifier` は Cognito の ID が無ければ WARN を出してどのトークンも 401 にする

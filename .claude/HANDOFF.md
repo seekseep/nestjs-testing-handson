@@ -8,9 +8,10 @@
   - C: テスト（このリポジトリ）
 - サイトの仕組み（`site/`・`tools/`・`.github/workflows/deploy-docs.yml`）は、元のリポジトリの main からそのまま持ってきた
 - 教材は元の `sections/10-testing/` の 3 節をもとに、最小構成（NestJS 1 つ＋ HTML 1 枚）に書き直した
-- 2026-11-20: 01〜05 章をすべてマージ済み（#2〜#6）。GitHub Pages へのデプロイも成功している（https://seekseep.github.io/nestjs-testing-handson/）
+- 2026-11-20: 01〜05 章（当時の章立て）をすべてマージ済み（#2〜#6）。GitHub Pages へのデプロイも成功している（https://seekseep.github.io/nestjs-testing-handson/）
 - 本文を重要な要素だけに絞り、各節の `api/` を最小構成にした（#8、#9）
 - 題材を B（`nestjs-cognito-auth-handson` の `05-refactor/01-auth-middleware`）と同じ形（ノートの作成・一覧・削除、`AuthMiddleware`）に作り直した
+- 2026-11-21: 02 章「はじめのプロジェクト」を 01 章「準備」に入れ（`01-setup/02-starter-project`）、単体・結合・E2E を 02〜04 章に繰り上げた
 - 進み具合と残りはイシュー #1 を見る
 
 ## 環境
@@ -28,8 +29,8 @@
   - `COGNITO_USER_POOL_ID`・`COGNITO_CLIENT_ID` が無いときは、起動はできて、警告を出し、どのトークンも 401
 - テストの道具は節ごとに入れる: Vitest（03-01）、`@vitest/coverage-v8`（03-02）、`@nestjs/testing`・supertest（04）、Playwright（05）
 - テストでの認証は「トークンの直書き」: `FakeTokenVerifier`（`alice-token`・`bob-token`）
-  - 結合テスト（04 章）: `overrideProvider(TokenVerifier).useClass(FakeTokenVerifier)`
-  - E2E テスト（05 章）: `USE_FAKE_AUTH=true` で `AppModule` が偽物を使う。Playwright の `request` にトークンを付けて作成・削除し、一覧の画面への反映を見る
+  - 結合テスト（03 章）: `overrideProvider(TokenVerifier).useClass(FakeTokenVerifier)`
+  - E2E テスト（04 章）: `USE_FAKE_AUTH=true` で `AppModule` が偽物を使う。Playwright の `request` にトークンを付けて作成・削除し、一覧の画面への反映を見る
   - 本来の方法（テスト用ユーザーでのサインイン、setup project と storageState など）には触れない、と本文に書く（ユーザーの指示）
 - テストの件数: 単体 4（03-01）→ 6（03-02 から）、結合 6、E2E 2
 - 結合テストのファイルは `test/*.integration-spec.ts`（`vitest.config.integration.ts`）。単体テストは `vitest.config.ts` で `src/**/*.spec.ts` に絞る（`e2e/` の Playwright のテストを拾わない）
@@ -40,11 +41,11 @@
 - AI エージェントの中で Vitest を動かすと、エージェントを見分けて `skipFull` を付け、カバレッジの表から 100% のファイルを隠す・`console.log` を出さない。本文の出力例は `env -i PATH=... HOME=...` で環境変数を外して取った
 - Nest の TestingModule の既定のロガーはエラーしか出さないので、結合テストで `FakeTokenVerifier` の WARN は出ない
 - `AppModule` の `USE_FAKE_AUTH` はファイルが読み込まれたときに決まる
-- middleware を掛け忘れると、`req.user` が無くてコントローラーで 500 になる（04 章の「試しに」で使っている）
+- middleware を掛け忘れると、`req.user` が無くてコントローラーで 500 になる（03 章の「試しに」で使っている）
 - npm 11.12 の `npm install` は `npm warn install-scripts` を出す（02-01 の FAQ）
 
 ## 確かめ方のメモ
 
-- 各節の `api/` で `npm install` → `npm run build`、03 章から `npm test`、04 章から `npm run test:integration`、05 章から `npm run test:e2e`
+- 各節の `api/` で `npm install` → `npm run build`、02 章から `npm test`、03 章から `npm run test:integration`、04 章から `npm run test:e2e`
 - 偽物の認証に切り替えていない起動では、`alice-token` が 401 になる
 - サイト: `cd site && pnpm install && pnpm run build`
