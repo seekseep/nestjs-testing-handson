@@ -38,7 +38,7 @@
 <line x1="40" y1="296" x2="1160" y2="296" stroke="#cbd5e1" stroke-width="1.5"/>
 <rect x="40" y="324" width="8" height="40" rx="4" fill="#16a34a"/>
 <text x="58" y="352" class="h">単体テスト</text>
-<text x="40" y="388" class="m" style="fill:#475569">Vitest ・ 02 章</text>
+<text x="40" y="388" class="m" style="fill:#475569">Vitest ・ 03 章</text>
 <text x="40" y="414" class="s">1 つのクラスだけを、</text>
 <text x="40" y="434" class="s">テストのコードから直接呼ぶ</text>
 <rect x="240" y="326" width="180" height="46" rx="10" fill="#cbd5e1"/>
@@ -50,7 +50,7 @@
 <text x="580.0" y="402" text-anchor="middle" class="s">トークンの検証: 偽物（vi.fn）</text>
 <rect x="40" y="459" width="8" height="40" rx="4" fill="#2563eb"/>
 <text x="58" y="487" class="h">結合テスト</text>
-<text x="40" y="523" class="m" style="fill:#475569">Vitest + supertest ・ 03 章</text>
+<text x="40" y="523" class="m" style="fill:#475569">Vitest + supertest ・ 04 章</text>
 <text x="40" y="549" class="s">アプリを丸ごと組み立て、</text>
 <text x="40" y="569" class="s">HTTP で呼ぶ</text>
 <rect x="240" y="461" width="180" height="46" rx="10" fill="#cbd5e1"/>
@@ -60,7 +60,7 @@
 <text x="580.0" y="537" text-anchor="middle" class="s">トークンの検証: 偽物（決め打ちのトークン）</text>
 <rect x="40" y="594" width="8" height="40" rx="4" fill="#7c3aed"/>
 <text x="58" y="622" class="h">E2E テスト</text>
-<text x="40" y="658" class="m" style="fill:#475569">Playwright ・ 04 章</text>
+<text x="40" y="658" class="m" style="fill:#475569">Playwright ・ 05 章</text>
 <text x="40" y="684" class="s">ブラウザで画面を開き、</text>
 <text x="40" y="704" class="s">画面から DB までまとめて</text>
 <rect x="240" y="596" width="930" height="46" rx="10" fill="#7c3aed"/>

@@ -5,7 +5,7 @@ title: E2E テスト
 
 # E2E テスト
 
-![04 章 E2E テスト](./images/00-thumbnail.svg)
+![05 章 E2E テスト](./images/00-thumbnail.svg)
 
 最後に、API を起動してブラウザで画面を開き、画面から API までをまとめて確かめる **E2E（End to End）テスト** を **Playwright** で書きます。Playwright はブラウザを動かし、人と同じように画面を開いて表示を確かめます。
 
@@ -16,9 +16,9 @@ title: E2E テスト
 
 ## E2E テストでの認証も「トークンの直書き」にする
 
-03 章と同じく、テストの認証は **トークンの直書き** にします。
+04 章と同じく、テストの認証は **トークンの直書き** にします。
 
-- API は、環境変数 `USE_FAKE_AUTH` が `true` のときだけ、03 章の `FakeTokenVerifier` を使う
+- API は、環境変数 `USE_FAKE_AUTH` が `true` のときだけ、04 章の `FakeTokenVerifier` を使う
 - テストは、ノートの作成・削除の API に `Authorization: Bearer alice-token` を付けて呼ぶ
 
 :::warning
