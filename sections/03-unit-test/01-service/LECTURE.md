@@ -5,7 +5,7 @@ title: サービスのテスト
 
 # サービスのテスト
 
-![02 章 サービスのテスト](./images/00-thumbnail.svg)
+![03 章 サービスのテスト](./images/00-thumbnail.svg)
 
 テストには、確かめる範囲によって 3 つの種類があります。
 
@@ -13,9 +13,9 @@ title: サービスのテスト
 
 | 種類 | 確かめる範囲 | 道具 | 章 |
 |---|---|---|---|
-| 単体テスト | 1 つのクラスだけ（`AuthMiddleware`・`NotesService`） | Vitest | 02 章 |
-| 結合テスト | エンドポイントから DB まで（HTTP で呼ぶ） | Vitest ＋ supertest | 03 章 |
-| E2E テスト | ユーザーのブラウザから DB まで | Playwright | 04 章 |
+| 単体テスト | 1 つのクラスだけ（`AuthMiddleware`・`NotesService`） | Vitest | 03 章 |
+| 結合テスト | エンドポイントから DB まで（HTTP で呼ぶ） | Vitest ＋ supertest | 04 章 |
+| E2E テスト | ユーザーのブラウザから DB まで | Playwright | 05 章 |
 
 範囲が狭いテストほど速く、こわれた場所をすぐ特定できます。範囲が広いテストほど、利用者が使うときに近い形で確かめられます。
 
