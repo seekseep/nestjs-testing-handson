@@ -33,9 +33,9 @@ npm install -D vitest
 
 ::diff{file="api/vitest.config.ts"}
 
-`npm test` で Vitest が動くようにします（`devDependencies` は `npm install` で入っています）。
+`npm test` で Vitest が動くようにします。
 
-::diff{file="api/package.json"}
+::diff{file="api/package.json" base="generated"}
 
 ## サービスのテストを書く
 
