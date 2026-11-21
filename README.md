@@ -27,12 +27,12 @@ NestJS で作ったノートの API に、**単体テスト・結合テスト・
 | 04. 結合テスト | アプリを丸ごと組み立て、supertest で HTTP で呼ぶ。トークンの検証を決め打ちのトークンを通す偽物に差し替える |
 | 05. E2E テスト | Playwright で、API で作成・削除したノートが一覧の画面に反映されることを確かめる |
 
-## ほかのハンズオン
+## 関連するハンズオン
 
-NestJS のハンズオンは 3 本に分かれていて、どれから始めても進められます。
+NestJS のハンズオンは 3 本に分かれていて、どれから始めても進められます。3 本のつながりは [関連するハンズオン](./sections/RELATED.md) にまとめています。
 
-- [基本的な REST API](https://github.com/seekseep/nestjs-rest-api-handson) … NestJS で API を作る
-- [Cognito で認証と認可](https://github.com/seekseep/nestjs-cognito-auth-handson) … Amazon Cognito のトークンで認証し、作った人だけが削除できるようにする（このハンズオンの題材は、これと同じ形）
+- [NestJS で作る REST API](https://github.com/seekseep/nestjs-rest-api-handson)
+- [NestJS と Cognito で認証と認可](https://github.com/seekseep/nestjs-cognito-auth-handson)
 - NestJS のテスト（このハンズオン）
 
 ## ドキュメントサイト
