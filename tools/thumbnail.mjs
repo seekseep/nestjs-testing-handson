@@ -30,11 +30,11 @@ const TOOL_COLORS = {
 
 const THUMBNAILS = [
   ['01-setup/01-environment', '01', '準備', ['Node.js', 'VS Code']],
-  ['02-starter/01-starter-project', '02', 'はじめのプロジェクト', ['NestJS', 'Middleware', 'HTML']],
-  ['03-unit-test/01-service', '03', 'サービスのテスト', ['Vitest', 'NestJS']],
-  ['03-unit-test/02-mock-coverage', '03', 'モックとカバレッジ', ['Vitest', 'Middleware', 'Coverage']],
-  ['04-integration-test/01-integration-test', '04', '結合テスト', ['Vitest', 'supertest', 'NestJS']],
-  ['05-e2e-test/01-e2e-test', '05', 'E2E テスト', ['Playwright', 'NestJS', 'HTML']],
+  ['01-setup/02-starter-project', '01', 'はじめのプロジェクト', ['NestJS', 'Middleware', 'HTML']],
+  ['02-unit-test/01-service', '02', 'サービスのテスト', ['Vitest', 'NestJS']],
+  ['02-unit-test/02-mock-coverage', '02', 'モックとカバレッジ', ['Vitest', 'Middleware', 'Coverage']],
+  ['03-integration-test/01-integration-test', '03', '結合テスト', ['Vitest', 'supertest', 'NestJS']],
+  ['04-e2e-test/01-e2e-test', '04', 'E2E テスト', ['Playwright', 'NestJS', 'HTML']],
 ];
 
 function escapeXml(s) {

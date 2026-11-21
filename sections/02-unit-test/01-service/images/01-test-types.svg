@@ -20,15 +20,15 @@
 <rect x="685" y="140" width="110" height="20" rx="6" fill="#16a34a"/>
 <text x="40" y="156" class="t">単体テスト</text>
 <text x="40" y="182" class="s">1 つのクラス・関数だけ。相手は偽物（モック）にする</text>
-<text x="640" y="182" class="m">Vitest ・ 03 章</text>
+<text x="640" y="182" class="m">Vitest ・ 02 章</text>
 <rect x="320" y="230" width="475" height="20" rx="6" fill="#2563eb"/>
 <rect x="810" y="230" width="95" height="20" rx="6" fill="#94a3b8"/>
 <text x="40" y="246" class="t">結合テスト</text>
 <text x="40" y="272" class="s">API 全体を HTTP で呼ぶ。トークンの検証だけ偽物にする</text>
-<text x="640" y="272" class="m">Vitest + supertest ・ 04 章</text>
+<text x="640" y="272" class="m">Vitest + supertest ・ 03 章</text>
 <text x="40" y="336" class="t">E2E テスト</text>
 <text x="40" y="362" class="s">ブラウザで画面を操作し、画面から API までまとめて確かめる</text>
-<text x="640" y="362" class="m">Playwright ・ 05 章</text>
+<text x="640" y="362" class="m">Playwright ・ 04 章</text>
 <rect x="40" y="385" width="755" height="20" rx="6" fill="#9333ea"/>
 <rect x="810" y="385" width="95" height="20" rx="6" fill="#94a3b8"/>
 <text x="905" y="445" text-anchor="end" class="s">灰色 = 偽物（決め打ちのトークンを通す）</text>
