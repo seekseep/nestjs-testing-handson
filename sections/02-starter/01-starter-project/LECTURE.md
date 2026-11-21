@@ -74,7 +74,7 @@ curl -X POST http://localhost:3000/notes -H "Authorization: Bearer alice-token" 
 :::notice
 **このハンズオンでは、Cognito（AWS のアカウント）は要りません。** テストでは、トークンの検証を「`alice-token` を送ったら alice とみなす」偽物に差し替えて動かします（04 章・05 章）。
 
-API を止めるときは、`npm start` のターミナルで `Ctrl + C` を押します。
+API を止めるときは、`npm start` のターミナルで Ctrl + C を押します。
 :::
 
 ## リクエストの流れ
