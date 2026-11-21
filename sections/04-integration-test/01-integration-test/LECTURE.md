@@ -52,7 +52,7 @@ NestJS の公式ドキュメントは、このようなテストを「e2e テス
 
 ::diff{file="api/vitest.config.integration.ts"}
 
-::diff{file="api/package.json"}
+::diff{file="api/package.json" base="generated"}
 
 `npm test`（`vitest.config.ts`）は `src/` の下だけを見るので、結合テストは入りません。速い単体テストと分けて動かせます。
 

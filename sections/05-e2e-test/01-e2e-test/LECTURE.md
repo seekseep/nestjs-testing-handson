@@ -59,7 +59,7 @@ Linux（Ubuntu など）で、テストの起動時にブラウザの部品が�
 
 `scripts` に `test:e2e` を足し、Playwright が作る結果とレポートを Git に入れないようにします。
 
-::diff{file="api/package.json"}
+::diff{file="api/package.json" base="generated"}
 
 ::diff{file="api/.gitignore"}
 

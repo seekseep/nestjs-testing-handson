@@ -50,7 +50,7 @@ npm install -D @vitest/coverage-v8
 
 `npm run test:cov` で測れるようにし、結果を書き出す `coverage/` を Git に入れないようにします。
 
-::diff{file="api/package.json"}
+::diff{file="api/package.json" base="generated"}
 
 ::diff{file="api/.gitignore"}
 

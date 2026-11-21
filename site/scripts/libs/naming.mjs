@@ -55,13 +55,15 @@ export function zipRootFor(sec, lec) {
 
 /**
  * 教材ファイルかどうか（レクチャー相対パス）。ZIP・::tree・::diff の対象から外す。
+ * generated/ は ::diff{base="generated"} の比べる相手（コマンドが作った直後のファイル）。
  * README.md はレクチャーの説明なので ZIP には入れるが、ツリーには出さない（isTreeHidden）。
  */
 export function isLectureAsset(relToLecture) {
   return (
     relToLecture === 'LECTURE.md' ||
     relToLecture.startsWith('images/') ||
-    relToLecture.startsWith('demos/')
+    relToLecture.startsWith('demos/') ||
+    relToLecture.startsWith('generated/')
   );
 }
 
