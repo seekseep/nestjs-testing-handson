@@ -35,21 +35,21 @@ podman compose up -d --build --wait
  Container api-api-1 Healthy
 ```
 
-`compose.yaml` には、2 つのコンテナが書いてあります。
+`api/` は、`nest new` で作った NestJS のプロジェクトに、割り勘のコード（`src/` の `members/`・`payments/`・`settlement/`・`database.ts`）と、`compose.yaml`・`Dockerfile`・`public/` を足したものです。`compose.yaml` には、2 つのコンテナが書いてあります。
 
 | コンテナ | 中身 | 開くところ |
 |---|---|---|
 | `web` | 画面（`public/index.html`）を配るだけの nginx | <http://localhost:3000> |
 | `api` | NestJS の API。データは SQLite のファイルに置き、ファイルはボリューム（`db`）に入れる | <http://localhost:3001> |
 
-## 使ってみる
+## 動作確認する
 
 ブラウザで <http://localhost:3000> を開きます。
 
 1. 「名前」に `A` を入れて **メンバーを足す** を押します。`B`・`C` も同じように足します
 2. 「払った人」に `A`、「金額」に `10000`、「メモ」に `飲み会` を入れ、**立て替えを記録する** を押します（対象の人は、はじめから全員に印が付いています）
 
-「清算」に次のように出れば、正しく動いています。10,000 円を 3 人で分けると 1 円余るので、A の負担が 1 円多くなります。
+「清算」に次のように出れば大丈夫です。10,000 円を 3 人で分けると 1 円余るので、A の負担が 1 円多くなります。
 
 ```text
 B → A 3,333 円

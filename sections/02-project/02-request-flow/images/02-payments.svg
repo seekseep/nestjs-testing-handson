@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="960" height="600" fill="#ffffff"/>
+<text x="90" y="40" text-anchor="middle" font-size="28.0" fill="#0f172a" font-weight="700">画面</text>
+<text x="330" y="40" text-anchor="middle" font-size="28.0" fill="#0f172a" font-weight="700">エンドポイント</text>
+<text x="590" y="40" text-anchor="middle" font-size="28.0" fill="#0f172a" font-weight="700">ロジック</text>
+<text x="850" y="40" text-anchor="middle" font-size="28.0" fill="#0f172a" font-weight="700">DB</text>
+<svg x="49.0" y="323.6" width="82.0" height="82.0" viewBox="0 0 36 36"><path fill="#CCD6DD" d="M36 22c0 2.209-1.791 4-4 4H4c-2.209 0-4-1.791-4-4V4c0-2.209 1.791-4 4-4h28c2.209 0 4 1.791 4 4v18z"/><path fill="#5DADEC" d="M4 4h28v18H4z"/><path fill="#CCD6DD" d="M13 26h10v6H13z"/><path fill="#9AAAB4" d="M13 26h10v2H13z"/><path fill="#E1E8ED" d="M36 33c0-1.657-1.343-3-3-3H3c-1.657 0-3 1.343-3 3s1.343 3 3 3h30c1.657 0 3-1.343 3-3z"/><path fill="#F5F8FA" d="M3 32h2v2H3zm4 0h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2zm4 0h2v2h-2zm4 0h2v2h-2zm4 0h2v2h-2zm4 0h2v2h-2z"/></svg>
+<text x="90" y="433.707" text-anchor="middle" font-size="22.666666666666664" fill="#475569" font-weight="600">画面</text>
+<rect x="240" y="80" width="180" height="80" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
+<text x="330" y="114" text-anchor="middle" font-size="22.666666666666664" fill="#475569" font-weight="600"><tspan x="330" dy="0">Members</tspan><tspan x="330" dy="32.8667">Controller</tspan></text>
+<text x="330" y="186" text-anchor="middle" font-size="20.0" fill="#475569" font-weight="400">POST /members</text>
+<rect x="240" y="210" width="180" height="80" rx="16" fill="#ccfbf1" stroke="#14b8a6" stroke-width="3.5"/>
+<text x="330" y="244" text-anchor="middle" font-size="22.666666666666664" fill="#0f766e" font-weight="600"><tspan x="330" dy="0">Payments</tspan><tspan x="330" dy="32.8667">Controller</tspan></text>
+<text x="330" y="316" text-anchor="middle" font-size="20.0" fill="#0f766e" font-weight="400">POST /payments</text>
+<rect x="240" y="340" width="180" height="80" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
+<text x="330" y="374" text-anchor="middle" font-size="22.666666666666664" fill="#475569" font-weight="600"><tspan x="330" dy="0">Settlement</tspan><tspan x="330" dy="32.8667">Controller</tspan></text>
+<text x="330" y="446" text-anchor="middle" font-size="20.0" fill="#475569" font-weight="400">GET /settlement</text>
+<polygon points="536.8,460 643.2,460 685,515 643.2,570 536.8,570 495,515" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
+<text x="590" y="495" text-anchor="middle" font-size="22.666666666666664" fill="#475569" font-weight="600"><tspan x="590" dy="0">split</tspan><tspan x="590" dy="32.8667">→ balances</tspan><tspan x="590" dy="32.8667">→ settle</tspan></text>
+<path d="M765.0 89.4 A85.0 14.4 0 0 0 935.0 89.4 L935.0 150.6 A85.0 14.4 0 0 1 765.0 150.6 Z" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
+<ellipse cx="850.0" cy="89.4" rx="85.0" ry="14.4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.5"/>
+<text x="850" y="127.933" text-anchor="middle" font-size="22.666666666666664" fill="#475569" font-weight="600">members</text>
+<path d="M765.0 219.4 A85.0 14.4 0 0 0 935.0 219.4 L935.0 280.6 A85.0 14.4 0 0 1 765.0 280.6 Z" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<ellipse cx="850.0" cy="219.4" rx="85.0" ry="14.4" fill="#dcfce7" stroke="#22c55e" stroke-width="2.5"/>
+<text x="850" y="257.933" text-anchor="middle" font-size="22.666666666666664" fill="#15803d" font-weight="600">payments</text>
+<path d="M765.0 346.0 A85.0 16.0 0 0 0 935.0 346.0 L935.0 414.0 A85.0 16.0 0 0 1 765.0 414.0 Z" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<ellipse cx="850.0" cy="346.0" rx="85.0" ry="16.0" fill="#dcfce7" stroke="#22c55e" stroke-width="2.5"/>
+<text x="850" y="387.933" text-anchor="middle" font-size="22.666666666666664" fill="#15803d" font-weight="600"><tspan x="850" dy="0">payment_</tspan><tspan x="850" dy="32.8667">participants</tspan></text>
+<path d="M90.00 317.57 L90.00 299.57 L90.00 261.47 Q90.00 250.00 101.47 250.00 L112.94 250.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M193.06 250.00 L216.00 250.00 L234.00 250.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="153" y="257.933" text-anchor="middle" font-size="22.666666666666664" fill="#0f172a" font-weight="600">HTTP</text>
+<path d="M426.00 250.00 L521.09 250.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M663.91 250.00 L759.00 250.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="592.5" y="257.933" text-anchor="middle" font-size="22.666666666666664" fill="#0f172a" font-weight="600">SQL で書く</text>
+<path d="M425.82 273.96 L759.18 357.29" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+</svg>

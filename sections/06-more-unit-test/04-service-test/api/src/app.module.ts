@@ -1,21 +1,22 @@
 import { Module } from '@nestjs/common';
-import { DatabaseSync } from 'node:sqlite';
-import { openDatabase } from './database.js';
+import { AppController } from './app.controller.js';
+import { AppService } from './app.service.js';
 import { MembersController } from './members/members.controller.js';
-import { MembersRepository } from './members/members.repository.js';
 import { PaymentsController } from './payments/payments.controller.js';
-import { PaymentsRepository } from './payments/payments.repository.js';
 import { SettlementController } from './settlement/settlement.controller.js';
+import { DatabaseModule } from './database/database.module.js';
+import { MembersRepository } from './members/members.repository.js';
+import { PaymentsRepository } from './payments/payments.repository.js';
 import { SettlementService } from './settlement/settlement.service.js';
 
 @Module({
-  controllers: [MembersController, PaymentsController, SettlementController],
-  providers: [
-    // DatabaseSync を受け取るクラスに、openDatabase() で開いたデータベースを渡す
-    { provide: DatabaseSync, useFactory: () => openDatabase() },
-    MembersRepository,
-    PaymentsRepository,
-    SettlementService,
+  imports: [DatabaseModule],
+  controllers: [
+    AppController,
+    MembersController,
+    PaymentsController,
+    SettlementController,
   ],
+  providers: [AppService, MembersRepository, PaymentsRepository, SettlementService],
 })
 export class AppModule {}

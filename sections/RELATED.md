@@ -20,5 +20,5 @@ NestJS のハンズオンは 3 本に分かれています。Cognito と Entra I
 ## つながり
 
 - **REST API → 認証と認可:** REST API で学ぶコントローラー・サービス・モジュールの分け方を、認証と認可でもそのまま使います。
-- **REST API → テスト:** テストで配る割り勘のアプリは、REST API と同じく SQLite（`node:sqlite`）を使います。テストの 06 章では、REST API の 05 章と同じように DB をプロバイダーにし、サービスに分けてから、偽物を渡して単体テストします。
+- **REST API → テスト:** テストで配る割り勘のアプリは、REST API と同じく SQLite（`node:sqlite`）を使います。テストの 06 章では、REST API の 05 章と同じように DB を `DatabaseModule` に分け、サービスに分けてから、偽物を渡して単体テストします。
 - **認証と認可 ↔ Cognito と Entra ID:** どちらも Cognito に Floci を使い、画面は `fetch` で Cognito を直接呼ぶ素の HTML です。Entra ID でログインしても、アプリが受け取るのは Cognito のトークンなので、認証と認可で作った API の側は変えずに済みます。
