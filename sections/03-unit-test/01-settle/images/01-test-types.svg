@@ -22,7 +22,7 @@
 <text x="750" y="80" text-anchor="middle" class="x">呼び出す</text>
 <line x1="962" y1="92" x2="1018" y2="92" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
 <text x="990" y="80" text-anchor="middle" class="x">読み書き</text>
-<line x1="40" y1="162" x2="1200" y2="162" stroke="#64748b" stroke-width="2" stroke="#cbd5e1" stroke-width="1.5"/>
+<line x1="40" y1="162" x2="1200" y2="162" stroke="#cbd5e1" stroke-width="1.5"/>
 <rect x="40" y="190" width="8" height="40" rx="4" fill="#16a34a"/>
 <text x="58" y="218" text-anchor="start" class="h">単体テスト</text>
 <text x="40" y="252" class="m" style="fill:#475569">Vitest ・ 03 章</text>
