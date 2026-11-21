@@ -151,8 +151,6 @@ export default defineConfig({
       ],
       sidebar: [
         { label: 'はじめに', link: '/' },
-        { label: '進め方', link: '/getting-started/' },
-        { label: '開発ツール', link: '/tools/' },
         // 章を足したらここに足す（章は固定。節は autogenerate が拾う）。
         // Starlight v0.39+ では autogenerate を items 配列に入れる（label と autogenerate を同階層に書けない）。
         { label: '01. 準備', items: [{ autogenerate: { directory: '01-setup' } }] },
