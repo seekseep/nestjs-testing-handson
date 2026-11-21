@@ -7,7 +7,7 @@ title: 準備
 
 ![01 章 準備](./images/00-thumbnail.svg)
 
-このハンズオンで使う **Node.js 26** と **VS Code** を入れます。どちらもすでに入っていれば、「[バージョンを確かめる](#バージョンを確かめる)」だけで次の節に進めます。
+このハンズオンで使う **Node.js 26**・**VS Code**・**Podman** を入れます。すでに入っていれば、「[バージョンを確かめる](#バージョンを確かめる)」だけで次の節に進めます。
 
 ## お使いの OS を選ぶ
 
@@ -85,6 +85,49 @@ sudo apt install ./<ダウンロードしたファイル>.deb
 
 プロジェクトのフォルダで `code .` を実行すると、VS Code で開きます。`` Ctrl + ` ``（バッククォート）でエディタの中にターミナルが開き、右上の **＋** でもう 1 つ開けます。
 
+## Podman を入れる
+
+Podman は、コンテナを動かす道具です。02 章から、割り勘のアプリの画面と API をコンテナで動かします。あわせて、`podman compose` が使う **docker-compose** も入れます。
+
+:::::platform
+::::macos
+[Homebrew](https://brew.sh/ja/) で入れます。
+
+```bash
+brew install podman docker-compose
+```
+
+macOS ではコンテナが Linux の仮想マシンの中で動きます。仮想マシンを作って起動します（`init` は最初の 1 回だけ。パソコンを再起動したら `start` をし直します）。
+
+```bash
+podman machine init
+podman machine start
+```
+::::
+::::windows
+```powershell
+winget install --id RedHat.Podman --source winget
+winget install --id Docker.DockerCompose --source winget
+```
+
+PowerShell 7 を開き直し、コンテナを動かす仮想マシンを作って起動します（`init` は最初の 1 回だけ。パソコンを再起動したら `start` をし直します）。仮想マシンには WSL2 を使います。WSL2 が入っていなければ `init` が入れるか聞いてくるので、案内に従ってください。
+
+```powershell
+podman machine init
+podman machine start
+```
+::::
+::::linux
+Ubuntu の例です。Linux ではコンテナがそのまま動くので、仮想マシンは要りません。docker-compose が Podman とやり取りできるように、Podman のソケットを有効にします。
+
+```bash
+sudo apt-get update
+sudo apt-get install -y podman docker-compose-v2
+systemctl --user enable --now podman.socket
+```
+::::
+:::::
+
 ## バージョンを確かめる
 
 ```bash
@@ -105,6 +148,18 @@ code --version
 
 VS Code のバージョンの番号が出れば、ターミナルから `code` を使えます。
 
+```bash
+podman --version
+podman compose version
+```
+
+```text
+podman version 6.2.0
+Docker Compose version 5.8.0
+```
+
+`podman compose version` が `Docker Compose version` を表示すれば大丈夫です（細かい番号は入れた日によって違います）。
+
 ## 参考にした公式ドキュメント
 
 この節は、次の公式ドキュメントをもとに書いています。
@@ -112,6 +167,8 @@ VS Code のバージョンの番号が出れば、ターミナルから `code` �
 - [Node.js: ダウンロード](https://nodejs.org/ja/download) … インストーラーでの入れ方
 - [Microsoft Learn: Windows への PowerShell のインストール](https://learn.microsoft.com/ja-jp/powershell/scripting/install/installing-powershell-on-windows) … winget で PowerShell 7 を入れる方法
 - [Visual Studio Code: Setup Overview](https://code.visualstudio.com/docs/setup/setup-overview) … OS ごとの入れ方
+- [Podman: Installation](https://podman.io/docs/installation) … OS ごとの Podman の入れ方と `podman machine`
+- [Podman: podman-compose](https://docs.podman.io/en/latest/markdown/podman-compose.1.html) … `podman compose` が docker-compose に処理を渡すこと
 - [Playwright: Installation](https://playwright.dev/docs/intro) … Playwright が動く OS（System requirements）
 
 :::faq

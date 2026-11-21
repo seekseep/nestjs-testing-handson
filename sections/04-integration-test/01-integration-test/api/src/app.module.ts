@@ -1,26 +1,9 @@
-import {
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  RequestMethod,
-} from '@nestjs/common';
-import { AuthMiddleware } from './auth/auth.middleware.js';
-import { TokenVerifier } from './auth/token-verifier.js';
-import { NotesController } from './notes/notes.controller.js';
-import { NotesService } from './notes/notes.service.js';
+import { Module } from '@nestjs/common';
+import { MembersController } from './members/members.controller.js';
+import { PaymentsController } from './payments/payments.controller.js';
+import { SettlementController } from './settlement/settlement.controller.js';
 
 @Module({
-  controllers: [NotesController],
-  providers: [NotesService, TokenVerifier],
+  controllers: [MembersController, PaymentsController, SettlementController],
 })
-export class AppModule implements NestModule {
-  // ノートの作成と削除にだけ、AuthMiddleware を掛ける（一覧は誰でも見られる）
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AuthMiddleware)
-      .forRoutes(
-        { path: 'notes', method: RequestMethod.POST },
-        { path: 'notes/:id', method: RequestMethod.DELETE },
-      );
-  }
-}
+export class AppModule {}
