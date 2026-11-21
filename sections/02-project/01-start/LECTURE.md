@@ -7,75 +7,73 @@ title: 起動する
 
 ![02 章 起動する](./images/00-thumbnail.svg)
 
-テストする題材の「はじめのプロジェクト」をダウンロードして動かします。プロジェクトは NestJS の API 1 つで、ノートの作成（`POST /notes`）・一覧（`GET /notes`）・削除（`DELETE /notes/:id`）と、一覧の画面（`/notes.html`）があります。
+テストする題材の「割り勘のアプリ」をダウンロードし、Podman で動かして使ってみます。メンバーを足し、誰かが立て替えた金額を記録すると、誰が誰にいくら払えばよいか（清算）が出ます。
+
+| API | すること |
+|---|---|
+| `POST /members`・`GET /members` | メンバーを足す・一覧を返す |
+| `POST /payments`・`GET /payments` | 立て替え（払った人・金額・メモ・対象の人）を記録する・一覧を返す |
+| `GET /settlement` | 清算の結果（誰が誰にいくら払うか）を返す |
 
 ## ダウンロードして動かす
 
 :::download
-[はじめのプロジェクトをダウンロード](./project.zip)
+[割り勘のアプリをダウンロード](./project.zip)
 :::
 
-ZIP を展開してできる `02-project-01-start/` を、`notes-app/` のような名前に変えて好きな場所に置きます。このフォルダに、節ごとにテストを足していきます。
+ZIP を展開してできる `02-project-01-start/` を、`warikan/` のような名前に変えて好きな場所に置きます。このフォルダに、節ごとにテストを足していきます。
 
-フォルダを VS Code で開き、ターミナルで `api/` に入って、ライブラリを入れてから起動します。
+フォルダを VS Code で開き、ターミナルで `api/` に入って起動します。
 
 ```bash
 cd api
-npm install
-npm start
+podman compose up -d --build --wait
 ```
 
 ```text
-[Nest] 12345  - WARN [TokenVerifier] COGNITO_USER_POOL_ID・COGNITO_CLIENT_ID が無いので、トークンはすべて 401 にします
-...
-[Nest] 12345  - LOG [NestApplication] Nest application successfully started
+ Container api-web-1 Healthy
+ Container api-api-1 Healthy
 ```
 
-もう 1 つターミナルを開いて（VS Code のターミナルの右上の **＋**）、API を呼んでみます。一覧はトークンなしで見られます。
+`compose.yaml` には、2 つのコンテナが書いてあります。
+
+| コンテナ | 中身 | 開くところ |
+|---|---|---|
+| `web` | 画面（`public/index.html`）を配るだけの nginx | <http://localhost:3000> |
+| `api` | NestJS の API。データは SQLite のファイルに置き、ファイルはボリューム（`db`）に入れる | <http://localhost:3001> |
+
+## 使ってみる
+
+ブラウザで <http://localhost:3000> を開きます。
+
+1. 「名前」に `A` を入れて **メンバーを足す** を押します。`B`・`C` も同じように足します
+2. 「払った人」に `A`、「金額」に `10000`、「メモ」に `飲み会` を入れ、**立て替えを記録する** を押します（対象の人は、はじめから全員に印が付いています）
+
+「清算」に次のように出れば、正しく動いています。10,000 円を 3 人で分けると 1 円余るので、A の負担が 1 円多くなります。
+
+```text
+B → A 3,333 円
+C → A 3,333 円
+```
+
+画面は、`api` のコンテナの API を呼んで表示しています。API を直接呼んでも、同じ結果が JSON で返ります。
 
 ```bash
-curl http://localhost:3000/notes
+curl http://localhost:3001/settlement
 ```
 
 ```text
-[]
+[{"from":2,"to":1,"amount":3333},{"from":3,"to":1,"amount":3333}]
 ```
 
-ブラウザで <http://localhost:3000/notes.html> を開くと、一覧の画面に「ノートはまだありません」と出ます。
-
-作成はトークンが要るので、トークンを付けないと `401` です。
-
-```bash
-curl -X POST http://localhost:3000/notes -H "content-type: application/json" -d '{"text":"牛乳を買う"}'
-```
-
-```text
-{"message":"Missing bearer token","error":"Unauthorized","statusCode":401}
-```
-
-それらしいトークンを付けても、`401` のままです。
-
-```bash
-curl -X POST http://localhost:3000/notes -H "Authorization: Bearer alice-token" -H "content-type: application/json" -d '{"text":"牛乳を買う"}'
-```
-
-```text
-{"message":"Invalid token","error":"Unauthorized","statusCode":401}
-```
-
-これで正しく動いています。このプロジェクトはトークンを **Amazon Cognito** で検証する作りで、Cognito の設定が無いときは、どのトークンも断ります（起動のログの `WARN`）。
-
-:::notice
-**このハンズオンでは、Cognito（AWS のアカウント）は要りません。** テストでは、トークンの検証を「`alice-token` を送ったら alice とみなす」偽物に差し替えて動かします（04 章・05 章）。
-
-API を止めるときは、`npm start` のターミナルで Ctrl + C を押します。
-:::
+止めるときは `podman compose down` です。データはボリュームに残るので、次に起動したときも同じメンバーと立て替えが出ます。
 
 ## 参考にした公式ドキュメント
 
 この節は、次の公式ドキュメントをもとに書いています。
 
-- [NestJS: First steps](https://docs.nestjs.com/first-steps) … `npm run start` での起動
+- [Docker: Compose file reference](https://docs.docker.com/reference/compose-file/services/) … `build`・`image`・`ports`・`volumes`
+- [Docker: docker compose up](https://docs.docker.com/reference/cli/docker/compose/up/) … `--build`・`--wait`
 
 ## この節を終えたときのディレクトリ
 
@@ -87,12 +85,12 @@ API を止めるときは、`npm start` のターミナルで Ctrl + C を押し
 
 :::faq
 
-### `EADDRINUSE: address already in use :::3000` と出る
+### `podman compose up` が `Cannot connect to Podman` で失敗する
 
-3000 番を、ほかのプログラムが使っています。前に起動した API が残っていないか確かめてください。
+Podman の仮想マシンが止まっています。`podman machine start` で起動してから、もう一度実行してください（Linux では要りません）。
 
-### `npm install` で `npm warn` や `vulnerabilities` と出る
+### `address already in use` で起動できない
 
-ライブラリについてのお知らせで、エラーではありません。そのまま進めてかまいません。
+3000 番か 3001 番を、ほかのプログラムが使っています。前に起動したコンテナが残っていないか、`podman ps` で確かめてください。
 
 :::

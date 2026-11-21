@@ -1,7 +1,6 @@
 # 依存とビルドの成果物
 node_modules/
 dist/
-coverage/
 *.tsbuildinfo
 
 # Playwright の結果とレポート

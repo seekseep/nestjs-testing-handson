@@ -2,9 +2,9 @@
 
 ## プロジェクト概要
 
-NestJS で作ったノートの API（作成・一覧・削除。B と同じ形）に、単体テスト（Vitest）・結合テスト（Vitest と supertest）・E2E テスト（Playwright）を書くハンズオン教材。
+割り勘のアプリ（NestJS の API と SQLite、画面は HTML 1 枚。認証なし）に、単体テスト（Vitest）・結合テスト（Vitest と supertest）・E2E テスト（Playwright）を書き、06 章で DI を使う形に書き換えて単体テストを広げるハンズオン教材。
 3 本に分けたハンズオンの C（A: 基本的な REST API `nestjs-rest-api-handson`、B: Cognito で認証と認可 `nestjs-cognito-auth-handson`）。
-A も B も終えていなくても始められるように、02 章で「はじめのプロジェクト」を ZIP で配る。
+A も B も終えていなくても始められるように、02 章で割り勘のアプリを ZIP で配る。
 handson-builder スキルの骨格（`sections/` ＋ Starlight の `site/` ＋ GitHub Pages）を使っている。
 全体の計画と方針の正本は GitHub のイシュー #1。
 
@@ -13,14 +13,14 @@ handson-builder スキルの骨格（`sections/` ＋ Starlight の `site/` ＋ G
 | 用語 | 指すもの | 例 |
 |---|---|---|
 | **章** | `sections/<NN-section>/`。章立ては固定（イシュー #1） | `03-unit-test/` |
-| **節** | `sections/<NN-section>/<NN-lecture>/`。増減してよい | `03-unit-test/01-service/` |
+| **節** | `sections/<NN-section>/<NN-lecture>/`。増減してよい | `03-unit-test/01-settle/` |
 
 - 節のディレクトリは **その節を終えた時点のプロジェクト** を丸ごと持つ（`api/`）
 - 次の節は、前の節のディレクトリをコピーして差分を足して作る（`tools/copy-lecture.sh <前の節> <次の節>`）
 - 本文は `LECTURE.md`（`docs: true`）。節の直下に `README.md` は置かない（起動方法は本文に書く）
 - 説明図は `images/` に SVG で置く（`00-thumbnail.svg` を先頭サムネに。`tools/thumbnail.mjs` の THUMBNAILS に足して `node tools/thumbnail.mjs`）
 - 章の直下には README を置かない
-- 準備（`01-setup/01-environment`）とリクエストの流れ（`02-project/02-request-flow`）はプロジェクトを持たない（本文だけ）。はじめのプロジェクトは `02-project/01-start`
+- 準備（`01-setup/01-environment`）とリクエストの流れ（`02-project/02-request-flow`）はプロジェクトを持たない（本文だけ）。配るアプリは `02-project/01-start`
 
 ## プロジェクトの形
 
@@ -28,25 +28,26 @@ handson-builder スキルの骨格（`sections/` ＋ Starlight の `site/` ＋ G
 sections/<sec>/<lec>/
 ├── LECTURE.md        教材本文（ZIP に入らない）
 ├── images/           説明図（ZIP に入らない）
+├── generated/        ::diff{base="generated"} の比べる相手（ZIP に入らない）
 └── api/              NestJS（1 つだけ）
-    ├── public/notes.html   ノートの一覧の画面（app.useStaticAssets() で配る）
+    ├── compose.yaml        api（NestJS と SQLite。ファイルはボリューム db）と web（nginx で public/ を配る）
+    ├── Dockerfile          B と同じ
+    ├── public/index.html   画面（素の HTML と fetch）
     ├── src/
     ├── test/         結合テスト（04 章から）
     └── e2e/          E2E テスト（05 章から。playwright.config.ts も api/ に置く）
 ```
 
-- **プロジェクトのファイルは最小限**: ビルド・起動・教材のテストに要るものだけを置く。lint・format（oxlint・Prettier）、
-  `.gitattributes`、`nest new` の使わないスクリプト（`start:dev`・`test:watch` など）や見本は入れない。
-  `nest-cli.json` は `deleteOutDir` のために残す（無いと `dist/` を消したあとビルドし直せない）
-- **最小限の構成**: Podman・compose・Next.js・Amplify・OpenAPI は使わない。**AWS（Cognito）が無くても全部進められる**
-- 題材は B（`nestjs-cognito-auth-handson`）の最後の節（`05-refactor/01-auth-middleware`）と同じ形: `POST /notes`（トークン要る）・`GET /notes`（誰でも）・`DELETE /notes/:id`（作った人だけ。ほかの人は 403、無ければ 404）。
-  ノートは `{ id, text, ownerId }` をメモリ上の配列に持つ。認証は `AuthMiddleware`（`forRoutes()` で POST と DELETE にだけ掛ける）。
-  B と違い、トークンの検証は DI で差し替えられる `TokenVerifier` クラスに切り出し、Floci・Podman は使わない
-- 言語は **TypeScript**（ESM で、import の末尾は `.js`）。はじめのプロジェクトにテストの道具は入れず、Vitest は 03-01、coverage-v8 は 03-02、`@nestjs/testing`・supertest は 04、Playwright は 05 で入れる
-- パッケージマネージャはレクチャー側が **npm**（`api/package-lock.json`）、サイトが pnpm
-- ポートは 3000（E2E テストは、ふだんの起動とぶつからないように 3100）
-- `.env`・`.env.example` は置かない（`.env` の読み込みもしない）。本物の `TokenVerifier` は Cognito の ID が無ければ WARN を出してどのトークンも 401 にする
-- **秘匿情報（ユーザープール ID・クライアント ID・AWS アカウント ID・キー）の実値は絶対にコミットしない**
+- **プロジェクトのファイルは最小限**: ビルド・起動・教材のテストに要るものだけを置く。lint・format・`.gitattributes`・README・AGENTS.md は入れない
+- 題材は割り勘: `POST/GET /members`・`POST/GET /payments`・`GET /settlement`。DB は SQLite（`node:sqlite` の `DatabaseSync`）で、表は `members`・`payments`・`payment_participants`（列は camelCase）。
+  計算は `src/settlement/settle.ts` の `split`・`balances`・`settle`（DB も HTTP も使わない関数）
+- 02〜05 章は **コントローラーに直書き**（`openDatabase()`・SQL・結果の組み立て）。06 章で DB のプロバイダー → リポジトリ → `SettlementService` → サービスの単体テスト、と段階的に書き換える（02-02 で「素直に実装した形」と書く）
+- 画面は `web`（`127.0.0.1:3000`）、API は `api`（`127.0.0.1:3001`）。画面から API を呼ぶために `main.ts` で `enableCors()` する
+- DB のファイルは環境変数 `DB_PATH`（既定は `warikan.db`）。コンテナでは `/data/warikan.db`（ボリューム）。結合テストはテストごとに一時ファイルを `DB_PATH` にする
+- テストは、単体・結合は手元の Node.js、E2E は Podman で動かした画面と API に対して流す（E2E の前に `podman compose down --volumes` でデータを消す）
+- 言語は **TypeScript**（ESM で、import の末尾は `.js`）。配るアプリにテストの道具は入れず、Vitest は 03、`@nestjs/testing`・supertest は 04、Playwright は 05 で入れる
+- パッケージマネージャはレクチャー側が **npm**（`api/package-lock.json`）、サイトが pnpm。Node 26・`@types/node@26`・Podman の手順と Dockerfile は B とそろえる
+- **秘匿情報の実値は絶対にコミットしない**
 
 ## 本文の分量
 
@@ -55,7 +56,7 @@ sections/<sec>/<lec>/
 - 任意の道具の紹介・豆知識・歴史や背景の長い説明・同じことの言い直し・比較表（Jest との対応など）は書かない
 - `::diff` の下の箇条書きは、そのコードを読むのに欠かせない点だけにする
 - `:::faq` は、手順どおりに進めても本当につまずく問題だけにする。無ければ `:::faq` ごと書かない
-- 残すもの: その節の重要な要素、テストでの認証の注意、`USE_FAKE_AUTH` の警告、打つコマンドと期待する出力
+- 残すもの: その節の重要な要素、打つコマンドと期待する出力
 
 ## 本文の書き方（センチネル）
 
@@ -80,13 +81,6 @@ sections/<sec>/<lec>/
   - 選んだ OS は localStorage（キー `handson-os`）に残り、ナビゲーションバーの選択欄と `::platform-choice`（01-01 に置いている）で変える
   - パネルの中に見出し（`##`・`###`）は書かない（目次に残って、隠れた所を指してしまう）
 - 「次へ」の見出しやリンクは書かない（Starlight の前へ／次へと重複するため）
-
-## テストでの認証
-
-- テストでの認証は **トークンの直書き**（`alice-token`・`bob-token` を通す `FakeTokenVerifier`）
-- 結合テストは `overrideProvider(TokenVerifier).useClass(FakeTokenVerifier)`、E2E テストは API の `USE_FAKE_AUTH=true`（`AppModule` が偽物を使う）と、
-  Playwright の `request` に `Authorization: Bearer alice-token` を付けて作成・削除し、一覧の画面（`/notes.html`）に反映されるかを見る
-- 本来の方法（テスト用ユーザーでのサインイン、setup project と storageState など）には触れない、と本文に書く
 
 ## サイト（site/）の開発
 

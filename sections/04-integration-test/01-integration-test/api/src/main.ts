@@ -1,12 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import type { NestExpressApplication } from '@nestjs/platform-express';
-import { join } from 'node:path';
 import { AppModule } from './app.module.js';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  // public/ の画面（notes.html など）を配る
-  app.useStaticAssets(join(import.meta.dirname, '..', 'public'));
+  const app = await NestFactory.create(AppModule);
+  // 画面（http://localhost:3000）から、この API（http://localhost:3001）を呼べるようにする
+  app.enableCors();
   await app.listen(process.env.PORT ?? 3000);
 }
 await bootstrap();

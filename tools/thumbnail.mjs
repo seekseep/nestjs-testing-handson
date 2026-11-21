@@ -26,16 +26,21 @@ const TOOL_COLORS = {
   supertest: '#475569',
   Playwright: '#2EAD33',
   HTML: '#E34F26',
+  Podman: '#892CA0',
+  SQLite: '#003B57',
 };
 
 const THUMBNAILS = [
-  ['01-setup/01-environment', '01', '準備', ['Node.js', 'VS Code']],
-  ['02-project/01-start', '02', '起動する', ['NestJS', 'HTML']],
-  ['02-project/02-request-flow', '02', 'リクエストの流れ', ['NestJS', 'Middleware']],
-  ['03-unit-test/01-service', '03', 'サービスのテスト', ['Vitest', 'NestJS']],
-  ['03-unit-test/02-mock-coverage', '03', 'モックとカバレッジ', ['Vitest', 'Middleware', 'Coverage']],
-  ['04-integration-test/01-integration-test', '04', '結合テスト', ['Vitest', 'supertest', 'NestJS']],
-  ['05-e2e-test/01-e2e-test', '05', 'E2E テスト', ['Playwright', 'NestJS', 'HTML']],
+  ['01-setup/01-environment', '01', '準備', ['Node.js', 'VS Code', 'Podman']],
+  ['02-project/01-start', '02', '起動する', ['Podman', 'NestJS', 'HTML']],
+  ['02-project/02-request-flow', '02', 'リクエストの流れ', ['NestJS', 'SQLite']],
+  ['03-unit-test/01-settle', '03', '計算の関数のテスト', ['Vitest']],
+  ['04-integration-test/01-integration-test', '04', '結合テスト', ['Vitest', 'supertest', 'SQLite']],
+  ['05-e2e-test/01-e2e-test', '05', 'E2E テスト', ['Playwright', 'Podman']],
+  ['06-more-unit-test/01-database-provider', '06', 'DB をプロバイダーにする', ['NestJS', 'SQLite']],
+  ['06-more-unit-test/02-repository', '06', 'SQL をリポジトリに分ける', ['NestJS', 'SQLite']],
+  ['06-more-unit-test/03-service', '06', '清算をサービスに分ける', ['NestJS']],
+  ['06-more-unit-test/04-service-test', '06', 'サービスを単体テストする', ['Vitest', 'NestJS']],
 ];
 
 function escapeXml(s) {

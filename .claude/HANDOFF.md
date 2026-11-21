@@ -13,6 +13,7 @@
 - 題材を B（`nestjs-cognito-auth-handson` の `05-refactor/01-auth-middleware`）と同じ形（ノートの作成・一覧・削除、`AuthMiddleware`）に作り直した
 - 2026-11-21: 02 章「はじめのプロジェクト」を 01 章「準備」に入れ（`01-setup/02-starter-project`）、単体・結合・E2E を 02〜04 章に繰り上げた
 - 2026-11-21: プロジェクトだけの 02 章を作り、起動する（`02-project/01-start`）とリクエストの流れ（`02-project/02-request-flow`）に分けた。単体・結合・E2E は 03〜05 章
+- 2026-11-21: 題材を割り勘のアプリ（認証なし、SQLite、Podman で api と web）に作り直し、章立てを 01 準備・02 プロジェクトの起動・03 単体・04 結合・05 E2E・06 もっと単体テストにした
 - 進み具合と残りはイシュー #1 を見る
 
 ## 環境
@@ -22,31 +23,17 @@
 
 ## 決まっている設計
 
-- 各節のディレクトリ = その節を終えた時点のプロジェクト（`api/` だけ。NestJS 12、ESM）。ファイルは最小限（lint・format・`.env` は無い）
-- 次の節は `tools/copy-lecture.sh <前の節> <次の節>` でコピーしてから差分を足す
-- 題材は B の最後の節と同じ形: `POST /notes`（トークン要る）・`GET /notes`（誰でも）・`DELETE /notes/:id`（作った人だけ。403 / 404）。ノートは `{ id, text, ownerId }`
-- 画面は一覧の `api/public/notes.html`（`/notes.html`）だけ。`app.useStaticAssets()` で配る。ポートは 3000
-- 認証は `AuthMiddleware`（`AppModule.configure()` の `forRoutes()` で POST と DELETE にだけ掛ける）。トークンの検証は DI で受け取る `TokenVerifier` に切り出し、本物は aws-jwt-verify の `CognitoJwtVerifier`（B の Floci 向けの `JwtVerifier` は使わない）
-  - `COGNITO_USER_POOL_ID`・`COGNITO_CLIENT_ID` が無いときは、起動はできて、警告を出し、どのトークンも 401
-- テストの道具は節ごとに入れる: Vitest（03-01）、`@vitest/coverage-v8`（03-02）、`@nestjs/testing`・supertest（04）、Playwright（05）
-- テストでの認証は「トークンの直書き」: `FakeTokenVerifier`（`alice-token`・`bob-token`）
-  - 結合テスト（03 章）: `overrideProvider(TokenVerifier).useClass(FakeTokenVerifier)`
-  - E2E テスト（04 章）: `USE_FAKE_AUTH=true` で `AppModule` が偽物を使う。Playwright の `request` にトークンを付けて作成・削除し、一覧の画面への反映を見る
-  - 本来の方法（テスト用ユーザーでのサインイン、setup project と storageState など）には触れない、と本文に書く（ユーザーの指示）
-- テストの件数: 単体 4（03-01）→ 6（03-02 から）、結合 6、E2E 2
-- 結合テストのファイルは `test/*.integration-spec.ts`（`vitest.config.integration.ts`）。単体テストは `vitest.config.ts` で `src/**/*.spec.ts` に絞る（`e2e/` の Playwright のテストを拾わない）
+- `.claude/AGENTS.md` の「プロジェクトの形」を見る
+- テストの件数: 単体 10（03 章から）→ 13（06-04）、結合 3（04 章から。06 章の各節でも 3 のまま通る）、E2E 1
 
 ## 作っていて分かったこと
 
 - Playwright の System requirements が Windows 11+・macOS 14+ なので、前提を Windows 11 にした
-- AI エージェントの中で Vitest を動かすと、エージェントを見分けて `skipFull` を付け、カバレッジの表から 100% のファイルを隠す・`console.log` を出さない。本文の出力例は `env -i PATH=... HOME=...` で環境変数を外して取った
-- Nest の TestingModule の既定のロガーはエラーしか出さないので、結合テストで `FakeTokenVerifier` の WARN は出ない
-- `AppModule` の `USE_FAKE_AUTH` はファイルが読み込まれたときに決まる
-- middleware を掛け忘れると、`req.user` が無くてコントローラーで 500 になる（03 章の「試しに」で使っている）
-- npm 11.12 の `npm install` は `npm warn install-scripts` を出す（02-01 の FAQ）
+- AI エージェントの中で Vitest を動かすと、エージェントを見分けて出力を変える。本文の出力例は `env -i PATH=... HOME=...` で環境変数を外して取った
+- `node:sqlite` の `.all()` の結果は `interface` には `as` で渡せない（`type` なら渡せる）
+- `podman compose up --wait` は、healthcheck の無いコンテナも起動したら `Healthy` と出す
 
 ## 確かめ方のメモ
 
-- 各節の `api/` で `npm install` → `npm run build`、02 章から `npm test`、03 章から `npm run test:integration`、04 章から `npm run test:e2e`
-- 偽物の認証に切り替えていない起動では、`alice-token` が 401 になる
+- 各節の `api/` で `npm install` → `npm run build`、03 章から `npm test`、04 章から `npm run test:integration`、05 章から `podman compose down --volumes` → `podman compose up -d --build --wait` → `npm run test:e2e`
 - サイト: `cd site && pnpm install && pnpm run build`

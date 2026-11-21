@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>割り勘</title>
+</head>
+<body>
+  <h1>割り勘</h1>
+
+  <h2 id="members-title">メンバー</h2>
+  <form id="member-form">
+    <label>名前 <input name="name" required></label>
+    <button>メンバーを足す</button>
+  </form>
+  <ul id="members" aria-labelledby="members-title"></ul>
+
+  <h2 id="payments-title">立て替え</h2>
+  <form id="payment-form">
+    <p><label>払った人 <select name="payerId" id="payer"></select></label></p>
+    <p><label>金額 <input name="amount" type="number" min="0" required></label></p>
+    <p><label>メモ <input name="memo"></label></p>
+    <fieldset>
+      <legend>対象の人</legend>
+      <div id="participants"></div>
+    </fieldset>
+    <button>立て替えを記録する</button>
+  </form>
+  <ul id="payments" aria-labelledby="payments-title"></ul>
+
+  <h2 id="settlement-title">清算</h2>
+  <ul id="settlement" aria-labelledby="settlement-title"></ul>
+
+  <script>
+    // API の場所。画面（http://localhost:3000）とは別のポートで動いている
+    const API = 'http://localhost:3001';
+
+    async function call(path, body) {
+      const init = body && {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(body),
+      };
+      const res = await fetch(API + path, init);
+      return res.json();
+    }
+
+    const yen = (amount) => `${amount.toLocaleString('ja-JP')} 円`;
+
+    function showList(id, texts) {
+      const items = texts.map((text) => {
+        const li = document.createElement('li');
+        li.textContent = text;
+        return li;
+      });
+      document.getElementById(id).replaceChildren(...items);
+    }
+
+    // API から読み直して、画面を全部描き直す
+    async function render() {
+      const [members, payments, settlement] = await Promise.all([
+        call('/members'),
+        call('/payments'),
+        call('/settlement'),
+      ]);
+      const nameOf = (id) => members.find((m) => m.id === id)?.name;
+
+      showList('members', members.map((m) => m.name));
+      document.getElementById('payer').replaceChildren(
+        ...members.map((m) => new Option(m.name, m.id)),
+      );
+      document.getElementById('participants').replaceChildren(
+        ...members.map((m) => {
+          const label = document.createElement('label');
+          const box = Object.assign(document.createElement('input'), {
+            type: 'checkbox', name: 'participantIds', value: m.id, checked: true,
+          });
+          label.append(box, m.name, ' ');
+          return label;
+        }),
+      );
+      showList('payments', payments.map((p) =>
+        `${nameOf(p.payerId)} が ${yen(p.amount)}（${p.memo}）: ${p.participantIds.map(nameOf).join('・')}`));
+      showList('settlement', settlement.map((t) =>
+        `${nameOf(t.from)} → ${nameOf(t.to)} ${yen(t.amount)}`));
+    }
+
+    document.getElementById('member-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const form = new FormData(event.target);
+      await call('/members', { name: form.get('name') });
+      event.target.reset();
+      await render();
+    });
+
+    document.getElementById('payment-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const form = new FormData(event.target);
+      await call('/payments', {
+        payerId: Number(form.get('payerId')),
+        amount: Number(form.get('amount')),
+        memo: form.get('memo'),
+        participantIds: form.getAll('participantIds').map(Number),
+      });
+      event.target.reset();
+      await render();
+    });
+
+    render();
+  </script>
+</body>
+</html>

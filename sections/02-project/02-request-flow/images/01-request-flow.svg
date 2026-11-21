@@ -1,75 +1,62 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700" role="img" aria-label="リクエストの流れ。作成（POST）と削除（DELETE）は、エンドポイントの AuthMiddleware が TokenVerifier でトークンを確かめ、正しくなければ 401 を返す。通ったら NotesController、ロジックの NotesService、DB のメモリ上の配列へ進む。一覧（GET）は AuthMiddleware を通らずに NotesController に届く。削除では NotesService が、ノートが無ければ 404、作った人でなければ 403 を返す">
-<defs><style>text{font-family:'Hiragino Sans','Noto Sans JP','Yu Gothic UI',system-ui,sans-serif}.t{font-size:20px;font-weight:700;fill:#0f172a}.s{font-size:14px;fill:#475569}.m{font-size:14px;fill:#1e293b;font-family:ui-monospace,Menlo,monospace}.b{font-size:15px;font-weight:700}.g{fill:#334155}.x{font-size:13px;fill:#94a3b8}.e{font-size:14px;font-weight:700;fill:#b91c1c}.ok{font-size:14px;font-weight:600;fill:#15803d}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620" role="img" aria-label="リクエストの流れ。画面（public/index.html）がエンドポイント（コントローラー）を HTTP で呼ぶ。メンバーを足すと MembersController が members の表に書き、立て替えを記録すると PaymentsController が payments と payment_participants の表に書く。清算を見ると SettlementController が立て替えを DB から読み、ロジックの split・balances・settle で計算して返す。DB を開くことも SQL も、コントローラーに直接書いてある">
+<defs><style>text{font-family:'Hiragino Sans','Noto Sans JP','Yu Gothic UI',system-ui,sans-serif}.h{font-size:22px;font-weight:700;fill:#0f172a}.t{font-size:20px;font-weight:700;fill:#0f172a}.s{font-size:14px;fill:#475569}.m{font-size:14px;fill:#1e293b;font-family:ui-monospace,Menlo,monospace}.b{font-size:15px;font-weight:700}.g{fill:#334155}.w{fill:#fff}.x{font-size:13px;fill:#64748b}</style>
 <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
-<rect width="1200" height="700" rx="20" fill="#f8fafc"/>
-<rect x="40" y="40" width="200" height="84" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
-<text x="140" y="76" text-anchor="middle" class="t">ユーザー</text>
-<text x="140" y="104" text-anchor="middle" class="m">ブラウザ・curl</text>
-<rect x="280" y="40" width="420" height="84" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
-<text x="490" y="76" text-anchor="middle" class="t">エンドポイント</text>
-<text x="490" y="104" text-anchor="middle" class="m">AuthMiddleware・NotesController</text>
-<rect x="760" y="40" width="190" height="84" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
-<text x="855" y="76" text-anchor="middle" class="t">ロジック</text>
-<text x="855" y="104" text-anchor="middle" class="m">NotesService</text>
-<rect x="1000" y="40" width="160" height="84" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
-<text x="1080" y="76" text-anchor="middle" class="t">DB</text>
-<text x="1080" y="104" text-anchor="middle" class="m">メモリ上の配列</text>
-<rect x="40" y="160" width="200" height="56" rx="12" fill="#cbd5e1" stroke="#cbd5e1" stroke-width="2"/>
-<text x="140" y="185" text-anchor="middle" class="b g">POST /notes</text>
-<text x="140" y="205" text-anchor="middle" class="s">作成</text>
-<text x="140" y="240" text-anchor="middle" class="ok">成功: 201 と作ったノート</text>
-<rect x="280" y="160" width="190" height="56" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
-<text x="375" y="194" text-anchor="middle" class="m">AuthMiddleware</text>
-<line x1="375" y1="216" x2="375" y2="236" stroke="#64748b" stroke-width="2" stroke-dasharray="5 4"/>
-<rect x="280" y="236" width="190" height="44" rx="12" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
-<text x="375" y="264" text-anchor="middle" class="m" style="font-size:13px">TokenVerifier</text>
-<text x="375" y="302" text-anchor="middle" class="e">401 トークンが無い・正しくない</text>
-<line x1="242" y1="188" x2="278" y2="188" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
-<line x1="472" y1="188" x2="508" y2="188" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
-<rect x="510" y="160" width="190" height="56" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
-<text x="605" y="194" text-anchor="middle" class="m">NotesController</text>
-<line x1="702" y1="188" x2="758" y2="188" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
-<rect x="760" y="160" width="190" height="56" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
-<text x="855" y="194" text-anchor="middle" class="m">create()</text>
-<line x1="952" y1="188" x2="998" y2="188" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
-<rect x="1000" y="160" width="160" height="56" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
-<text x="1080" y="194" text-anchor="middle" class="s">配列に足す</text>
-<rect x="40" y="332" width="200" height="56" rx="12" fill="#cbd5e1" stroke="#cbd5e1" stroke-width="2"/>
-<text x="140" y="357" text-anchor="middle" class="b g">GET /notes</text>
-<text x="140" y="377" text-anchor="middle" class="s">一覧</text>
-<text x="140" y="412" text-anchor="middle" class="ok">成功: 200 とノートの一覧</text>
-<rect x="280" y="332" width="190" height="56" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="6 5"/>
-<text x="375" y="366" text-anchor="middle" class="x">AuthMiddleware（通らない）</text>
-<path d="M242 360 C 300 306, 490 306, 508 360" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
-<rect x="510" y="332" width="190" height="56" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
-<text x="605" y="366" text-anchor="middle" class="m">NotesController</text>
-<line x1="702" y1="360" x2="758" y2="360" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
-<rect x="760" y="332" width="190" height="56" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
-<text x="855" y="366" text-anchor="middle" class="m">findAll()</text>
-<line x1="952" y1="360" x2="998" y2="360" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
-<rect x="1000" y="332" width="160" height="56" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
-<text x="1080" y="366" text-anchor="middle" class="s">配列にあるものを返す</text>
-<rect x="40" y="504" width="200" height="56" rx="12" fill="#cbd5e1" stroke="#cbd5e1" stroke-width="2"/>
-<text x="140" y="529" text-anchor="middle" class="b g">DELETE /notes/:id</text>
-<text x="140" y="549" text-anchor="middle" class="s">削除</text>
-<text x="140" y="584" text-anchor="middle" class="ok">成功: 204</text>
-<rect x="280" y="504" width="190" height="56" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
-<text x="375" y="538" text-anchor="middle" class="m">AuthMiddleware</text>
-<line x1="375" y1="560" x2="375" y2="580" stroke="#64748b" stroke-width="2" stroke-dasharray="5 4"/>
-<rect x="280" y="580" width="190" height="44" rx="12" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
-<text x="375" y="608" text-anchor="middle" class="m" style="font-size:13px">TokenVerifier</text>
-<text x="375" y="646" text-anchor="middle" class="e">401 トークンが無い・正しくない</text>
-<line x1="242" y1="532" x2="278" y2="532" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
-<line x1="472" y1="532" x2="508" y2="532" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
-<rect x="510" y="504" width="190" height="56" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
-<text x="605" y="538" text-anchor="middle" class="m">NotesController</text>
-<line x1="702" y1="532" x2="758" y2="532" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
-<rect x="760" y="504" width="190" height="56" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
-<text x="855" y="538" text-anchor="middle" class="m">remove()</text>
-<text x="855" y="586" text-anchor="middle" class="e">404 ノートが無い</text>
-<text x="855" y="608" text-anchor="middle" class="e">403 作った人でない</text>
-<line x1="952" y1="532" x2="998" y2="532" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
-<rect x="1000" y="504" width="160" height="56" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
-<text x="1080" y="538" text-anchor="middle" class="s">配列に消す</text>
-<text x="40" y="680" text-anchor="start" class="s">赤 = エラーを返すところ（そこで止まり、先へは進まない）</text>
+<rect width="1200" height="620" rx="20" fill="#f8fafc"/>
+<rect x="40" y="36" width="230" height="108" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
+<text x="155" y="72" text-anchor="middle" class="t">画面</text>
+<text x="155" y="100" text-anchor="middle" class="m">public/index.html</text>
+<text x="155" y="124" text-anchor="middle" class="s">web コンテナ（3000 番）</text>
+<rect x="330" y="36" width="250" height="108" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
+<text x="455" y="72" text-anchor="middle" class="t">エンドポイント</text>
+<text x="455" y="100" text-anchor="middle" class="m">コントローラー</text>
+<text x="455" y="124" text-anchor="middle" class="s">api コンテナ（3001 番）</text>
+<rect x="640" y="36" width="250" height="108" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
+<text x="765" y="72" text-anchor="middle" class="t">ロジック</text>
+<text x="765" y="100" text-anchor="middle" class="m">settle.ts</text>
+<text x="765" y="124" text-anchor="middle" class="s">計算だけの関数</text>
+<rect x="950" y="36" width="210" height="108" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
+<text x="1055" y="72" text-anchor="middle" class="t">DB</text>
+<text x="1055" y="100" text-anchor="middle" class="m">SQLite</text>
+<text x="1055" y="124" text-anchor="middle" class="s">ボリュームのファイル</text>
+<rect x="40" y="190" width="230" height="64" rx="12" fill="#cbd5e1" stroke="#cbd5e1" stroke-width="2"/>
+<text x="155" y="228" text-anchor="middle" class="b g">メンバーを足す</text>
+<rect x="330" y="190" width="250" height="64" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
+<text x="455" y="216" text-anchor="middle" class="m">POST /members</text>
+<text x="455" y="238" text-anchor="middle" class="s">MembersController</text>
+<line x1="272" y1="222" x2="328" y2="222" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
+<text x="300" y="212" text-anchor="middle" class="x">HTTP</text>
+<rect x="950" y="190" width="210" height="64" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
+<text x="1055" y="227" text-anchor="middle" class="m">members</text>
+<line x1="582" y1="222" x2="948" y2="222" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
+<text x="765" y="212" text-anchor="middle" class="x">SQL で書く</text>
+<rect x="40" y="326" width="230" height="64" rx="12" fill="#cbd5e1" stroke="#cbd5e1" stroke-width="2"/>
+<text x="155" y="364" text-anchor="middle" class="b g">立て替えを記録する</text>
+<rect x="330" y="326" width="250" height="64" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
+<text x="455" y="352" text-anchor="middle" class="m">POST /payments</text>
+<text x="455" y="374" text-anchor="middle" class="s">PaymentsController</text>
+<line x1="272" y1="358" x2="328" y2="358" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
+<text x="300" y="348" text-anchor="middle" class="x">HTTP</text>
+<rect x="950" y="326" width="210" height="64" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
+<text x="1055" y="353" text-anchor="middle" class="m">payments・</text>
+<text x="1055" y="373" text-anchor="middle" class="m">payment_participants</text>
+<line x1="582" y1="358" x2="948" y2="358" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
+<text x="765" y="348" text-anchor="middle" class="x">SQL で書く</text>
+<rect x="40" y="462" width="230" height="64" rx="12" fill="#cbd5e1" stroke="#cbd5e1" stroke-width="2"/>
+<text x="155" y="500" text-anchor="middle" class="b g">清算を見る</text>
+<rect x="330" y="462" width="250" height="64" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
+<text x="455" y="488" text-anchor="middle" class="m">GET /settlement</text>
+<text x="455" y="510" text-anchor="middle" class="s">SettlementController</text>
+<line x1="272" y1="494" x2="328" y2="494" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
+<text x="300" y="484" text-anchor="middle" class="x">HTTP</text>
+<rect x="950" y="462" width="210" height="64" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
+<text x="1055" y="489" text-anchor="middle" class="m">payments・</text>
+<text x="1055" y="509" text-anchor="middle" class="m">payment_participants</text>
+<path d="M582 476 C 700 422, 830 422, 948 476" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
+<text x="765" y="436" text-anchor="middle" class="x">SQL で立て替えを読む</text>
+<rect x="640" y="480" width="250" height="60" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
+<text x="765" y="506" text-anchor="middle" class="m">split → balances</text>
+<text x="765" y="528" text-anchor="middle" class="m">→ settle</text>
+<line x1="582" y1="510" x2="638" y2="510" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
+<text x="610" y="502" text-anchor="middle" class="x">計算する</text>
+<text x="40" y="600" text-anchor="start" class="s">DB を開くことも SQL も、コントローラーに直接書いてある（06 章で分ける）</text>
 </svg>
