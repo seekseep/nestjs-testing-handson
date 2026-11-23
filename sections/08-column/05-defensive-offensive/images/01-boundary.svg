@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="380" viewBox="0 0 960 380" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="960" height="380" fill="#ffffff"/>
+<svg x="49.0" y="113.6" width="82.0" height="82.0" viewBox="0 0 36 36"><path fill="#CCD6DD" d="M36 22c0 2.209-1.791 4-4 4H4c-2.209 0-4-1.791-4-4V4c0-2.209 1.791-4 4-4h28c2.209 0 4 1.791 4 4v18z"/><path fill="#5DADEC" d="M4 4h28v18H4z"/><path fill="#CCD6DD" d="M13 26h10v6H13z"/><path fill="#9AAAB4" d="M13 26h10v2H13z"/><path fill="#E1E8ED" d="M36 33c0-1.657-1.343-3-3-3H3c-1.657 0-3 1.343-3 3s1.343 3 3 3h30c1.657 0 3-1.343 3-3z"/><path fill="#F5F8FA" d="M3 32h2v2H3zm4 0h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2zm4 0h2v2h-2zm4 0h2v2h-2zm4 0h2v2h-2zm4 0h2v2h-2z"/></svg>
+<text x="90" y="223.707" text-anchor="middle" font-size="22.666666666666664" fill="#475569" font-weight="600">画面</text>
+<rect x="230" y="120" width="200" height="100" rx="16" fill="#ccfbf1" stroke="#14b8a6" stroke-width="3.5"/>
+<text x="330" y="164" text-anchor="middle" font-size="22.666666666666664" fill="#0f766e" font-weight="600"><tspan x="330" dy="0">コントローラー</tspan><tspan x="330" dy="32.8667">境界で確かめる</tspan></text>
+<rect x="480" y="40" width="460" height="260" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.0" stroke-dasharray="7 6"/>
+<text x="710" y="80" text-anchor="middle" font-size="22.666666666666664" fill="#475569" font-weight="600">内側（確かめ済みの値を信じる）</text>
+<polygon points="609.2,120 810.8,120 890,170 810.8,220 609.2,220 530,170" fill="#ede9fe" stroke="#8b5cf6" stroke-width="3.5"/>
+<text x="710" y="178" text-anchor="middle" font-size="22.666666666666664" fill="#6d28d9" font-weight="600">split・balances・settle</text>
+<rect x="230" y="302" width="200" height="56" rx="16" fill="#fee2e2" stroke="#ef4444" stroke-width="3.5"/>
+<text x="330" y="338" text-anchor="middle" font-size="22.666666666666664" fill="#b91c1c" font-weight="600">400 で断る</text>
+<path d="M137.00 170.00 L148.93 170.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M212.07 170.00 L224.00 170.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="180.5" y="177.933" text-anchor="middle" font-size="22.666666666666664" fill="#0f172a" font-weight="600">入力</text>
+<path d="M436.00 170.00 L524.00 170.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<path d="M330.00 226.00 L330.00 241.67" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330.00 280.33 L330.00 296.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="330" y="268.933" text-anchor="middle" font-size="22.666666666666664" fill="#0f172a" font-weight="600">おかしな値</text>
+</svg>
