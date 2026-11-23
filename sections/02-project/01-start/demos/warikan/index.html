@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>割り勘（デモ）</title>
+</head>
+<body>
+  <h1>割り勘</h1>
+
+  <h2 id="members-title">メンバー</h2>
+  <form id="member-form">
+    <label>名前 <input name="name" required></label>
+    <button>メンバーを足す</button>
+  </form>
+  <ul id="members" aria-labelledby="members-title"></ul>
+
+  <h2 id="payments-title">立て替え</h2>
+  <form id="payment-form">
+    <p><label>払った人 <select name="payerId" id="payer"></select></label></p>
+    <p><label>金額 <input name="amount" type="number" min="0" required></label></p>
+    <p><label>メモ <input name="memo"></label></p>
+    <fieldset>
+      <legend>対象の人</legend>
+      <div id="participants"></div>
+    </fieldset>
+    <button>立て替えを記録する</button>
+  </form>
+  <ul id="payments" aria-labelledby="payments-title"></ul>
+
+  <h2 id="settlement-title">清算</h2>
+  <ul id="settlement" aria-labelledby="settlement-title"></ul>
+
+  <script>
+    // デモ: API と DB の代わりに、ブラウザのメモリにデータを持つ（読み込み直すと消える）。
+    // 計算は、本物の src/settlement/settle.ts と同じ決まり。
+
+    /** amount 円を count 人で分ける。1 円単位で、余った 1 円は前の人から順に足す。 */
+    function split(amount, count) {
+      const base = Math.floor(amount / count);
+      const rest = amount - base * count;
+      return Array.from({ length: count }, (_, i) => (i < rest ? base + 1 : base));
+    }
+
+    /** 一人ずつの「払った額 − 負担する額」。ID の小さい順。 */
+    function balances(payments) {
+      const totals = new Map();
+      const add = (id, amount) => totals.set(id, (totals.get(id) ?? 0) + amount);
+      for (const p of payments) {
+        add(p.payerId, p.amount);
+        const shares = split(p.amount, p.participantIds.length);
+        p.participantIds.forEach((id, i) => add(id, -shares[i]));
+      }
+      return [...totals]
+        .map(([memberId, amount]) => ({ memberId, amount }))
+        .sort((a, b) => a.memberId - b.memberId);
+    }
+
+    /** 誰が誰にいくら払うか。多く払う人から、多く受け取る人へ払うことをくり返す。 */
+    function settle(list) {
+      const payers = list.filter((b) => b.amount < 0).map((b) => ({ memberId: b.memberId, amount: -b.amount }));
+      const receivers = list.filter((b) => b.amount > 0).map((b) => ({ ...b }));
+      const transfers = [];
+      while (payers.length > 0 && receivers.length > 0) {
+        payers.sort((a, b) => b.amount - a.amount);
+        receivers.sort((a, b) => b.amount - a.amount);
+        const payer = payers[0];
+        const receiver = receivers[0];
+        const amount = Math.min(payer.amount, receiver.amount);
+        transfers.push({ from: payer.memberId, to: receiver.memberId, amount });
+        payer.amount -= amount;
+        receiver.amount -= amount;
+        if (payer.amount === 0) payers.shift();
+        if (receiver.amount === 0) receivers.shift();
+      }
+      return transfers;
+    }
+
+    const members = [];
+    const payments = [];
+
+    // 本物の画面が API を呼ぶところを、メモリの読み書きに置き換える
+    async function call(path, body) {
+      if (path === '/members' && body) {
+        const member = { id: members.length + 1, name: body.name };
+        members.push(member);
+        return member;
+      }
+      if (path === '/payments' && body) {
+        const payment = { id: payments.length + 1, ...body };
+        payments.push(payment);
+        return payment;
+      }
+      if (path === '/members') return [...members];
+      if (path === '/payments') return [...payments];
+      if (path === '/settlement') return settle(balances(payments));
+    }
+
+    const yen = (amount) => `${amount.toLocaleString('ja-JP')} 円`;
+
+    function showList(id, texts) {
+      const items = texts.map((text) => {
+        const li = document.createElement('li');
+        li.textContent = text;
+        return li;
+      });
+      document.getElementById(id).replaceChildren(...items);
+    }
+
+    // API から読み直して、画面を全部描き直す
+    async function render() {
+      const [members, payments, settlement] = await Promise.all([
+        call('/members'),
+        call('/payments'),
+        call('/settlement'),
+      ]);
+      const nameOf = (id) => members.find((m) => m.id === id)?.name;
+
+      showList('members', members.map((m) => m.name));
+      document.getElementById('payer').replaceChildren(
+        ...members.map((m) => new Option(m.name, m.id)),
+      );
+      document.getElementById('participants').replaceChildren(
+        ...members.map((m) => {
+          const label = document.createElement('label');
+          const box = Object.assign(document.createElement('input'), {
+            type: 'checkbox', name: 'participantIds', value: m.id, checked: true,
+          });
+          label.append(box, m.name, ' ');
+          return label;
+        }),
+      );
+      showList('payments', payments.map((p) =>
+        `${nameOf(p.payerId)} が ${yen(p.amount)}（${p.memo}）: ${p.participantIds.map(nameOf).join('・')}`));
+      showList('settlement', settlement.map((t) =>
+        `${nameOf(t.from)} → ${nameOf(t.to)} ${yen(t.amount)}`));
+    }
+
+    document.getElementById('member-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const form = new FormData(event.target);
+      await call('/members', { name: form.get('name') });
+      event.target.reset();
+      await render();
+    });
+
+    document.getElementById('payment-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const form = new FormData(event.target);
+      await call('/payments', {
+        payerId: Number(form.get('payerId')),
+        amount: Number(form.get('amount')),
+        memo: form.get('memo'),
+        participantIds: form.getAll('participantIds').map(Number),
+      });
+      event.target.reset();
+      await render();
+    });
+
+    render();
+  </script>
+</body>
+</html>

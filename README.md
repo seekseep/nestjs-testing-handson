@@ -17,6 +17,12 @@ title: NestJS のテスト ハンズオン
 
 ![ユーザー（画面）→ コントローラー → ロジック → DB の 4 つが横に並ぶ。単体テストはロジックだけを、結合テストはコントローラー・ロジック・DB を、E2E テストはユーザーから DB までの全部を、入れ子の枠で囲む](./sections/03-test-types/01-test-types/images/01-test-types.svg)
 
+:::notice
+これはアプリの機能のイメージをつかむためのものです。実際のアプリは API と DB を使います（02 章で動かします）。
+:::
+
+::preview[割り勘のアプリのデモ。メンバーを足し、立て替えを記録すると、清算が出ます]{src="02-project/01-start" demo="warikan" height="760"}
+
 ### 01. 準備
 
 Node.js 26・VS Code・Podman を入れます。
