@@ -1,4 +1,4 @@
-"""08 章「コラム」どのテストを、どれだけ書くか のサムネイル。下ほど多い、テストのピラミッド。
+"""08 章「コラム」データベースの処理のパターン のサムネイル。同じ DB に、4 つの形がそれぞれのつなぎ方でつながる。
 """
 
 import os
@@ -20,14 +20,16 @@ def box(cx, cy, w, h, label, color, draw=None, dash="solid"):
     return n
 
 
-box(480, 190, 200, 50, "E2E", "blue")
-box(480, 255, 380, 50, "結合", "orange")
-box(480, 320, 560, 50, "単体", "pink")
-c.text(800, 195, "少なく・遅い", scale="body", align="left", fill=PALETTE["gray"]["text"])
-c.text(800, 325, "多く・速い", scale="body", align="left", fill=PALETTE["gray"]["text"])
+db = c.node(780, 270, "DB", shape="cylinder", color="green", w=170, h=160, label_scale="heading")
+for i, (label, color, how) in enumerate([("直接書く", "teal", "SQL"),
+                                         ("アクティブレコード", "yellow", "save()"),
+                                         ("リポジトリ", "orange", "findAll()"),
+                                         ("ORM", "blue", "対応づけ")]):
+    n = box(300, 150 + i * 80, 250, 56, label, color)
+    c.link(n, (db.left, 270 + (i - 1.5) * 34), label=how)
 
 # 絵のある範囲（x, y, 幅, 高さ）。文字の見出しは置かず、絵を枠の上下左右の真ん中に寄せて少し大きくする
-BOX = (200, 165, 720, 180)
+BOX = (150, 100, 760, 340)
 
 
 def save_centered(path):

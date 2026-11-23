@@ -35,49 +35,57 @@ title: コラム
 :::
 
 :::card
-![どこでも確かめる盾と、すぐ止める標識](../04-defensive-offensive/images/00-thumbnail.svg)
+![同じ DB に、4 つの形がそれぞれのつなぎ方でつながる](../04-db-patterns/images/00-thumbnail.svg)
 
-[防御的プログラミングと攻撃的プログラミング](../04-defensive-offensive/LECTURE.md)
+[データベースの処理のパターン](../04-db-patterns/LECTURE.md)
+
+SQL はどこに書くのがよいのか、迷ったことはありませんか。DB の読み書きを書く場所の 4 つのパターンと、テストのしやすさのちがいを見ます。
+:::
+
+:::card
+![どこでも確かめる盾と、交差した剣](../05-defensive-offensive/images/00-thumbnail.svg)
+
+[防御的プログラミングと攻撃的プログラミング](../05-defensive-offensive/LECTURE.md)
 
 おかしな値が来たら、黙って直すべきか、すぐ止めるべきか、迷ったことはありませんか。2 つの考え方と、テストとの関係を見ます。
 :::
 
 :::card
-![下ほど多い、テストのピラミッド](../05-how-many/images/00-thumbnail.svg)
+![アイスクリームコーンからテストピラミッドへ](../06-how-many/images/00-thumbnail.svg)
 
-[どのテストを、どれだけ書くか](../05-how-many/LECTURE.md)
+[どのテストを、どれだけ書くか](../06-how-many/LECTURE.md)
 
-単体・結合・E2E を、それぞれどれくらい書けばよいか迷いませんか。よく使われる目安の形と、はじめの一歩を見ます。
+E2E テストばかり増えて、遅くて不安定になっていませんか。アイスクリームコーンからテストピラミッドへの考え方と、「テストサイズ」という見方を見ます。
 :::
 
 :::card
-![外から見える振る舞いを確かめる](../06-what-to-test/images/00-thumbnail.svg)
+![外から見える振る舞いを確かめる](../07-what-to-test/images/00-thumbnail.svg)
 
-[何をテストするか](../06-what-to-test/LECTURE.md)
+[何をテストするか](../07-what-to-test/LECTURE.md)
 
 テストを書こうとして、何を確かめればよいか手が止まったことはありませんか。確かめるところの選び方を見ます。
 :::
 
 :::card
-![本物の代わりに渡す 5 つの偽物](../07-test-doubles/images/00-thumbnail.svg)
+![本物の代わりに渡す 5 つの偽物](../08-test-doubles/images/00-thumbnail.svg)
 
-[テストダブルの種類](../07-test-doubles/LECTURE.md)
+[テストダブルの種類](../08-test-doubles/LECTURE.md)
 
 「モック」と「スタブ」は何がちがうのか、気になったことはありませんか。本物の代わりに渡すもの（テストダブル）の種類を見ます。
 :::
 
 :::card
-![同じコードなのに、通ったり落ちたりする](../08-flaky/images/00-thumbnail.svg)
+![同じコードなのに、通ったり落ちたりする](../09-flaky/images/00-thumbnail.svg)
 
-[不安定なテストと扱いにくいもの](../08-flaky/LECTURE.md)
+[不安定なテストと扱いにくいもの](../09-flaky/LECTURE.md)
 
 同じコードなのに、流すたびに通ったり落ちたりするテストに困ったことはありませんか。原因と、時刻や乱数の扱い方を見ます。
 :::
 
 :::card
-![push のたびに CI で流し、通ったものだけマージする](../09-operation/images/00-thumbnail.svg)
+![push のたびに CI で流し、通ったものだけマージする](../10-operation/images/00-thumbnail.svg)
 
-[自動テストの運用](../09-operation/LECTURE.md)
+[自動テストの運用](../10-operation/LECTURE.md)
 
 テストを書いたのに、いつのまにか誰も流さなくなった、ということはありませんか。テストを続けて役立てるための運用を見ます。
 :::
