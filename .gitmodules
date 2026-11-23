@@ -1,0 +1,3 @@
+[submodule ".claude/skills/genfig"]
+	path = .claude/skills/genfig
+	url = https://github.com/seekseep/genfig-skill.git
