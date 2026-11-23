@@ -2,7 +2,7 @@
 
 ## プロジェクト概要
 
-割り勘のアプリ（NestJS の API と SQLite、画面は HTML 1 枚。認証なし）に、単体テスト（Vitest）・結合テスト（Vitest と supertest）・E2E テスト（Playwright）を書き、06 章で DI を使う形に書き換えて単体テストを広げるハンズオン教材。
+割り勘のアプリ（NestJS の API と SQLite、画面は HTML 1 枚。認証なし）に、単体テスト（Vitest）・結合テスト（Vitest と supertest）・E2E テスト（Playwright）を書き、07 章で DI を使う形に書き換えて単体テストを広げるハンズオン教材。
 3 本に分けたハンズオンの C（A: 基本的な REST API `nestjs-rest-api-handson`、B: Cognito で認証と認可 `nestjs-cognito-auth-handson`）。
 A も B も終えていなくても始められるように、02 章で割り勘のアプリを ZIP で配る。
 handson-builder スキルの骨格（`sections/` ＋ Starlight の `site/` ＋ GitHub Pages）を使っている。
@@ -12,18 +12,18 @@ handson-builder スキルの骨格（`sections/` ＋ Starlight の `site/` ＋ G
 
 | 用語 | 指すもの | 例 |
 |---|---|---|
-| **章** | `sections/<NN-section>/`。章立ては固定（イシュー #1） | `03-unit-test/` |
-| **節** | `sections/<NN-section>/<NN-lecture>/`。増減してよい | `03-unit-test/02-first-test/` |
+| **章** | `sections/<NN-section>/`。章立ては固定（イシュー #1） | `04-unit-test/` |
+| **節** | `sections/<NN-section>/<NN-lecture>/`。増減してよい | `04-unit-test/02-first-test/` |
 
 - 節のディレクトリは **その節を終えた時点のプロジェクト** を丸ごと持つ（`api/`）
 - 次の節は、前の節のディレクトリをコピーして差分を足して作る（`tools/copy-lecture.sh <前の節> <次の節>`）
 - 本文は `LECTURE.md`（`docs: true`）。節の直下に `README.md` は置かない（起動方法は本文に書く）
 - 説明図は `images/` に SVG で置く（`00-thumbnail.svg` を先頭サムネに。`tools/thumbnail.mjs` の THUMBNAILS に足して `node tools/thumbnail.mjs`）
-- ほかの図は genfig（`~/.claude/skills/genfig` の Canvas。スキルのリポジトリは `seekseep/genfig-skill`）で、`images/NN-xxx.py` から同じ名前の `.svg` を作る。`text` のコードブロックにアスキーアートの図を描かない。alt に中身が分かる説明を書き、SVG は `xmllint --noout` を通す
-  - 節ごとに変わる図（02-02 のリクエストの流れ、06 章の構成図、04-01・05-01 の範囲）は、同じ構図のスクリプトを `STAGE` だけ変えて作る。その節で扱うものに色を付け、ほかは灰色にする
+- ほかの図は genfig で、`images/NN-xxx.py` から同じ名前の `.svg` を作る。genfig は `.claude/skills/genfig` にサブモジュール（`seekseep/genfig-skill`）として入れてあり、`.py` はファイルの場所から上へたどってそこを読む。clone するときは `git clone --recurse-submodules`（clone 済みなら `git submodule update --init`）。`text` のコードブロックにアスキーアートの図を描かない。alt に中身が分かる説明を書き、SVG は `xmllint --noout` を通す
+  - 節ごとに変わる図（02-02 のリクエストの流れ、07 章の構成図、05-01・06-01 の範囲）は、同じ構図のスクリプトを `STAGE` だけ変えて作る。その節で扱うものに色を付け、ほかは灰色にする
 - 章の直下には README を置かない
-- 準備（`01-setup/01-environment`）・リクエストの流れ（`02-project/02-request-flow`）・03〜05 章の設計の節（`01-design`）はプロジェクトを持たない（本文だけ）。配るアプリは `02-project/01-start`
-- 03〜05 章は、どれも「設計（`01-design`。コードは書かず、範囲の図とテストケースの表）→ 書く（`02-first-test`。1〜2 ケース）→ 足す（`03-more-cases`。表の残り）」の 3 節。テストのコードには表の番号（S1・B1・T1、I1〜I3、E1〜E4）をコメントで付ける
+- 準備（`01-setup/01-environment`）・リクエストの流れ（`02-project/02-request-flow`）・テストの種類（`03-test-types/01-test-types`）・04〜06 章の設計の節（`01-design`）はプロジェクトを持たない（本文だけ）。配るアプリは `02-project/01-start`
+- 04〜06 章は、どれも「設計（`01-design`。コードは書かず、範囲の図とテストケースの表）→ 書く（`02-first-test`。1〜2 ケース）→ 足す（`03-more-cases`。表の残り）」の 3 節。テストのコードには表の番号（S1・B1・T1、I1〜I3、E1〜E4）をコメントで付ける
 
 ## プロジェクトの形
 
@@ -37,18 +37,18 @@ sections/<sec>/<lec>/
     ├── Dockerfile          B と同じ
     ├── public/index.html   画面（素の HTML と fetch）
     ├── src/
-    ├── test/         結合テスト（04 章から。*.e2e-spec.ts）
-    └── e2e/          E2E テスト（05 章から。*.test.ts。playwright.config.ts も api/ に置く）
+    ├── test/         結合テスト（05 章から。*.e2e-spec.ts）
+    └── e2e/          E2E テスト（06 章から。*.test.ts。playwright.config.ts も api/ に置く）
 ```
 
 - **`api/` は `nest new` が作ったものを消さずに使う**: `npx @nestjs/cli@12 new api --package-manager npm --skip-tests --type esm --no-observe --skip-skills` の出力（`AGENTS.md`・`README.md`・oxlint・Prettier・Vitest の設定とパッケージ・`scripts`、`AppController`・`AppService` も）に、割り勘のコード・`compose.yaml`・`Dockerfile`・`.dockerignore`・`public/` を足した形。A（REST API）の #50 と同じ方針
 - 題材は割り勘: `POST/GET /members`・`POST/GET /payments`・`GET /settlement`。DB は SQLite（`node:sqlite` の `DatabaseSync`）で、表は `members`・`payments`・`payment_participants`（列は camelCase）。
   計算は `src/settlement/settle.ts` の `split`・`balances`・`settle`（DB も HTTP も使わない関数）
-- 02〜05 章は **コントローラーに直書き**（`openDatabase()`・SQL・結果の組み立て）。06 章で DB の `DatabaseModule`（`nest g module database`）→ リポジトリ → `SettlementService`（`nest g service settlement --no-spec`）→ サービスの単体テスト、と段階的に書き換える（02-02 で「素直に実装した形」と書く）
+- 02〜06 章は **コントローラーに直書き**（`openDatabase()`・SQL・結果の組み立て）。07 章で DB の `DatabaseModule`（`nest g module database`）→ リポジトリ → `SettlementService`（`nest g service settlement --no-spec`）→ サービスの単体テスト、と段階的に書き換える（02-02 で「素直に実装した形」と書く）
 - 画面は `web`（`127.0.0.1:3000`）、API は `api`（`127.0.0.1:3001`）。画面から API を呼ぶために `main.ts` で `enableCors()` する
 - DB のファイルは環境変数 `DB_PATH`（既定は `warikan.db`）。コンテナでは `/data/warikan.db`（ボリューム）。結合テストはテストごとに一時ファイルを `DB_PATH` にする
 - テストは、単体・結合は手元の Node.js、E2E は Podman で動かした画面と API に対して流す（E2E の前に `podman compose down --volumes` でデータを消す）
-- 言語は **TypeScript**（ESM で、import の末尾は `.js`）。Vitest（4 系）・`@nestjs/testing`・supertest は `nest new` が入れたものをそのまま使う（版を上げない）。Playwright だけ 05-02 で入れる
+- 言語は **TypeScript**（ESM で、import の末尾は `.js`）。Vitest（4 系）・`@nestjs/testing`・supertest は `nest new` が入れたものをそのまま使う（版を上げない）。Playwright だけ 06-02 で入れる
 - テストのファイルとコマンドは `nest new` の設定に合わせる: 単体テストは `src/` の `*.spec.ts` を `npm test`（`vitest.config.ts`）、結合テストは `test/` の `*.e2e-spec.ts` を `npm run test:e2e`（`vitest.config.e2e.ts`。NestJS は e2e と呼ぶが、教材では結合テストと呼ぶ）、E2E テストは `e2e/` の `*.test.ts` を `npx playwright test`（`*.spec.ts` にすると Vitest が拾う）
 - E2E テストは、最初に API（`request`）でデータが空であることを確かめてから画面を操作する（古いデータで通ってしまうのを防ぐ）
 - パッケージマネージャはレクチャー側が **npm**（`api/package-lock.json`）、サイトが pnpm。Node 26・Podman の手順と Dockerfile は B とそろえる。`@types/node` は `nest new` が入れたもの（24 系）のまま

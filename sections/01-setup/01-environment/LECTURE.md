@@ -17,10 +17,10 @@ title: 準備
 
 :::::platform
 ::::macos
-ターミナル（「アプリケーション」→「ユーティリティ」→「ターミナル」）で進めます。05 章で使う Playwright は **macOS 14（Sonoma）以降** が必要です。
+ターミナル（「アプリケーション」→「ユーティリティ」→「ターミナル」）で進めます。06 章で使う Playwright は **macOS 14（Sonoma）以降** が必要です。
 ::::
 ::::windows
-**Windows 11** と **PowerShell 7** で進めます（05 章で使う Playwright が Windows 11 以降を必要とします）。メモリは 8 GB 以上、ディスクの空きは 5 GB 以上が要ります。WSL は使いません。
+**Windows 11** と **PowerShell 7** で進めます（06 章で使う Playwright が Windows 11 以降を必要とします）。メモリは 8 GB 以上、ディスクの空きは 5 GB 以上が要ります。WSL は使いません。
 
 **PowerShell 7 を入れる**
 
@@ -39,7 +39,7 @@ $PSVersionTable.PSVersion
 `7.` から始まる番号が出れば大丈夫です。
 ::::
 ::::linux
-ふだんのターミナルで進めます。05 章で使う Playwright は **Ubuntu 22.04・24.04・26.04、Debian 12・13** で動きます。
+ふだんのターミナルで進めます。06 章で使う Playwright は **Ubuntu 22.04・24.04・26.04、Debian 12・13** で動きます。
 ::::
 :::::
 

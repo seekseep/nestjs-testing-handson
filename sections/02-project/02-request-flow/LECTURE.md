@@ -27,7 +27,7 @@ DB の表は 3 つです。
 | `payments` | `id`・`payerId`・`amount`・`memo` | 立て替え（誰が・いくら・何に） |
 | `payment_participants` | `paymentId`・`memberId` | 立て替えごとの、対象の人 |
 
-このアプリは、素直に実装した形です。DB を開くことも SQL も、コントローラーに直接書いてあります。そのため、計算の関数のほかは、DB や HTTP 無しでは確かめにくくなっています。06 章で、NestJS の形に分けて直します。
+このアプリは、素直に実装した形です。DB を開くことも SQL も、コントローラーに直接書いてあります。そのため、計算の関数のほかは、DB や HTTP 無しでは確かめにくくなっています。07 章で、NestJS の形に分けて直します。
 
 ## メンバーを足す
 
@@ -87,7 +87,7 @@ export class AppController {
 ```
 :::
 
-`constructor(private readonly appService: AppService)` と書くだけで、NestJS が `AppService` のインスタンスを作って渡してくれます。これを **依存性の注入（DI）** と呼びます。割り勘のコントローラーは DI を使わず、自分で DB を開いています。06 章で、DB や SQL も DI で受け取る形に直します。
+`constructor(private readonly appService: AppService)` と書くだけで、NestJS が `AppService` のインスタンスを作って渡してくれます。これを **依存性の注入（DI）** と呼びます。割り勘のコントローラーは DI を使わず、自分で DB を開いています。07 章で、DB や SQL も DI で受け取る形に直します。
 
 ## 参考にした公式ドキュメント
 
