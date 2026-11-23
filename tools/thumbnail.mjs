@@ -48,6 +48,7 @@ const THUMBNAILS = [
   ['07-di-container/02-repository', '07', 'リポジトリを注入する', ['NestJS', 'SQLite']],
   ['07-di-container/03-service', '07', 'サービスを注入する', ['NestJS']],
   ['07-di-container/04-service-test', '07', '偽物に差し替えてテストする', ['Vitest', 'NestJS']],
+  ['08-column/00-index', '08', 'コラム', ['Vitest', 'NestJS', 'Playwright']],
 ];
 
 function escapeXml(s) {
