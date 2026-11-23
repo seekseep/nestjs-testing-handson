@@ -1,66 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 760" width="1240" height="760" role="img" aria-label="アプリは画面・エンドポイント・ロジック・DB の 4 つでできている。単体テスト（03 章）はロジックの計算の関数だけを確かめる。結合テスト（04 章）はテストのコードから HTTP でエンドポイント・ロジック・DB をまとめて確かめ、DB は一時ファイルにする。E2E テスト（05 章）は Podman で動かした画面から DB までをブラウザで確かめる。もっと単体テスト（06 章）は、リポジトリを偽物にしてサービスを確かめる">
-<defs><style>text{font-family:'Hiragino Sans','Noto Sans JP','Yu Gothic UI',system-ui,sans-serif}.h{font-size:22px;font-weight:700;fill:#0f172a}.t{font-size:20px;font-weight:700;fill:#0f172a}.s{font-size:14px;fill:#475569}.m{font-size:14px;fill:#1e293b;font-family:ui-monospace,Menlo,monospace}.b{font-size:15px;font-weight:700}.g{fill:#334155}.w{fill:#fff}.x{font-size:13px;fill:#64748b}</style>
-<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
-<rect width="1240" height="760" rx="20" fill="#f8fafc"/>
-<text x="40" y="84" text-anchor="start" class="h">アプリの構成</text>
-<text x="40" y="110" text-anchor="start" class="s">左から右へ呼び出す</text>
-<rect x="300" y="50" width="180" height="84" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
-<text x="390" y="84" text-anchor="middle" class="t">画面</text>
-<text x="390" y="112" text-anchor="middle" class="m">index.html</text>
-<rect x="540" y="50" width="180" height="84" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
-<text x="630" y="84" text-anchor="middle" class="t">エンドポイント</text>
-<text x="630" y="112" text-anchor="middle" class="m">コントローラー</text>
-<rect x="780" y="50" width="180" height="84" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
-<text x="870" y="84" text-anchor="middle" class="t">ロジック</text>
-<text x="870" y="112" text-anchor="middle" class="m">計算・サービス</text>
-<rect x="1020" y="50" width="180" height="84" rx="12" fill="#fff" stroke="#0f172a" stroke-width="2"/>
-<text x="1110" y="84" text-anchor="middle" class="t">DB</text>
-<text x="1110" y="112" text-anchor="middle" class="m">SQLite</text>
-<line x1="482" y1="92" x2="538" y2="92" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
-<text x="510" y="80" text-anchor="middle" class="x">HTTP</text>
-<line x1="722" y1="92" x2="778" y2="92" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
-<text x="750" y="80" text-anchor="middle" class="x">呼び出す</text>
-<line x1="962" y1="92" x2="1018" y2="92" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
-<text x="990" y="80" text-anchor="middle" class="x">読み書き</text>
-<line x1="40" y1="162" x2="1200" y2="162" stroke="#cbd5e1" stroke-width="1.5"/>
-<rect x="40" y="190" width="8" height="40" rx="4" fill="#16a34a"/>
-<text x="58" y="218" text-anchor="start" class="h">単体テスト</text>
-<text x="40" y="252" class="m" style="fill:#475569">Vitest ・ 03 章</text>
-<text x="40" y="276" text-anchor="start" class="s">計算の関数だけを、</text>
-<text x="40" y="296" text-anchor="start" class="s">テストのコードから呼ぶ</text>
-<rect x="540" y="192" width="180" height="46" rx="10" fill="#cbd5e1"/>
-<text x="630" y="221" text-anchor="middle" class="b g">テストのコード</text>
-<rect x="780" y="192" width="180" height="46" rx="10" fill="#16a34a"/>
-<text x="870" y="221" text-anchor="middle" class="b w">計算の関数だけ</text>
-<rect x="40" y="318" width="8" height="40" rx="4" fill="#2563eb"/>
-<text x="58" y="346" text-anchor="start" class="h">結合テスト</text>
-<text x="40" y="380" class="m" style="fill:#475569">Vitest + supertest ・ 04 章</text>
-<text x="40" y="404" text-anchor="start" class="s">アプリを丸ごと組み立て、</text>
-<text x="40" y="424" text-anchor="start" class="s">HTTP で呼ぶ</text>
-<rect x="300" y="320" width="180" height="46" rx="10" fill="#cbd5e1"/>
-<text x="390" y="349" text-anchor="middle" class="b g">テストのコード（HTTP）</text>
-<rect x="540" y="320" width="660" height="46" rx="10" fill="#2563eb"/>
-<text x="870" y="349" text-anchor="middle" class="b w">エンドポイント → ロジック → DB（一時ファイル）</text>
-<rect x="40" y="446" width="8" height="40" rx="4" fill="#7c3aed"/>
-<text x="58" y="474" text-anchor="start" class="h">E2E テスト</text>
-<text x="40" y="508" class="m" style="fill:#475569">Playwright ・ 05 章</text>
-<text x="40" y="532" text-anchor="start" class="s">Podman で動かした画面を</text>
-<text x="40" y="552" text-anchor="start" class="s">ブラウザで操作する</text>
-<rect x="300" y="448" width="900" height="46" rx="10" fill="#7c3aed"/>
-<text x="750" y="477" text-anchor="middle" class="b w">ブラウザ → 画面 → エンドポイント → ロジック → DB</text>
-<rect x="40" y="574" width="8" height="40" rx="4" fill="#16a34a"/>
-<text x="58" y="602" text-anchor="start" class="h">もっと単体テスト</text>
-<text x="40" y="636" class="m" style="fill:#475569">Vitest ・ 06 章</text>
-<text x="40" y="660" text-anchor="start" class="s">DI で偽物のリポジトリを</text>
-<text x="40" y="680" text-anchor="start" class="s">渡して、サービスを呼ぶ</text>
-<rect x="540" y="576" width="180" height="46" rx="10" fill="#cbd5e1"/>
-<text x="630" y="605" text-anchor="middle" class="b g">テストのコード</text>
-<rect x="780" y="576" width="180" height="46" rx="10" fill="#16a34a"/>
-<text x="870" y="605" text-anchor="middle" class="b w">サービスと計算</text>
-<rect x="1020" y="576" width="180" height="46" rx="10" fill="#cbd5e1"/>
-<text x="1110" y="605" text-anchor="middle" class="b g">偽物のリポジトリ</text>
-<rect x="300" y="712" width="22" height="16" rx="4" fill="#475569"/>
-<text x="330" y="726" text-anchor="start" class="s">色つき = 本物を動かして確かめる</text>
-<rect x="600" y="712" width="22" height="16" rx="4" fill="#cbd5e1"/>
-<text x="630" y="726" text-anchor="start" class="s">灰色 = テストのコードや偽物</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="960" height="420" fill="#ffffff"/>
+<rect x="20" y="20" width="920" height="380" rx="16" fill="#dbeafe" stroke="#3b82f6" stroke-width="2.0"/>
+<text x="38" y="52" text-anchor="start" font-size="22.666666666666664" fill="#1d4ed8" font-weight="600">E2E テスト</text>
+<rect x="250" y="80" width="670" height="300" rx="16" fill="#ffedd5" stroke="#f97316" stroke-width="2.0"/>
+<text x="268" y="112" text-anchor="start" font-size="22.666666666666664" fill="#c2410c" font-weight="600">結合テスト</text>
+<rect x="500" y="140" width="200" height="220" rx="16" fill="#fce7f3" stroke="#ec4899" stroke-width="2.0"/>
+<text x="518" y="172" text-anchor="start" font-size="22.666666666666664" fill="#be185d" font-weight="600">単体テスト</text>
+<svg x="89.0" y="228.6" width="82.0" height="82.0" viewBox="0 0 36 36"><path fill="#FFAC33" d="M23.111 2.081c-2.638-.853-8.844-.621-10.395 1.396-4.034.078-8.766 3.724-9.387 8.534-.614 4.76.754 6.971 1.241 10.551.552 4.056 2.832 5.353 4.655 5.896 2.623 3.465 5.411 3.317 10.092 3.317 9.141 0 13.495-6.116 13.88-16.505.232-6.284-3.454-11.043-10.086-13.189z"/><path fill="#FFDC5D" d="M28.339 15.713c-.884-1.225-2.017-2.211-4.499-2.56.931.427 1.823 1.901 1.939 2.715.116.815.233 1.474-.504.659-2.952-3.263-6.167-1.978-9.354-3.972-2.226-1.392-2.903-2.933-2.903-2.933s-.272 2.056-3.646 4.15c-.978.607-2.145 1.959-2.793 3.956-.465 1.435-.321 2.715-.321 4.903 0 6.385 5.262 11.753 11.753 11.753s11.753-5.415 11.753-11.753c0-3.97-.416-5.521-1.425-6.918z"/><path fill="#C1694F" d="M18 31c-2.347 0-3.575-1.16-3.707-1.293-.391-.391-.391-1.023 0-1.414.387-.387 1.013-.39 1.404-.01.051.047.806.717 2.303.717 1.519 0 2.273-.69 2.305-.719.398-.373 1.027-.362 1.408.029.379.393.38 1.011-.006 1.397C21.575 29.84 20.347 31 18 31zm1-5h-2c-.552 0-1-.447-1-1s.448-1 1-1h2c.553 0 1 .447 1 1s-.447 1-1 1z"/><path fill="#662113" d="M13 22c-.552 0-1-.447-1-1v-2c0-.552.448-1 1-1s1 .448 1 1v2c0 .553-.448 1-1 1zm10 0c-.553 0-1-.447-1-1v-2c0-.552.447-1 1-1s1 .448 1 1v2c0 .553-.447 1-1 1z"/></svg>
+<text x="130" y="338.707" text-anchor="middle" font-size="22.666666666666664" fill="#475569" font-weight="600">ユーザー（画面）</text>
+<rect x="285" y="245" width="180" height="80" rx="16" fill="#ccfbf1" stroke="#14b8a6" stroke-width="3.5"/>
+<text x="375" y="292.933" text-anchor="middle" font-size="22.666666666666664" fill="#0f766e" font-weight="600">コントローラー</text>
+<polygon points="558,245 642,245 675,285 642,325 558,325 525,285" fill="#ede9fe" stroke="#8b5cf6" stroke-width="3.5"/>
+<text x="600" y="292.933" text-anchor="middle" font-size="22.666666666666664" fill="#6d28d9" font-weight="600">ロジック</text>
+<path d="M765.0 254.4 A65.0 14.4 0 0 0 895.0 254.4 L895.0 315.6 A65.0 14.4 0 0 1 765.0 315.6 Z" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<ellipse cx="830.0" cy="254.4" rx="65.0" ry="14.4" fill="#dcfce7" stroke="#22c55e" stroke-width="2.5"/>
+<text x="830" y="292.933" text-anchor="middle" font-size="22.666666666666664" fill="#15803d" font-weight="600">DB</text>
+<path d="M230.29 285.00 L279.00 285.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<path d="M471.00 285.00 L519.00 285.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<path d="M681.00 285.00 L759.00 285.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
 </svg>

@@ -6,9 +6,9 @@
 <rect x="230" y="50" width="650" height="270" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2.0" stroke-dasharray="7 6"/>
 <text x="254" y="86" text-anchor="start" font-size="26.25" fill="#0f172a" font-weight="700">AppModule</text>
 <rect x="300" y="142" width="200" height="96" rx="16" fill="#ccfbf1" stroke="#14b8a6" stroke-width="3.5"/>
-<text x="400" y="197.438" text-anchor="middle" font-size="21.25" fill="#0f766e" font-weight="600"><tspan x="400" dy="0">AppController</tspan><tspan x="400" dy="30.8125">@Get() getHello()</tspan></text>
+<text x="400" y="182.031" text-anchor="middle" font-size="21.25" fill="#0f766e" font-weight="600"><tspan x="400" dy="0">AppController</tspan><tspan x="400" dy="30.8125">@Get() getHello()</tspan></text>
 <polygon points="717.4,142 812.6,142 850,190 812.6,238 717.4,238 680,190" fill="#ede9fe" stroke="#8b5cf6" stroke-width="3.5"/>
-<text x="765" y="197.438" text-anchor="middle" font-size="21.25" fill="#6d28d9" font-weight="600"><tspan x="765" dy="0">AppService</tspan><tspan x="765" dy="30.8125">getHello()</tspan></text>
+<text x="765" y="182.031" text-anchor="middle" font-size="21.25" fill="#6d28d9" font-weight="600"><tspan x="765" dy="0">AppService</tspan><tspan x="765" dy="30.8125">getHello()</tspan></text>
 <path d="M150.60 164.00 L184.35 164.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M260.25 164.00 L294.00 164.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
 <text x="222.3" y="171.438" text-anchor="middle" font-size="21.25" fill="#0f172a" font-weight="600">GET /</text>
