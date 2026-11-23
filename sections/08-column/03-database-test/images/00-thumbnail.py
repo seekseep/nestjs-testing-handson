@@ -20,15 +20,15 @@ def box(cx, cy, w, h, label, color, draw=None, dash="solid"):
     return n
 
 
-test = c.node(170, 270, "テスト", emoji_cp="1f9ea", w=110, h=100, label_scale="label")  # 🧪
-db = c.node(480, 270, "DB\n一時ファイル", shape="cylinder", color="green", w=190, h=120,
+test = c.node(130, 270, "テスト", emoji_cp="1f9ea", w=110, h=100, label_scale="label")  # 🧪
+db = c.node(500, 270, "DB\n一時ファイル", shape="cylinder", color="green", w=190, h=120,
             label_scale="label")
-trash = c.node(790, 270, "終わったら消す", emoji_cp="1f5d1", w=110, h=100, label_scale="label")  # 🗑️
+trash = c.node(840, 270, "終わったら消す", emoji_cp="1f5d1", w=110, h=100, label_scale="label")  # 🗑️
 c.link(test, db, label="本物で確かめる")
 c.link(db, trash, primary=False)
 
 # 絵のある範囲（x, y, 幅, 高さ）。文字の見出しは置かず、絵を枠の上下左右の真ん中に寄せて少し大きくする
-BOX = (110, 190, 750, 165)
+BOX = (70, 190, 830, 165)
 
 
 def save_centered(path):
