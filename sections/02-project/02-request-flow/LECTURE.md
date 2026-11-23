@@ -31,21 +31,21 @@ DB の表は 3 つです。
 
 ## メンバーを足す
 
-![メンバーを足すときの流れ。画面が HTTP の POST /members で MembersController を呼び、MembersController が SQL で members の表に書く。ロジックとほかの表は使わないので灰色](./images/01-members.svg)
+![メンバーを足すときの流れ。画面が HTTP の POST /members で MembersController を呼び、MembersController が SQL で members の表に書く](./images/01-members.svg)
 
 画面で **メンバーを足す** を押すと、`POST /members` が `MembersController` に届きます。コントローラーは、SQL で `members` の表に 1 行書きます。
 
 ## 立て替えを記録する
 
-![立て替えを記録するときの流れ。画面が HTTP の POST /payments で PaymentsController を呼び、PaymentsController が SQL で payments と payment_participants の表に書く。ロジックと members の表は使わないので灰色](./images/02-payments.svg)
+![立て替えを記録するときの流れ。画面が HTTP の POST /payments で PaymentsController を呼び、PaymentsController が SQL で payments と payment_participants の表に書く](./images/02-payments.svg)
 
 **立て替えを記録する** を押すと、`POST /payments` が `PaymentsController` に届きます。立て替えを `payments` に 1 行、対象の人を `payment_participants` に 1 人 1 行ずつ書きます。
 
 ## 清算を見る
 
-![清算を見るときの流れ。① 画面が HTTP の GET /settlement で SettlementController を呼ぶ。② SettlementController が SQL で payments と payment_participants の表から立て替えを読む。③ 読んだ立て替えを、ロジックの split・balances・settle で計算する。④ 計算した清算を画面に返す](./images/03-settlement.svg)
+![清算を見るときの流れ。① 画面が HTTP の GET /settlement で SettlementController を呼ぶ。② SettlementController が SQL で payments と payment_participants の表から立て替えを読む。③ 読んだ立て替えで計算を始め、split（1 人分ずつに分ける）→ balances（一人ずつの差し引きを出す）→ settle（だれがだれに払うか決める）の順に進む。④ settle の結果がコントローラーに戻る。⑤ 清算を画面に返す](./images/03-settlement.svg)
 
-画面は、表示を描き直すたびに `GET /settlement` を呼びます。`SettlementController` は、① リクエストを受け取り、② SQL で立て替えを読み、③ ロジックの関数で計算して、④ 清算を返します。
+画面は、表示を描き直すたびに `GET /settlement` を呼びます。`SettlementController` は、① リクエストを受け取り、② SQL で立て替えを読み、③ ロジックの関数で計算し、④ 結果を受け取って、⑤ 清算を返します。計算は `split` → `balances` → `settle` の順に進みます。
 
 `settle.ts` の 3 つの関数は、次の順に使います。
 
