@@ -1,0 +1,6 @@
+# 依存
+/node_modules
+
+# Playwright の結果とレポート
+/test-results
+/playwright-report

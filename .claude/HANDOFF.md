@@ -17,6 +17,7 @@
 - 2026-11-21: A の新しい書き方を入れた。配る `api/` を `nest new` の出力そのままにアプリのコードを足した形にし（Vitest・supertest は入れ直さない）、03〜05 章を「設計 → 書く → 足す」の 3 節に分け、02-02 の流れの図を処理ごとの 3 枚に分け、06 章を `DatabaseModule` から始めて節ごとの構成図を足した
 - 2026-11-23: テストの種類を 03 章として独立させ、単体・結合・E2E・もっと単体テストを 04〜07 章に繰り下げた。genfig を `.claude/skills/genfig` のサブモジュールにした（clone は `--recurse-submodules`。図は `.claude/skills/genfig` で作る）
 - 2026-11-23: 07 章を「DI コンテナ」（`07-di-container`）にし、07-01 に DI コンテナの図、07-04 に結合テストとサービスの単体テストの比べ（起動するもの・時間・確かめること）を置いた。フォルダ名を変えたら `site/astro.config.mjs` のサイドバーも直す
+- 2026-11-23: プロジェクトの形を、ルートに `compose.yaml` と `apps/api/`・`apps/ui/`（`public/` と Playwright の `e2e/`）を並べるモノレポにした（ルートの package.json・workspaces は入れない）
 - 進み具合と残りはイシュー #1 を見る
 
 ## 環境
@@ -42,5 +43,5 @@
 
 ## 確かめ方のメモ
 
-- 各節の `api/` で `npm install` → `npm run build`、04-02 から `npm test`、05-02 から `npm run test:e2e`（結合テスト）、06-02 から `podman compose down --volumes` → `podman compose up -d --build --wait` → `npx playwright test`
+- 各節の `apps/api/` で `npm install` → `npm run build`、04-02 から `npm test`、05-02 から `npm run test:e2e`（結合テスト）、06-02 からルートで `podman compose down --volumes` → `podman compose up -d --build --wait` → `apps/ui/` で `npm install` → `npx playwright test`
 - サイト: `cd site && pnpm install && pnpm run build`

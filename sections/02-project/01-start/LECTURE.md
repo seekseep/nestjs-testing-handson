@@ -23,23 +23,30 @@ title: 起動する
 
 ZIP を展開してできる `02-project-01-start/` を、`warikan/` のような名前に変えて好きな場所に置きます。このフォルダに、節ごとにテストを足していきます。
 
-フォルダを VS Code で開き、ターミナルで `api/` に入って起動します。
+フォルダの中は、API と画面を 1 つのリポジトリで並べて管理する形（モノレポ）です。
+
+| 場所 | 中身 |
+|---|---|
+| `apps/api/` | NestJS の API。`nest new` で作ったプロジェクトに、割り勘のコード（`src/` の `members/`・`payments/`・`settlement/`・`database.ts`）と `Dockerfile` を足したもの |
+| `apps/ui/public/` | 画面（`index.html`） |
+| `compose.yaml` | 画面と API の 2 つのコンテナ |
+
+フォルダを VS Code で開き、ターミナルで（`warikan/` で）起動します。
 
 ```bash
-cd api
 podman compose up -d --build --wait
 ```
 
 ```text
- Container api-web-1 Healthy
- Container api-api-1 Healthy
+ Container warikan-web-1 Healthy
+ Container warikan-api-1 Healthy
 ```
 
-`api/` は、`nest new` で作った NestJS のプロジェクトに、割り勘のコード（`src/` の `members/`・`payments/`・`settlement/`・`database.ts`）と、`compose.yaml`・`Dockerfile`・`public/` を足したものです。`compose.yaml` には、2 つのコンテナが書いてあります。
+`compose.yaml` には、2 つのコンテナが書いてあります。
 
 | コンテナ | 中身 | 開くところ |
 |---|---|---|
-| `web` | 画面（`public/index.html`）を配るだけの nginx | <http://localhost:3000> |
+| `web` | 画面（`apps/ui/public/`）を配るだけの nginx | <http://localhost:3000> |
 | `api` | NestJS の API。データは SQLite のファイルに置き、ファイルはボリューム（`db`）に入れる | <http://localhost:3001> |
 
 ## 動作確認する

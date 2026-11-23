@@ -22,11 +22,11 @@ UPDATE src/app.module.ts (905 bytes)
 
 `--no-spec` は、テストのひな形（`settlement.service.spec.ts`）を作らない指定です。サービスのテストは、次の節で自分で書きます。`AppModule` の `providers` に `SettlementService` が登録されます。
 
-::diff{file="api/src/app.module.ts" by="command"}
+::diff{file="apps/api/src/app.module.ts" by="command"}
 
-::diff{file="api/src/settlement/settlement.service.ts" base="generated"}
+::diff{file="apps/api/src/settlement/settlement.service.ts" base="generated"}
 
-::diff{file="api/src/settlement/settlement.controller.ts"}
+::diff{file="apps/api/src/settlement/settlement.controller.ts"}
 
 - コントローラーは「受け取って、サービスを呼んで、返す」だけになります
 

@@ -13,22 +13,22 @@ title: リポジトリを注入する
 
 ![SQL が MembersRepository と PaymentsRepository に分かれる。DatabaseSync はリポジトリに注入され、MembersRepository は MembersController に、PaymentsRepository は PaymentsController と SettlementController に注入される](./images/01-structure.svg)
 
-::diff{file="api/src/members/members.repository.ts"}
+::diff{file="apps/api/src/members/members.repository.ts"}
 
-::diff{file="api/src/payments/payments.repository.ts"}
+::diff{file="apps/api/src/payments/payments.repository.ts"}
 
 - メソッドの中身は、コントローラーにあったものをそのまま移しています
 - `@Injectable()` … NestJS が作って、ほかのクラスに渡せるようにする印です。DB は前の節と同じく、コンストラクターで受け取ります
 
 リポジトリを `AppModule` の `providers` に登録し、コントローラーはリポジトリを受け取って呼ぶだけにします。
 
-::diff{file="api/src/app.module.ts"}
+::diff{file="apps/api/src/app.module.ts"}
 
-::diff{file="api/src/members/members.controller.ts"}
+::diff{file="apps/api/src/members/members.controller.ts"}
 
-::diff{file="api/src/payments/payments.controller.ts"}
+::diff{file="apps/api/src/payments/payments.controller.ts"}
 
-::diff{file="api/src/settlement/settlement.controller.ts"}
+::diff{file="apps/api/src/settlement/settlement.controller.ts"}
 
 ## 動作確認する
 

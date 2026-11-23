@@ -11,30 +11,30 @@ title: E2E テストを書く
 
 ## Playwright を入れる
 
-ブラウザを操作する道具の **Playwright** は、`nest new` には入っていません。`api/` で、Playwright と、テストで使うブラウザ（Chromium）を入れます。
+E2E テストは画面を操作して確かめるテストなので、画面のプロジェクト（`apps/ui/`）に置きます。ブラウザを操作する道具の **Playwright** は、`apps/ui/` を npm のプロジェクトにして入れます。テストで使うブラウザ（Chromium）も入れます。ルート（`warikan/`）から始めます。
 
 ```bash
+cd apps/ui
+npm init -y
 npm install -D @playwright/test
 npx playwright install chromium
 ```
 
 Linux（Ubuntu など）で、テストの起動時にブラウザの部品が足りないというエラーが出たら、`npx playwright install-deps chromium` で入れます（`sudo` のパスワードを聞かれます）。
 
-::diff{file="api/package.json" by="command"}
+::diff{file="apps/ui/package.json" by="command"}
 
 テストを置く場所（`e2e/`）と、開く画面（`http://localhost:3000`）を設定します。
 
-::diff{file="api/playwright.config.ts"}
+::diff{file="apps/ui/playwright.config.ts"}
 
-Playwright が作る結果とレポートを、Git に入れないようにします。
+ライブラリと、Playwright が作る結果とレポートを、Git に入れないようにします。画面として配るのは `public/` だけなので、ここに置いたものは nginx からは見えません。
 
-::diff{file="api/.gitignore"}
+::diff{file="apps/ui/.gitignore"}
 
 ## テストを書く
 
-Vitest（`npm test`）は `.spec.ts` を単体テストとして動かすので、Playwright のテストは `.test.ts` の名前にして分けます。
-
-::diff{file="api/e2e/settlement.test.ts"}
+::diff{file="apps/ui/e2e/settlement.spec.ts"}
 
 - `test('...', async ({ page, request }) => { ... })` … テスト 1 つです。`page` は開いたブラウザのページ、`request` は API を直接呼ぶ道具です
 - `request.get('http://localhost:3001/members')` … 画面を操作する前に、データが空であることを API で確かめます。前のデータが残っていると、メンバーの数が合わずに、たまたま通ったり落ちたりします。ここで落ちれば、データを消し忘れたことがすぐ分かります
@@ -45,12 +45,14 @@ Vitest（`npm test`）は `.spec.ts` を単体テストとして動かすので�
 
 ## 動かす
 
-テストは、データが空の状態から始めます。データをボリュームごと消して、起動し直します。
+テストは、データが空の状態から始めます。ルート（`warikan/`）で、データをボリュームごと消して、起動し直します。
 
 ```bash
 podman compose down --volumes
 podman compose up -d --build --wait
 ```
+
+`apps/ui/` でテストを流します。
 
 ```bash
 npx playwright test
@@ -59,9 +61,9 @@ npx playwright test
 ```text
 Running 1 test using 1 worker
 
-  ✓  1 [chromium] › e2e/settlement.test.ts:3:1 › メンバーを足すと、一覧に出る (230ms)
+  ✓  1 [chromium] › e2e/settlement.spec.ts:3:1 › メンバーを足すと、一覧に出る (156ms)
 
-  1 passed (576ms)
+  1 passed (482ms)
 ```
 
 データを消さずにもう一度動かすと、最初の確かめで落ちます。上の 2 つのコマンドでデータを消してから動かします。

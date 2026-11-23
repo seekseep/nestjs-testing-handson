@@ -11,7 +11,7 @@ title: 偽物に差し替えてテストする
 
 ![単体テストの範囲。テストのコードが SettlementService を作って呼び、本物の PaymentsRepository の代わりに、findAll() だけを持つ偽物のリポジトリを渡す。本物の PaymentsRepository と DatabaseSync は使わない](./images/01-fake.svg)
 
-::diff{file="api/src/settlement/settlement.service.spec.ts"}
+::diff{file="apps/api/src/settlement/settlement.service.spec.ts"}
 
 - `fakeRepository(payments)` … `findAll()` が決まった立て替えを返すだけの偽物です。`SettlementService` が使うのは `findAll()` だけなので、ほかは要りません
 - `new SettlementService(fakeRepository([...]))` … NestJS を通さず、コンストラクターに偽物を渡して作ります

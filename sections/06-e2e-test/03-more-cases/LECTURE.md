@@ -20,13 +20,15 @@ title: E2E テストを仕上げる
 
 ## テストを足す
 
-::diff{file="api/e2e/settlement.test.ts"}
+::diff{file="apps/ui/e2e/settlement.spec.ts"}
 
 - E1・E2 … 1 人ずつ、`toHaveCount(i + 1)` で一覧に出るのを待ってから次の人を足します。待たずに続けると、画面を描き直している間に次の名前を入れてしまいます
 - E3 … `selectOption({ label: 'A' })` で、選択欄から A を選びます。対象の人は、はじめから全員に印が付いています
 - E4 … `getByRole('list', { name: '清算' })` は「清算」の見出しが付いたリストです。`toHaveText([...])` で、項目の文字を上から順に確かめます
 
 ## 動かす
+
+ルート（`warikan/`）でデータを消して起動し直し、`apps/ui/` でテストを流します。
 
 ```bash
 podman compose down --volumes
@@ -40,9 +42,9 @@ npx playwright test
 ```text
 Running 1 test using 1 worker
 
-  ✓  1 [chromium] › e2e/settlement.test.ts:3:1 › 3 人の飲み会で A が 10,000 円を立て替えると、B と C から A への支払いが出る (600ms)
+  ✓  1 [chromium] › e2e/settlement.spec.ts:3:1 › 3 人の飲み会で A が 10,000 円を立て替えると、B と C から A への支払いが出る (336ms)
 
-  1 passed (1.1s)
+  1 passed (663ms)
 ```
 
 ## 参考にした公式ドキュメント

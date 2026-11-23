@@ -17,7 +17,7 @@ title: 結合テストを足す
 
 ## テストを足す
 
-::diff{file="api/test/settlement.e2e-spec.ts"}
+::diff{file="apps/api/test/settlement.e2e-spec.ts"}
 
 - `seed()` … 3 人のメンバーを足し、A が 3 人分の 10,000 円を立て替えた状態にします。I1 と I2 で同じものを使うので、関数にまとめます
 - I1 … 立て替えを記録すると、`payments` と `payment_participants` の 2 つの表に書かれることも確かめます

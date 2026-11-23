@@ -7,13 +7,13 @@ title: リクエストの流れ
 
 ![02 章 リクエストの流れ](./images/00-thumbnail.svg)
 
-前の節で動かしたアプリのコードを読み、画面からのリクエストがどこを通るかを見ます。中身は、[起動する](../01-start/LECTURE.md) のページの最後のディレクトリか、手元の `api/` で開いて読めます。
+前の節で動かしたアプリのコードを読み、画面からのリクエストがどこを通るかを見ます。中身は、[起動する](../01-start/LECTURE.md) のページの最後のディレクトリか、手元のフォルダ（`warikan/`）で開いて読めます。
 
 アプリは、次の 4 つでできています。
 
-| 部分 | ファイル | すること |
+| 部分 | ファイル（API は `apps/api/` の中） | すること |
 |---|---|---|
-| 画面 | `public/index.html` | API を `fetch` で呼び、結果を表示する。`web` のコンテナが配る |
+| 画面 | `apps/ui/public/index.html` | API を `fetch` で呼び、結果を表示する。`web` のコンテナが配る |
 | エンドポイント | `src/members/members.controller.ts` など | URL ごとに、リクエストを受け取って応答を返す（コントローラー） |
 | | `src/main.ts` | 起動する。画面（3000 番）とは別のポートから呼ばれるので、`enableCors()` で受け付ける |
 | ロジック | `src/settlement/settle.ts` | 清算の計算。DB も HTTP も使わない関数 |
@@ -59,7 +59,7 @@ DB の表は 3 つです。
 
 コントローラーは、`@Controller()` に書いたパスと、メソッドに付けた `@Get()`・`@Post()` で、どのリクエストを受け取るかが決まります。
 
-:::code{filepath="api/src/members/members.controller.ts"}
+:::code{filepath="apps/api/src/members/members.controller.ts"}
 ```ts
 @Controller('members')
 export class MembersController {
@@ -73,7 +73,7 @@ export class MembersController {
 
 ![GET / が AppModule の AppController の getHello() に届き、AppService の getHello() が返した Hello World! がレスポンスの本文になる](./images/04-di.svg)
 
-:::code{filepath="api/src/app.controller.ts"}
+:::code{filepath="apps/api/src/app.controller.ts"}
 ```ts
 @Controller()
 export class AppController {

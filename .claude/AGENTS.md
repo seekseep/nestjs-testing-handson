@@ -32,16 +32,20 @@ sections/<sec>/<lec>/
 ├── LECTURE.md        教材本文（ZIP に入らない）
 ├── images/           説明図（ZIP に入らない）
 ├── generated/        ::diff{base="generated"} の比べる相手（ZIP に入らない）
-└── api/              NestJS（1 つだけ）
-    ├── compose.yaml        api（NestJS と SQLite。ファイルはボリューム db）と web（nginx で public/ を配る）
-    ├── Dockerfile          B と同じ
-    ├── public/index.html   画面（素の HTML と fetch）
-    ├── src/
-    ├── test/         結合テスト（05 章から。*.e2e-spec.ts）
-    └── e2e/          E2E テスト（06 章から。*.test.ts。playwright.config.ts も api/ に置く）
+├── demos/            ::preview{demo=...} のデモ（ZIP に入らない。02-01 の warikan は apps/ui/public/index.html をもとに、API の代わりにメモリで動く）
+├── compose.yaml      api（build: ./apps/api。NestJS と SQLite。ファイルはボリューム db）と web（nginx で ./apps/ui/public を配る）
+└── apps/             API と画面を並べるモノレポ（ルートの package.json・npm workspaces は入れない。それぞれ独立した npm のプロジェクト）
+    ├── api/          NestJS（Dockerfile・.dockerignore もここ）
+    │   ├── src/      単体テスト（*.spec.ts）は確かめるファイルの隣
+    │   └── test/     結合テスト（05 章から。*.e2e-spec.ts、npm run test:e2e）
+    └── ui/
+        ├── public/   画面（index.html。nginx が配るのはここだけ）
+        ├── e2e/      E2E テスト（06 章から。*.spec.ts、npx playwright test）
+        └── package.json・playwright.config.ts（06 章から。npm init -y と npm install -D @playwright/test）
 ```
 
-- **`api/` は `nest new` が作ったものを消さずに使う**: `npx @nestjs/cli@12 new api --package-manager npm --skip-tests --type esm --no-observe --skip-skills` の出力（`AGENTS.md`・`README.md`・oxlint・Prettier・Vitest の設定とパッケージ・`scripts`、`AppController`・`AppService` も）に、割り勘のコード・`compose.yaml`・`Dockerfile`・`.dockerignore`・`public/` を足した形。A（REST API）の #50 と同じ方針
+- **`apps/api/` は `nest new` が作ったものを消さずに使う**: `npx @nestjs/cli@12 new api --package-manager npm --skip-tests --type esm --no-observe --skip-skills` の出力（`AGENTS.md`・`README.md`・oxlint・Prettier・Vitest の設定とパッケージ・`scripts`、`AppController`・`AppService` も）に、割り勘のコード・`Dockerfile`・`.dockerignore` を足した形。A（REST API）の #50 と同じ方針
+- コマンドは、Podman（`podman compose ...`）はルート、API のテストは `apps/api/`、E2E は `apps/ui/` で実行する
 - 題材は割り勘: `POST/GET /members`・`POST/GET /payments`・`GET /settlement`。DB は SQLite（`node:sqlite` の `DatabaseSync`）で、表は `members`・`payments`・`payment_participants`（列は camelCase）。
   計算は `src/settlement/settle.ts` の `split`・`balances`・`settle`（DB も HTTP も使わない関数）
 - 02〜06 章は **コントローラーに直書き**（`openDatabase()`・SQL・結果の組み立て）。07 章で DB の `DatabaseModule`（`nest g module database`）→ リポジトリ → `SettlementService`（`nest g service settlement --no-spec`）→ サービスの単体テスト、と段階的に書き換える（02-02 で「素直に実装した形」と書く）
@@ -49,9 +53,9 @@ sections/<sec>/<lec>/
 - DB のファイルは環境変数 `DB_PATH`（既定は `warikan.db`）。コンテナでは `/data/warikan.db`（ボリューム）。結合テストはテストごとに一時ファイルを `DB_PATH` にする
 - テストは、単体・結合は手元の Node.js、E2E は Podman で動かした画面と API に対して流す（E2E の前に `podman compose down --volumes` でデータを消す）
 - 言語は **TypeScript**（ESM で、import の末尾は `.js`）。Vitest（4 系）・`@nestjs/testing`・supertest は `nest new` が入れたものをそのまま使う（版を上げない）。Playwright だけ 06-02 で入れる
-- テストのファイルとコマンドは `nest new` の設定に合わせる: 単体テストは `src/` の `*.spec.ts` を `npm test`（`vitest.config.ts`）、結合テストは `test/` の `*.e2e-spec.ts` を `npm run test:e2e`（`vitest.config.e2e.ts`。NestJS は e2e と呼ぶが、教材では結合テストと呼ぶ）、E2E テストは `e2e/` の `*.test.ts` を `npx playwright test`（`*.spec.ts` にすると Vitest が拾う）
+- テストのファイルとコマンドは `nest new` の設定に合わせる: 単体テストは `src/` の `*.spec.ts` を `npm test`（`vitest.config.ts`）、結合テストは `test/` の `*.e2e-spec.ts` を `npm run test:e2e`（`vitest.config.e2e.ts`。NestJS は e2e と呼ぶが、教材では結合テストと呼ぶ）、E2E テストは `apps/ui/e2e/` の `*.spec.ts` を `apps/ui/` で `npx playwright test`
 - E2E テストは、最初に API（`request`）でデータが空であることを確かめてから画面を操作する（古いデータで通ってしまうのを防ぐ）
-- パッケージマネージャはレクチャー側が **npm**（`api/package-lock.json`）、サイトが pnpm。Node 26・Podman の手順と Dockerfile は B とそろえる。`@types/node` は `nest new` が入れたもの（24 系）のまま
+- パッケージマネージャはレクチャー側が **npm**（`apps/api/package-lock.json`・`apps/ui/package-lock.json`）、サイトが pnpm。Node 26・Podman の手順と Dockerfile は B とそろえる。`@types/node` は `nest new` が入れたもの（24 系）のまま
 - **秘匿情報の実値は絶対にコミットしない**
 
 ## 本文の分量
