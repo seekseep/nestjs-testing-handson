@@ -1,0 +1,62 @@
+/* `::::cards` / `:::card`（src/plugins/remark-cards.mjs）の見た目。カード全体が 1 つのリンク。 */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.sl-markdown-content .cards a.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.75rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.75rem;
+  background: var(--sl-color-bg);
+  color: var(--sl-color-gray-2);
+  text-decoration: none;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+.sl-markdown-content .cards a.card:hover {
+  border-color: var(--sl-color-accent);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.12);
+  transform: translateY(-2px);
+}
+
+.sl-markdown-content .cards a.card:focus-visible {
+  outline: 3px solid var(--sl-color-accent);
+  outline-offset: 2px;
+}
+
+.sl-markdown-content .cards .card > * {
+  margin: 0;
+}
+
+.sl-markdown-content .cards .card__image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  background: #ffffff; /* サムネイルは白地で描いているので、ダークでも白の上に出す */
+}
+
+.sl-markdown-content .cards .card__title {
+  display: block;
+  color: var(--sl-color-white);
+  font-weight: 700;
+  font-size: var(--sl-text-lg);
+  line-height: 1.4;
+}
+
+.sl-markdown-content .cards a.card:hover .card__title {
+  color: var(--sl-color-accent-high);
+}
+
+.sl-markdown-content .cards .card__desc {
+  display: block;
+  font-size: var(--sl-text-sm);
+  line-height: 1.7;
+}
