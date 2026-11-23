@@ -70,6 +70,41 @@ create(@Body() body: Omit<Payment, 'id'>): Payment {
 
 境界で断れない、ありえない値が内側に届いたときは、黙って直さず、すぐ止めます。
 
+## 型と防御
+
+内側の関数が確かめを書かずに済むのは、型があるからでもあります。`split(amount: number, count: number)` に文字列を渡すコードは、動かす前に TypeScript がエラーにします。型は、「内側は信じる」を支えるしくみです。
+
+ただし、型が確かめるのは、動かす前のコードだけです。画面から届く JSON は、動いているときに外から入ってくる値です。`@Body() body: Omit<Payment, 'id'>` と書いても、届いた中身が本当にその形かどうかは、だれも確かめていません。そのため、境界では、型を書くだけでなく、値そのものを確かめます（上のコントローラー）。
+
+境界で値を確かめ、そこから先は型を付けて渡す。こう分けると、内側は型を信じて書けます。
+
+## any を使ってはいけない理由
+
+`any` は、その値の型チェックを止める型です。`any` の値は、どんな型の引数にも渡せて、無いプロパティを読んでもエラーになりません。
+
+```ts
+function record(body: any) {
+  return split(body.amout, body.participantIds.length); // amount のつづりをまちがえている
+}
+
+record({ amount: 10000, participantIds: [1, 2, 3] }); // [NaN, NaN, NaN]
+```
+
+`body.amout` は `undefined` ですが、`any` なので TypeScript は何も言いません。`split` は確かめを書いていないので、`NaN` がそのまま先へ進みます。まちがいが黙って先へ進むという、防御的に書いたときと同じことが起きます。
+
+`body` に型を付けていれば、このまちがいは動かす前に見つかります。
+
+```ts
+type PaymentBody = { amount: number; participantIds: number[] };
+
+function record(body: PaymentBody) {
+  return split(body.amout, body.participantIds.length);
+  // error TS2551: Property 'amout' does not exist on type 'PaymentBody'. Did you mean 'amount'?
+}
+```
+
+`any` を 1 か所使うと、そこから先は「型を信じて書いた内側」に、確かめていない値が入りこみます。外から来て形が分からない値には、`any` ではなく `unknown` を使います。`unknown` の値は、確かめるまでプロパティを読めないので、境界で確かめることを忘れられません。
+
 ## テストとの関係
 
 すぐ止めるコードは、テストでまちがいを見つけやすくなります。止まった場所とメッセージが、そのままテストの失敗として出るからです。
@@ -87,4 +122,6 @@ create(@Body() body: Omit<Payment, 'id'>): Payment {
 ## 参考
 
 - [Jim Shore: Fail Fast（IEEE Software）](https://martinfowler.com/ieeeSoftware/failFast.pdf) … おかしな値をその場で止める理由と、黙って直すことの問題
+- [TypeScript: Everyday Types（any）](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any) … `any` は型チェックを止める
+- [TypeScript: unknown](https://www.typescriptlang.org/docs/handbook/2/functions.html#unknown) … 確かめるまで使えない `unknown`
 - [NestJS: Exception filters](https://docs.nestjs.com/exception-filters) … `BadRequestException` などで 400 を返す
