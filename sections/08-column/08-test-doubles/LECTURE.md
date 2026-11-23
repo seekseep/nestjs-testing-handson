@@ -13,15 +13,55 @@ title: テストダブルの種類
 
 テストで本物の代わりに渡すものを、まとめて **テストダブル** と呼びます。映画のスタントの代役（stunt double）から来た名前です。役目によって、5 つに分けられます。
 
-| 種類 | すること | 割り勘のアプリでの例 |
-|---|---|---|
-| ダミー | 渡すだけで、使われない | 引数の数を合わせるためだけに渡す空のオブジェクト |
-| スタブ | 決まった値を返す | `findAll()` がいつも同じ立て替えを返すリポジトリ |
-| スパイ | 呼ばれ方を残す（決まった値も返せる） | `findAll()` が何回呼ばれたかを数えておくリポジトリ |
-| モック | どう呼ばれるべきかを先に決めておき、そのとおりに呼ばれたかを確かめる | `findAll()` が 1 回だけ呼ばれることを確かめるリポジトリ |
-| フェイク | 本番では使えないが、動く簡単な本物 | 配列に立て替えをためて読み書きする、メモリ上のリポジトリ |
+### ダミー
 
-Vitest の `vi.fn()` は、呼ばれ方を残すスパイとして使え、`mockReturnValue()` で決まった値を返すスタブにもなります。
+渡すだけで、使われないものです。引数の数を合わせるためだけに渡します。
+
+```ts
+const dummy = {} as PaymentsRepository; // 中で一度も呼ばれない
+```
+
+### スタブ
+
+呼ばれると、決まった値を返すものです。`findAll()` がいつも同じ立て替えを返すリポジトリが、これに当たります。
+
+```ts
+const stub = { findAll: () => payments } as PaymentsRepository;
+```
+
+### スパイ
+
+呼ばれ方（何回、どんな引数で呼ばれたか）を残しておくものです。決まった値を返すこともできます。テストのあとで、残った呼ばれ方を確かめます。Vitest の `vi.fn()` はスパイとして使え、`mockReturnValue()` で決まった値を返すスタブにもなります。
+
+```ts
+const findAll = vi.fn().mockReturnValue(payments);
+// …テストする処理を動かしたあとで
+expect(findAll).toHaveBeenCalledTimes(1);
+```
+
+### モック
+
+どう呼ばれるべきかを先に決めておき、そのとおりに呼ばれたかを確かめるものです。「`findAll()` が 1 回だけ呼ばれる」のように、呼ばれ方そのものがテストの中身になります。
+
+### フェイク
+
+本番では使えないものの、ちゃんと動く簡単な作りのものです。配列に立て替えをためて読み書きする、メモリ上のリポジトリが、これに当たります。
+
+```ts
+class InMemoryPaymentsRepository {
+  private payments: Payment[] = [];
+
+  create(input: Omit<Payment, 'id'>): Payment {
+    const payment = { id: this.payments.length + 1, ...input };
+    this.payments.push(payment);
+    return payment;
+  }
+
+  findAll(): Payment[] {
+    return this.payments;
+  }
+}
+```
 
 ## このハンズオンで使ったもの
 
