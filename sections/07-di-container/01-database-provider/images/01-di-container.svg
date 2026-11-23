@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="960" height="500" fill="#ffffff"/>
+<text x="30" y="44" text-anchor="start" font-size="28.0" fill="#0f172a" font-weight="700">アプリを動かすとき</text>
+<rect x="35" y="105" width="210" height="110" rx="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3.5"/>
+<text x="140" y="154" text-anchor="middle" font-size="22.666666666666664" fill="#475569" font-weight="600"><tspan x="140" dy="0">AppModule</tspan><tspan x="140" dy="32.8667">providers</tspan></text>
+<polygon points="414,105 526,105 570,160 526,215 414,215 370,160" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="470" y="154" text-anchor="middle" font-size="22.666666666666664" fill="#1d4ed8" font-weight="600"><tspan x="470" dy="0">DI コンテナ</tspan><tspan x="470" dy="32.8667">（NestJS）</tspan></text>
+<rect x="685" y="115" width="250" height="90" rx="16" fill="#ede9fe" stroke="#8b5cf6" stroke-width="3.5"/>
+<text x="810" y="168" text-anchor="middle" font-size="22.666666666666664" fill="#6d28d9" font-weight="600">SettlementService</text>
+<text x="810" y="235" text-anchor="middle" font-size="20.0" fill="#6d28d9" font-weight="400">本物のリポジトリを受け取る</text>
+<path d="M251.00 160.00 L266.14 160.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M348.86 160.00 L364.00 160.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="307.5" y="167.933" text-anchor="middle" font-size="22.666666666666664" fill="#0f172a" font-weight="600">① 登録</text>
+<path d="M576.00 160.00 L586.14 160.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M668.86 160.00 L679.00 160.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="627.5" y="167.933" text-anchor="middle" font-size="22.666666666666664" fill="#0f172a" font-weight="600">③ 注入</text>
+<text x="470" y="245" text-anchor="middle" font-size="20.0" fill="#1d4ed8" font-weight="400">② インスタンスを作る</text>
+<text x="30" y="320" text-anchor="start" font-size="28.0" fill="#0f172a" font-weight="700">単体テストのとき</text>
+<rect x="310" y="355" width="240" height="90" rx="16" fill="#ffedd5" stroke="#f97316" stroke-width="3.5" stroke-dasharray="7 6"/>
+<text x="430" y="408" text-anchor="middle" font-size="22.666666666666664" fill="#c2410c" font-weight="600">偽物のリポジトリ</text>
+<rect x="685" y="355" width="250" height="90" rx="16" fill="#ede9fe" stroke="#8b5cf6" stroke-width="3.5"/>
+<text x="810" y="408" text-anchor="middle" font-size="22.666666666666664" fill="#6d28d9" font-weight="600">SettlementService</text>
+<text x="810" y="475" text-anchor="middle" font-size="20.0" fill="#6d28d9" font-weight="400">偽物のリポジトリを受け取る</text>
+<path d="M556.00 400.00 L679.00 400.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<text x="617.5" y="388.6" text-anchor="middle" font-size="22.666666666666664" fill="#0f172a" font-weight="600">new で渡す</text>
+</svg>

@@ -1,4 +1,4 @@
-"""07 章「もっと単体テスト」の構成図。どの節でも同じ構図で、3 つのコントローラーから部品が分かれていく。
+"""07 章「DI コンテナ」の構成図。どの節でも同じ構図で、3 つのコントローラーから部品が分かれていく。
 
 STAGE だけを節ごとに変える（start / db / repository / service）。
 その節で分けたものに色を付け、前の節までに分けたものは灰色にする。
@@ -13,7 +13,7 @@ sys.path.insert(0, str(next(p / ".claude/skills/genfig" for p in Path(__file__).
 from genfig import Canvas  # noqa: E402
 from genfig.tokens import PALETTE  # noqa: E402
 
-STAGE = "start"
+STAGE = "service"
 
 ORDER = ["db", "repository", "service"]
 moved = [] if STAGE == "start" else ORDER[: ORDER.index(STAGE) + 1]
