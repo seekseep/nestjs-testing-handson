@@ -155,10 +155,11 @@ export default defineConfig({
         // Starlight v0.39+ では autogenerate を items 配列に入れる（label と autogenerate を同階層に書けない）。
         { label: '01. 準備', items: [{ autogenerate: { directory: '01-setup' } }] },
         { label: '02. プロジェクトの起動', items: [{ autogenerate: { directory: '02-project' } }] },
-        { label: '03. 単体テスト', items: [{ autogenerate: { directory: '03-unit-test' } }] },
-        { label: '04. 結合テスト', items: [{ autogenerate: { directory: '04-integration-test' } }] },
-        { label: '05. E2E テスト', items: [{ autogenerate: { directory: '05-e2e-test' } }] },
-        { label: '06. もっと単体テスト', items: [{ autogenerate: { directory: '06-more-unit-test' } }] },
+        { label: '03. テストの種類', items: [{ autogenerate: { directory: '03-test-types' } }] },
+        { label: '04. 単体テスト', items: [{ autogenerate: { directory: '04-unit-test' } }] },
+        { label: '05. 結合テスト', items: [{ autogenerate: { directory: '05-integration-test' } }] },
+        { label: '06. E2E テスト', items: [{ autogenerate: { directory: '06-e2e-test' } }] },
+        { label: '07. もっと単体テスト', items: [{ autogenerate: { directory: '07-more-unit-test' } }] },
       ],
       editLink: {
         baseUrl: `${repoUrl}/edit/main/`,
