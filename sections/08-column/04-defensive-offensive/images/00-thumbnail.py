@@ -1,4 +1,4 @@
-"""08 章「コラム」防御的プログラミングと攻撃的プログラミング のサムネイル。どこでも確かめる盾と、すぐ止める標識。
+"""08 章「コラム」防御的プログラミングと攻撃的プログラミング のサムネイル。どこでも確かめる盾と、交差した剣。
 """
 
 import os
@@ -10,8 +10,6 @@ from genfig import Canvas  # noqa: E402
 from genfig.tokens import PALETTE  # noqa: E402
 
 c = Canvas(960, 400)
-c.text(40, 52, "コラム", scale="label", align="left", fill=PALETTE["gray"]["text"])
-c.text(40, 92, "防御的プログラミングと攻撃的プログラミング", scale="title", align="left")
 
 
 def box(cx, cy, w, h, label, color, draw=None, dash="solid"):
@@ -23,7 +21,24 @@ def box(cx, cy, w, h, label, color, draw=None, dash="solid"):
 
 
 shield = c.node(250, 270, "防御的\nどこでも確かめる", emoji_cp="1f6e1", w=120, h=100, label_scale="label")
-stop = c.node(710, 270, "攻撃的\nおかしければすぐ止める", emoji_cp="1f6d1", w=120, h=100, label_scale="label")
+stop = c.node(710, 270, "攻撃的\nおかしければすぐ止める", emoji_cp="2694", w=120, h=100, label_scale="label")
 c.text(480, 280, "↔", scale="title", fill=PALETTE["gray"]["text"])
 
-c.save(os.path.splitext(os.path.basename(__file__))[0] + ".svg")
+# 絵のある範囲（x, y, 幅, 高さ）。文字の見出しは置かず、絵を枠の上下左右の真ん中に寄せて少し大きくする
+BOX = (150, 215, 690, 160)
+
+
+def save_centered(path):
+    x, y, w, h = BOX
+    k = min(960 * 0.9 / w, 400 * 0.85 / h, 1.4)
+    tx, ty = 480 - k * (x + w / 2), 200 - k * (y + h / 2)
+    c.check()
+    svg = c.svg()
+    bg = '<rect x="0" y="0" width="960" height="400" fill="#ffffff"/>'
+    head, body = svg.split(bg, 1)
+    body = "</g>\n</svg>".join(body.rsplit("</svg>", 1))  # 最後の </svg> の前で閉じる（絵文字の中にも <svg> がある）
+    with open(path, "w") as f:
+        f.write(head + bg + f'\n<g transform="translate({tx:.1f} {ty:.1f}) scale({k:.3f})">' + body)
+
+
+save_centered(os.path.splitext(os.path.basename(__file__))[0] + ".svg")
