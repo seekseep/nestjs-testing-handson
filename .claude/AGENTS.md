@@ -2,7 +2,7 @@
 
 ## プロジェクト概要
 
-割り勘のアプリ（NestJS の API と SQLite、画面は HTML 1 枚。認証なし）に、単体テスト（Vitest）・結合テスト（Vitest と supertest）・E2E テスト（Playwright）を書き、07 章で DI を使う形に書き換えて単体テストを広げるハンズオン教材。
+割り勘のアプリ（NestJS の API と SQLite、画面は HTML 1 枚。認証なし）に、単体テスト（Vitest）・結合テスト（Vitest と supertest）・E2E テスト（Playwright）を書き、07 章「DI コンテナ」で DB・リポジトリ・サービスを切り出し、結合テストでしか確かめられなかったことをアプリも DB も起動せずに確かめられるようにするハンズオン教材。
 3 本に分けたハンズオンの C（A: 基本的な REST API `nestjs-rest-api-handson`、B: Cognito で認証と認可 `nestjs-cognito-auth-handson`）。
 A も B も終えていなくても始められるように、02 章で割り勘のアプリを ZIP で配る。
 handson-builder スキルの骨格（`sections/` ＋ Starlight の `site/` ＋ GitHub Pages）を使っている。

@@ -1,11 +1,11 @@
 ---
 docs: true
-title: SQL をリポジトリに分ける
+title: リポジトリを注入する
 ---
 
-# SQL をリポジトリに分ける
+# リポジトリを注入する
 
-![07 章 SQL をリポジトリに分ける](./images/00-thumbnail.svg)
+![07 章 リポジトリを注入する](./images/00-thumbnail.svg)
 
 コントローラーに書いてある SQL を、表ごとの **リポジトリ** に移します。立て替えを読む SQL は `PaymentsController` と `SettlementController` の 2 か所にありましたが、`PaymentsRepository` の 1 か所にまとまります。DB は、コントローラーではなくリポジトリに注入します。
 

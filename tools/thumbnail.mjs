@@ -44,10 +44,10 @@ const THUMBNAILS = [
   ['06-e2e-test/01-design', '06', 'E2E テストの設計', ['Playwright', 'Podman']],
   ['06-e2e-test/02-first-test', '06', 'E2E テストを書く', ['Playwright', 'Podman']],
   ['06-e2e-test/03-more-cases', '06', 'E2E テストを仕上げる', ['Playwright', 'Podman']],
-  ['07-more-unit-test/01-database-provider', '07', 'DB をモジュールに分ける', ['NestJS', 'SQLite']],
-  ['07-more-unit-test/02-repository', '07', 'SQL をリポジトリに分ける', ['NestJS', 'SQLite']],
-  ['07-more-unit-test/03-service', '07', '清算をサービスに分ける', ['NestJS']],
-  ['07-more-unit-test/04-service-test', '07', 'サービスを単体テストする', ['Vitest', 'NestJS']],
+  ['07-di-container/01-database-provider', '07', 'DB をプロバイダーにする', ['NestJS', 'SQLite']],
+  ['07-di-container/02-repository', '07', 'リポジトリを注入する', ['NestJS', 'SQLite']],
+  ['07-di-container/03-service', '07', 'サービスを注入する', ['NestJS']],
+  ['07-di-container/04-service-test', '07', '偽物に差し替えてテストする', ['Vitest', 'NestJS']],
 ];
 
 function escapeXml(s) {

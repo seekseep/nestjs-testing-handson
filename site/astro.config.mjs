@@ -159,7 +159,7 @@ export default defineConfig({
         { label: '04. 単体テスト', items: [{ autogenerate: { directory: '04-unit-test' } }] },
         { label: '05. 結合テスト', items: [{ autogenerate: { directory: '05-integration-test' } }] },
         { label: '06. E2E テスト', items: [{ autogenerate: { directory: '06-e2e-test' } }] },
-        { label: '07. もっと単体テスト', items: [{ autogenerate: { directory: '07-more-unit-test' } }] },
+        { label: '07. DI コンテナ', items: [{ autogenerate: { directory: '07-di-container' } }] },
       ],
       editLink: {
         baseUrl: `${repoUrl}/edit/main/`,

@@ -1,21 +1,33 @@
 ---
 docs: true
-title: DB をモジュールに分ける
+title: DB をプロバイダーにする
 ---
 
-# DB をモジュールに分ける
+# DB をプロバイダーにする
 
-![07 章 DB をモジュールに分ける](./images/00-thumbnail.svg)
+![07 章 DB をプロバイダーにする](./images/00-thumbnail.svg)
 
-04 章で単体テストできたのは、DB も HTTP も使わない計算の関数だけでした。清算を出すところ（`SettlementController`）は、自分で DB を開いて SQL を書いているので、DB 無しでは確かめられません。この章では、NestJS の **DI**（依存性の注入）を使う形に少しずつ書き換え、清算を出すところも単体テストできるようにします。各節の最後に、05 章の結合テストで動きが変わっていないことを確かめます。
+NestJS では、ふつう処理をサービスに切り出します。このハンズオンでは、04〜06 章であえて切り出さず、コントローラーに直接書いてきました。そのため、DB を使う処理（清算を出すところ）は、05 章の結合テスト（アプリを丸ごと組み立てて、HTTP で呼び、本物の DB に書き込む）でしか確かめられませんでした。
+
+この章では、NestJS の **DI コンテナ** を使って、DB・リポジトリ・サービスを切り出します。サービスに切り出すと、これまで結合テストでしか確かめられなかったことが、アプリも DB も実際に起動しなくても確かめられるようになります。
+
+## DI コンテナがしていること
+
+![DI コンテナのしくみ。アプリを動かすときは、① AppModule の providers にクラスを登録し、② DI コンテナ（NestJS）がインスタンスを作り、③ コンストラクターで受け取りたい SettlementService に本物のリポジトリを注入する。単体テストのときは、DI コンテナを通さず、偽物のリポジトリを new で SettlementService に渡す](./images/01-di-container.svg)
+
+モジュールの `providers` に登録したクラスは、NestJS（DI コンテナ）がインスタンスを作り、コンストラクターでそれを受け取りたいクラスに渡します（注入）。受け取る側は、自分で相手を作らないので、テストでは本物の代わりに偽物を渡せます。
+
+各節の最後に、05 章の結合テストで動きが変わっていないことを確かめます。
+
+## DB を DatabaseModule に分ける
 
 今は、3 つのコントローラーが、それぞれ DB を開き、SQL を書いています。この章の図では、節ごとに、その節で分けたものに色を付けます。
 
-![今の形。AppModule の中の MembersController・PaymentsController・SettlementController が、それぞれ受け取って返すことに加えて、DB を開くことと SQL を持っている。SettlementController は清算も持っている](./images/01-before.svg)
+![今の形。AppModule の中の MembersController・PaymentsController・SettlementController が、それぞれ受け取って返すことに加えて、DB を開くことと SQL を持っている。SettlementController は清算も持っている](./images/02-before.svg)
 
 最初は DB です。コントローラーが自分で `openDatabase()` を呼ぶのをやめ、NestJS に **プロバイダー** として渡してもらいます。DB はどの機能からも使うものなので、`DatabaseModule` という **モジュール** にまとめます。
 
-![DB を開く処理が DatabaseModule の DatabaseSync に分かれ、3 つのコントローラーに注入される](./images/02-structure.svg)
+![DB を開く処理が DatabaseModule の DatabaseSync に分かれ、3 つのコントローラーに注入される](./images/03-structure.svg)
 
 ```bash
 npx nest g module database
