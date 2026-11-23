@@ -9,6 +9,8 @@ title: リポジトリを注入する
 
 コントローラーに書いてある SQL を、表ごとの **リポジトリ** に移します。立て替えを読む SQL は `PaymentsController` と `SettlementController` の 2 か所にありましたが、`PaymentsRepository` の 1 か所にまとまります。DB は、コントローラーではなくリポジトリに注入します。
 
+このように、データを読み書きする処理を 1 つのクラスにまとめ、ほかのクラスからは`create()`（足す）・`findAll()`（全部読む）のようなメソッドだけで扱えるようにする形を、**リポジトリパターン** と呼びます。使う側は、データが SQLite に入っているのか、どんな SQL で読むのかを知らずに済みます。そのため、あとの節では、リポジトリを偽物に差し替えるだけで、DB 無しでテストできるようになります。詳しくは、Martin Fowler の [Repository](https://martinfowler.com/eaaCatalog/repository.html)（『Patterns of Enterprise Application Architecture』の解説）を参照してください。
+
 ![SQL が MembersRepository と PaymentsRepository に分かれる。DatabaseSync はリポジトリに注入され、MembersRepository は MembersController に、PaymentsRepository は PaymentsController と SettlementController に注入される](./images/01-structure.svg)
 
 ::diff{file="api/src/members/members.repository.ts"}
