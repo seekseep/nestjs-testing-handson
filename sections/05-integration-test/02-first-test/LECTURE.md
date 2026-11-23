@@ -18,13 +18,13 @@ title: 結合テストを書く
 | `package.json` | `devDependencies` に `@nestjs/testing`・`supertest`。`scripts` の `test:e2e` は `vitest run --config ./vitest.config.e2e.ts` |
 | `vitest.config.e2e.ts` | `include: ['**/*.e2e-spec.ts']`。名前が `.e2e-spec.ts` で終わるファイルを動かす |
 
-NestJS は、アプリを組み立てて HTTP で呼ぶテストを「e2e テスト」と呼び、`test/` に `.e2e-spec.ts` の名前で置きます。このハンズオンでは、ブラウザで画面を操作するテスト（06 章）を E2E テストと呼ぶので、こちらを **結合テスト** と呼びます。ファイルの名前と置き場所、コマンドは、`nest new` が用意したものをそのまま使います。
+NestJS は、アプリを組み立てて HTTP で呼ぶテストを「e2e テスト」と呼び、`test/` に `.e2e-spec.ts` の名前で置きます。このハンズオンでは、ブラウザで画面を操作するテスト（06 章。`apps/ui/e2e/` に置く）を E2E テストと呼ぶので、`apps/api/test/` に置くこちらを **結合テスト** と呼びます。ファイルの名前と置き場所、コマンド（`apps/api/` で `npm run test:e2e`）は、`nest new` が用意したものをそのまま使います。
 
 `npm test`（`vitest.config.ts`）が見るのは `.spec.ts` だけなので、結合テストは入りません。速い単体テストと分けて動かせます。
 
 ## テストを書く
 
-::diff{file="api/test/settlement.e2e-spec.ts"}
+::diff{file="apps/api/test/settlement.e2e-spec.ts"}
 
 - `process.env.DB_PATH = dbPath` … コントローラーは `openDatabase()` で、`DB_PATH` のファイルを開きます。アプリを組み立てる前に、一時フォルダ（`tmpdir()`）の新しいファイルを指しておきます。テストが終わったら `rmSync()` で消します
 - `beforeEach()`・`afterEach()` … テスト 1 つごとに、前と後に動かす処理です。テストごとに新しい DB とアプリを用意し、テストどうしが影響し合わないようにします

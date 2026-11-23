@@ -11,10 +11,10 @@ title: 単体テストを書く
 
 ## Vitest の場所を確かめる
 
-テストは、Podman ではなく手元の Node.js で動かします。`api/` で、ライブラリを入れます。
+テストは、Podman ではなく手元の Node.js で動かします。`apps/api/` で、ライブラリを入れます。
 
 ```bash
-cd api
+cd apps/api
 npm install
 ```
 
@@ -29,7 +29,7 @@ npm install
 
 ## テストを書く
 
-::diff{file="api/src/settlement/settle.spec.ts"}
+::diff{file="apps/api/src/settlement/settle.spec.ts"}
 
 - `describe('split', ...)` … テストをまとめる箱です。関数ごとに分けます
 - `it('...', () => { ... })` … テスト 1 つです。名前には「どうなるべきか」を書きます。テストが落ちたとき、この名前が表示されます

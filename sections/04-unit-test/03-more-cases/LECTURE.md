@@ -17,7 +17,7 @@ title: 単体テストを足す
 
 ## テストを足す
 
-::diff{file="api/src/settlement/settle.spec.ts"}
+::diff{file="apps/api/src/settlement/settle.spec.ts"}
 
 - S2 は、配列が期待どおりかに加えて、合計が元の金額と同じになることも `toBe(10000)` で確かめます。`toBe` は、数のような 1 つの値を比べます
 - B3 は、結果の `memberId` だけを取り出して比べます。確かめたいこと（出てこない人が入らないこと）だけを比べると、テストが落ちたときに何が破れたかが分かります
