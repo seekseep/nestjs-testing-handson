@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="400" viewBox="0 0 960 400" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="960" height="400" fill="#ffffff"/>
+<text x="40" y="52" text-anchor="start" font-size="22.666666666666664" fill="#475569" font-weight="600">コラム</text>
+<text x="40" y="92" text-anchor="start" font-size="34.666666666666664" fill="#0f172a" font-weight="700">テスト駆動開発と自動テスト</text>
+<ellipse cx="230" cy="270" rx="115" ry="50" fill="#fee2e2" stroke="#ef4444" stroke-width="3.5"/>
+<text x="230" y="261.5" text-anchor="middle" font-size="22.666666666666664" fill="#b91c1c" font-weight="600"><tspan x="230" dy="0">レッド</tspan><tspan x="230" dy="32.8667">落ちるテストを書く</tspan></text>
+<ellipse cx="520" cy="270" rx="115" ry="50" fill="#dcfce7" stroke="#22c55e" stroke-width="3.5"/>
+<text x="520" y="261.5" text-anchor="middle" font-size="22.666666666666664" fill="#15803d" font-weight="600"><tspan x="520" dy="0">グリーン</tspan><tspan x="520" dy="32.8667">通るように書く</tspan></text>
+<ellipse cx="800" cy="270" rx="115" ry="50" fill="#dbeafe" stroke="#3b82f6" stroke-width="3.5"/>
+<text x="800" y="261.5" text-anchor="middle" font-size="22.666666666666664" fill="#1d4ed8" font-weight="600"><tspan x="800" dy="0">リファクタリング</tspan><tspan x="800" dy="32.8667">整える</tspan></text>
+<path d="M351.00 270.00 L399.00 270.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<path d="M641.00 270.00 L679.00 270.00" fill="none" stroke="#475569" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aR)"/>
+<path d="M800.00 326.00 L800.00 344.00 L800.00 358.00 Q800.00 372.00 786.00 372.00 L712.65 372.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M602.35 372.00 L515.00 372.00 L244.00 372.00 Q230.00 372.00 230.00 358.00 L230.00 344.00 L230.00 326.00" fill="none" stroke="#94a3b8" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#aRsub)"/>
+<text x="657.5" y="379.933" text-anchor="middle" font-size="22.666666666666664" fill="#475569" font-weight="600">くり返す</text>
+</svg>

@@ -160,6 +160,7 @@ export default defineConfig({
         { label: '05. 結合テスト', items: [{ autogenerate: { directory: '05-integration-test' } }] },
         { label: '06. E2E テスト', items: [{ autogenerate: { directory: '06-e2e-test' } }] },
         { label: '07. DI コンテナ', items: [{ autogenerate: { directory: '07-di-container' } }] },
+        { label: '08. コラム', items: [{ autogenerate: { directory: '08-column' } }] },
       ],
       editLink: {
         baseUrl: `${repoUrl}/edit/main/`,

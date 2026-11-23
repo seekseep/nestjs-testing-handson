@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="400" viewBox="0 0 960 400" font-family="'Hiragino Sans','Noto Sans JP','Yu Gothic','Segoe UI',sans-serif">
+<defs><marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#475569"/></marker><marker id="aRsub" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="#94a3b8"/></marker></defs>
+<rect x="0" y="0" width="960" height="400" fill="#ffffff"/>
+<text x="40" y="52" text-anchor="start" font-size="22.666666666666664" fill="#475569" font-weight="600">コラム</text>
+<text x="40" y="92" text-anchor="start" font-size="34.666666666666664" fill="#0f172a" font-weight="700">防御的プログラミングと攻撃的プログラミング</text>
+<svg x="204.0" y="208.6" width="92.0" height="92.0" viewBox="0 0 36 36"><path fill="#CCD6DD" d="M33 3c-7-3-15-3-15-3S10 0 3 3C0 18 3 31 18 36c15-5 18-18 15-33z"/><path fill="#55ACEE" d="M18 33.884C6.412 29.729 1.961 19.831 4.76 4.444 11.063 2.029 17.928 2 18 2c.071 0 6.958.04 13.24 2.444 2.799 15.387-1.652 25.285-13.24 29.44z"/><path fill="#269" d="M31.24 4.444C24.958 2.04 18.071 2 18 2v31.884c11.588-4.155 16.039-14.053 13.24-29.44z"/></svg>
+<text x="250" y="328.707" text-anchor="middle" font-size="22.666666666666664" fill="#475569" font-weight="600"><tspan x="250" dy="0">防御的</tspan><tspan x="250" dy="32.8667">どこでも確かめる</tspan></text>
+<svg x="664.0" y="208.6" width="92.0" height="92.0" viewBox="0 0 36 36"><path fill="#DD2E44" d="M12 3l-9 8.985V24l9 9h12l9-9V11.985L24 3z"/><path fill="#CCD6DD" d="M24.827 1H11.173L1 11.156v13.672L11.172 35h13.657L35 24.828V11.156L24.827 1zM33 24l-9 9H12l-9-9V11.985L12 3h12l9 8.985V24z"/></svg>
+<text x="710" y="328.707" text-anchor="middle" font-size="22.666666666666664" fill="#475569" font-weight="600"><tspan x="710" dy="0">攻撃的</tspan><tspan x="710" dy="32.8667">おかしければすぐ止める</tspan></text>
+<text x="480" y="280" text-anchor="middle" font-size="34.666666666666664" fill="#475569" font-weight="700">↔</text>
+</svg>
