@@ -12,6 +12,7 @@ import remarkScript from './src/plugins/remark-script.mjs';
 import remarkCode from './src/plugins/remark-code.mjs';
 import remarkFaq from './src/plugins/remark-faq.mjs';
 import remarkPlatform from './src/plugins/remark-platform.mjs';
+import remarkCards from './src/plugins/remark-cards.mjs';
 import ecLineNumbers from './src/plugins/ec-line-numbers.mjs';
 import lectureSync from './src/integrations/lecture-sync.mjs';
 
@@ -80,6 +81,8 @@ function calloutIntegration() {
         config.markdown.processor?.options.remarkPlugins.push(remarkFaq);
         // `:::::platform` を OS（macOS / Windows / Linux）ごとのパネルに変換。名前衝突なし。
         config.markdown.processor?.options.remarkPlugins.push(remarkPlatform);
+        // `::::cards` / `:::card` を、カード全体が 1 つのリンクのカード一覧に変換。名前衝突なし。
+        config.markdown.processor?.options.remarkPlugins.push(remarkCards);
       },
     },
   };
@@ -120,6 +123,7 @@ export default defineConfig({
         './src/styles/code.css',
         './src/styles/faq.css',
         './src/styles/platform.css',
+        './src/styles/cards.css',
       ],
       // `:::code` が付けた startLineNumber / startNewLineNumber を読んで
       // ガターに行番号を出す自作プラグイン。それ以外のコードブロックには何もしない。

@@ -81,6 +81,7 @@ sections/<sec>/<lec>/
 - コマンドの実行例は普通のコードブロックで書く
 - 「参考にした公式ドキュメント」は `- [名前](URL) … 何を参考にしたか` の形で並べる。リンクは開けることと、書いた中身が本当にそのページにあることを確かめてから載せる
 - よくある質問は `:::faq`、注意は `:::warning` / `:::danger` / `:::notice`
+- カードの一覧は `::::cards` の中に `:::card` を並べる（`site/src/plugins/remark-cards.mjs`・`site/src/styles/cards.css`。08-column/00-index で使う）。`:::card` の中は、画像・題のリンク・説明の 3 段落をふつうの Markdown で書く。カード全体が題のリンク先へのリンクになり、題は見出しにしない（目次に出ない）
 - 手順が OS で分かれるところは `:::::platform` で囲み、中を `::::macos` / `::::windows` / `::::linux`（`::::macos-linux` のように `-` でつなぐと両方に出す）に分ける
   - Windows は PowerShell 7 の手順を書く（WSL は使わない）。bash のコマンドで PowerShell では動かないもの（`\` の改行・`/dev/null`・`export`・`rm -rf`・`VAR=値 コマンド` など）は、`::::macos-linux` と `::::windows` に分ける
   - 選んだ OS は localStorage（キー `handson-os`）に残り、ナビゲーションバーの選択欄と `::platform-choice`（01-01 に置いている）で変える
